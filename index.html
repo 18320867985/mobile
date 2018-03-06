@@ -1,0 +1,174 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			
+			html,
+			body {
+				height: 100%;
+				overflow: hidden;
+			}
+			
+			input {
+				outline: none;
+			}
+			
+			ul {
+				list-style: none;
+			}
+			
+			img {
+				display: block;
+			}
+			
+			a {
+				text-decoration: none;
+				-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+			}
+			/*mobile-slide*/
+			
+			h1 {
+				width: 100%;
+				padding: 10px;
+				text-align: center;
+				font-size: 28px;
+				background: #f8f8f8;
+			}
+			
+		</style>
+		
+		<link rel="stylesheet" type="text/css" href="css/mobile-slide.css"/>
+	</head>
+
+	<body>
+		<h1>mobile 触摸页面</h1>
+
+		<!--导航区-->
+		<nav class="mobile-scroll" data-link="true">
+			<ul class="mobile-scroll-list" >
+				<li class="active">
+					<a href="竖向滑屏.html">首页</a>
+				</li>
+				<li>
+					<a href="javascript:;">MV</a>
+				</li>
+				<li>
+					<a href="javascript:;">悦单</a>
+				</li>
+				<li>
+					<a href="javascript:;">V榜</a>
+				</li>
+				<li>
+					<a href="javascript:;">音悦</a>
+				</li>
+				<li>
+					<a href="javascript:;">商城</a>
+				</li>
+				<li>
+					<a href="javascript:;">节目</a>
+				</li>
+				<li>
+					<a href="javascript:;">饭团</a>
+				</li>
+				<li>
+					<a href="javascript:;">资讯</a>
+				</li>
+				<li>
+					<a href="javascript:;">我的家</a>
+				</li>
+				<li>
+					<a href="javascript:;">APP下载</a>
+				</li>
+				<li>
+					<a href="javascript:;">热门应用</a>
+				</li>
+				<li>
+					<a href="javascript:;">MV</a>
+				</li>
+				<li>
+					<a href="javascript:;">悦单</a>
+				</li>
+				<li>
+					<a href="javascript:;">V榜</a>
+				</li>
+				<li>
+					<a href="javascript:;">音悦</a>
+				</li>
+				<li>
+					<a href="javascript:;">商城</a>
+				</li>
+				<li>
+					<a href="javascript:;">节目</a>
+				</li>
+				<li>
+					<a href="javascript:;">饭团</a>
+				</li>
+				<li>
+					<a href="javascript:;">资讯</a>
+				</li>
+			</ul>
+		</nav>
+	
+		<!--轮播图-->
+		<div  class="mobile-slide " data-time="4000">
+				
+				<ul class="mobile-slide-list ">
+						<li>
+							<a href="http://www.baidu.com" id="a">
+								<div id="">
+									<img src="./img/1.jpg" alt="">
+								</div>
+
+							</a>
+						</li>
+						<li>
+							<a href="http://www.51zxw.com">
+								<img src="./img/2.jpg" alt="">
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;">
+								<img src="./img/3.jpg" alt="">
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;">
+								<img src="./img/4.jpg" alt="">
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;">
+								<img src="./img/5.jpg" alt="">
+							</a>
+						</li>
+					</ul>
+						
+				<div class="mobile-slide-radius">
+						<span class="active"></span>
+						<span></span>
+						<span></span>
+						<span></span>
+						<span></span>
+				</div>
+
+			</div>
+	
+		
+		<script src="js/mobile.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mobile.scroll();
+			mobile.slide();
+			
+		</script>
+	
+	</body>
+
+</html>
