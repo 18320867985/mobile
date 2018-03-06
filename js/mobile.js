@@ -110,8 +110,7 @@ var mobile = (function() {
 			var startX = 0;
 			var isFirst = true;
 			isX = true;
-			
-			var isLink=true;
+
 			navs.addEventListener("touchstart", function(event) {
 				var touch = event.changedTouches[0];
 				startX = touch.clientX;
@@ -126,7 +125,7 @@ var mobile = (function() {
 			});
 
 			navs.addEventListener("touchmove", function(event) {
-				isLink=false;
+
 				var touch = event.changedTouches[0];
 				var nowX = touch.clientX;
 				var dis = nowX - startX;
@@ -161,6 +160,7 @@ var mobile = (function() {
 			});
 
 			navs.addEventListener("touchend", function(event) {
+
 				var touch = event.changedTouches[0];
 				var speed = disValue / (endTime - beginTime);
 				var window_w = window.innerWidth ||
@@ -181,16 +181,7 @@ var mobile = (function() {
 				// 过度时间0.5s
 				navsList.style.transition = '.8s ' + bezier;
 				transformCss(navsList, "translateX", target);
-				
-				
-			// a链接
-				if(isLink) {
-					isLink = true;
-					var href =event.target.getAttribute("href")|| "javascript:;";
-					window.location.assign(href);
-				}
 
-				
 			});
 
 		}
@@ -198,7 +189,7 @@ var mobile = (function() {
 		///导航点击选中样式
 		function changeColor(navs, fn) {
 			var Linodes = navs.querySelectorAll(".mobile-scroll-list li ");
-			
+			var isLink = navs.getAttribute("data-link");
 			// 对li进行遍历
 			for(var i = 0; i < Linodes.length; i++) {
 				//误触解决
@@ -210,7 +201,13 @@ var mobile = (function() {
 
 				});
 
-				Linodes[i].addEventListener("touchend", function() {
+				Linodes[i].addEventListener("touchend", function(event) {
+					// a链接
+					if(isLink!==null) {
+						var href = event.target.getAttribute("href") || "javascript:;";
+						window.location.assign(href);
+					}
+
 					//对每个li绑定touchend，添加classname
 					if(!this.isMove) {
 						for(var j = 0; j < Linodes.length; j++) {
@@ -225,13 +222,11 @@ var mobile = (function() {
 						}
 					}
 					this.isMove = false;
-					
-				
 
 				});
 
 			}
-			
+
 		}
 
 	}
@@ -281,8 +276,11 @@ var mobile = (function() {
 			var now = 0;
 			//           var disX =0
 			//           var  translateX =0;
-			var isLink = false;
+			var isLink = true;
 			wrap.addEventListener("touchstart", function(event) {
+				
+					var touch = event.changedTouches[0];
+				
 				isLink = true;
 				clearInterval(timerId);
 				list.style.transition = 'none';
@@ -296,24 +294,43 @@ var mobile = (function() {
 				}
 				transformCss(list, 'translateX', -now * document.documentElement.clientWidth)
 
-				var touch = event.changedTouches[0];
+				
 				//               elementX = list.offsetLeft;
 				startX = touch.clientX
 				//                elementX =translateX;
-				elementX = transformCss(list, 'translateX')
+				elementX = transformCss(list, 'translateX');
+				
+				
 			});
 
 			wrap.addEventListener("touchmove", function(event) {
+				clearInterval(timerId);
 				isLink = false;
 				var touch = event.changedTouches[0];
 				var nowX = touch.clientX;
 				var disX = nowX - startX
 				//               translateX = elementX+disX
 				//               list.style.transform = 'translateX('+translateX +'px)';
-				transformCss(list, 'translateX', elementX + disX)
+				transformCss(list, 'translateX', elementX + disX);
 			});
 
 			wrap.addEventListener("touchend", function(event) {
+
+				// a链接
+				if(isLink) {
+					isLink = true;
+					var href = "";
+					if(event.target.parentElement.nodeName == "A") {
+						// 包裹一层
+						href = event.target.parentElement.getAttribute("href") || "javascript:;";
+					} else {
+						// 包裹两层
+						href = event.target.parentElement.parentElement.getAttribute("href") || "javascript:;";
+					}
+
+					window.location.assign(href);
+				}
+
 				event.preventDefault();
 
 				//               var left =list.offsetLeft;
@@ -340,30 +357,12 @@ var mobile = (function() {
 					spanNodes[i].className = ''
 				}
 
-				
 				spanNodes[now % spanNodes.length].className = 'active';
 
-				// a链接
-				if(isLink) {
-					isLink = false;
-					var href = "";
-					if(event.target.parentElement.nodeName == "A") {
-						// 包裹一层
-						href = event.target.parentElement.getAttribute("href") || "javascript:;";
-					} else {
-						// 包裹两层
-						href = event.target.parentElement.parentElement.getAttribute("href") || "javascript:;";
-					}
-
-					window.location.assign(href);
-				}
-				
 				// 自动播放
 				timerId = auto(time);
 
 			});
-
-		
 
 			// var now = 0;
 
@@ -390,10 +389,10 @@ var mobile = (function() {
 
 				}, t);
 			}
-			
+
 			// 页面skip
-			function link(){
-				
+			function link() {
+
 			}
 		}
 
