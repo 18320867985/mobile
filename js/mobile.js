@@ -135,7 +135,7 @@ var mobile = (function() {
 
 				var minX = window_w - navsList.offsetWidth;
 
-				transformCss(navsList, "translateX", eleX + dis);
+			//	transformCss(navsList, "translateX", eleX + dis);
 				var translateX = eleX + dis;
 				if(translateX > 0) {
 					var scale = 1 - translateX / window_w
@@ -192,6 +192,7 @@ var mobile = (function() {
 			var isLink = navs.getAttribute("data-link");
 			// 对li进行遍历
 			for(var i = 0; i < Linodes.length; i++) {
+
 				//误触解决
 				Linodes[i].addEventListener("touchmove", function() {
 					if(!this.isMove) {
@@ -202,11 +203,6 @@ var mobile = (function() {
 				});
 
 				Linodes[i].addEventListener("touchend", function(event) {
-					// a链接
-					if(isLink!==null) {
-						var href = event.target.getAttribute("href") || "javascript:;";
-						window.location.assign(href);
-					}
 
 					//对每个li绑定touchend，添加classname
 					if(!this.isMove) {
@@ -216,6 +212,12 @@ var mobile = (function() {
 						}
 
 						this.classList.add("active");
+						// a链接
+						if( isLink !==null) {
+							var href = event.target.getAttribute("href") || "javascript:;";
+							window.location.assign(href);
+						}
+
 						// 点击回调函数
 						if(typeof fn === "function") {
 							fn(this);
@@ -246,24 +248,25 @@ var mobile = (function() {
 
 			var wrap = mobile_slide; //document.querySelector(".mobile-slide");
 			var list = wrap.querySelector(".mobile-slide-list");
-
+			// 轮播时间 
+			var time = wrap.getAttribute("data-time") || "3000";
+			var isAuto=wrap.getAttribute("data-auto"); //自动播放
+			
+			time = parseInt(time);
+			var timerId = 0;
+			
 			// 小圆点
 			var spanNodes = wrap.querySelectorAll(".mobile-slide-radius span");
 
 			// 取消 浏览器默认行为
 			documentPreventDefault(wrap);
-
-			// 轮播时间 
-			var time = wrap.getAttribute("data-time") || "3000";
-			time = parseInt(time);
-
-			var timerId = 0;
-
+			
 			transformCss(list, 'translateZ', 0.01)
 			list.innerHTML += list.innerHTML
 			var liNodes = wrap.querySelectorAll(".mobile-slide-list li")
 
 			// 添加样式
+			mobile_slide.style.overflow="hidden"
 			list.style.width = liNodes.length + '00%';
 
 			for(var l = 0; l < liNodes.length; l++) {
@@ -278,9 +281,9 @@ var mobile = (function() {
 			//           var  translateX =0;
 			var isLink = true;
 			wrap.addEventListener("touchstart", function(event) {
-				
-					var touch = event.changedTouches[0];
-				
+
+				var touch = event.changedTouches[0];
+
 				isLink = true;
 				clearInterval(timerId);
 				list.style.transition = 'none';
@@ -294,13 +297,11 @@ var mobile = (function() {
 				}
 				transformCss(list, 'translateX', -now * document.documentElement.clientWidth)
 
-				
 				//               elementX = list.offsetLeft;
 				startX = touch.clientX
 				//                elementX =translateX;
 				elementX = transformCss(list, 'translateX');
-				
-				
+
 			});
 
 			wrap.addEventListener("touchmove", function(event) {
@@ -360,16 +361,24 @@ var mobile = (function() {
 				spanNodes[now % spanNodes.length].className = 'active';
 
 				// 自动播放
+			if( isAuto!=null){
+			
 				timerId = auto(time);
-
+				}
+							
 			});
 
 			// var now = 0;
 
 			// 自动播放
-			timerId = auto(time);
+		
+			if( isAuto!=null){
+			
+				timerId = auto(time);
+			}
 
 			function auto(t) {
+
 				return setInterval(function() {
 					list.style.transition = 'none'
 					if(now == liNodes.length - 1) {
@@ -403,4 +412,6 @@ var mobile = (function() {
 		slide: _slide
 
 	}
+	
+	
 })();

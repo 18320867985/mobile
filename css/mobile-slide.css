@@ -1,5 +1,5 @@
-/*clr*/
 
+/*clr*/
 .clr:before,
 .clr:after {
 	display: table;
@@ -23,7 +23,7 @@
 .mobile-scroll-list {
 	float: left;
 	white-space: nowrap;
-	text-align: center;
+	text-align:center;
 	font-size: 0;
 }
 
@@ -53,10 +53,11 @@
 /* mobile-slide 图片轮播 */
 
 .mobile-slide {
-	margin-bottom: 10px;
 	position: relative;
+	box-sizing: border-box;
+	width: 100%;
 	height: auto;
-	
+	overflow: hidden;
 
 }
 
@@ -101,3 +102,4 @@
 .mobile-slide-radius .active {
 	background: red;
 }
+			

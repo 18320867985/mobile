@@ -6,17 +6,13 @@
 		<title></title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<style>
+			
 			* {
 				margin: 0;
 				padding: 0;
 			}
 			
-			html,
-			body {
-				height: 100%;
-				overflow: hidden;
-			}
-			
+		
 			input {
 				outline: none;
 			}
@@ -31,28 +27,29 @@
 			
 			a {
 				text-decoration: none;
-				-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+				
 			}
-			/*mobile-slide*/
-			
+		
 			h1 {
 				width: 100%;
+				box-sizing: border-box;
 				padding: 10px;
 				text-align: center;
 				font-size: 28px;
 				background: #f8f8f8;
 			}
-			
+	
+
 		</style>
 		
-		<link rel="stylesheet" type="text/css" href="css/mobile-slide.css"/>
+	 <link rel="stylesheet" type="text/css" href="css/mobile-slide.css"/>
 	</head>
 
 	<body>
 		<h1>mobile 触摸页面</h1>
 
-		<!--导航区-->
-		<nav class="mobile-scroll"  data-link>
+		<!--导航区  data-link="跳转页面"  -->
+		<nav class="mobile-scroll"  data-link="跳转页面" >
 			<ul class="mobile-scroll-list" >
 				<li class="active">
 					<a href="http://www.baidu.com">首页</a>
@@ -117,8 +114,10 @@
 			</ul>
 		</nav>
 	
-		<!--轮播图-->
-		<div  class="mobile-slide " data-time="3000">
+		
+			
+		<!--轮播图 data-time="3000" data-auto="自动播放" -->
+		<div  class="mobile-slide " data-time="3000"  data-auto="自动播放" >
 				
 				<ul class="mobile-slide-list ">
 						<li>
@@ -126,7 +125,6 @@
 								<div id="">
 									<img src="./img/1.jpg" alt="">
 								</div>
-
 							</a>
 						</li>
 						<li>
@@ -161,7 +159,12 @@
 
 			</div>
 	
-		
+		<p>1</p><p>1</p><p>1</p><p>1</p><p>1</p><p>1</p><p>1</p>
+		<p>1</p><p>1</p><p>1</p><p>1</p><p>1</p><p>1</p><p>1</p>
+		<p>1</p><p>1</p><p>1</p><p>1</p><p>1</p><p>1</p><p>1</p>
+		<p>1</p><p>1</p><p>1</p><p>1</p><p>1</p><p>1</p><p>1</p>
+		<p>1</p><p>1</p><p>1</p><p>1</p><p>1</p><p>1</p><p>1</p>
+		<p>1</p><p>1</p><p>1</p><p>1</p><p>1</p><p>1</p><p>1</p>
 		<script src="js/mobile.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			mobile.scroll();
