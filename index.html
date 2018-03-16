@@ -6,48 +6,28 @@
 		<title></title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<style>
-			
-			* {
-				margin: 0;
-				padding: 0;
-			}
-			
 		
-			input {
-				outline: none;
+			.mobile-slide {
+				margin-bottom: 10px;
 			}
-			
-			ul {
-				list-style: none;
-			}
-			
-			img {
-				display: block;
-			}
-			
-			a {
-				text-decoration: none;
-				
-			}
-		
-			h1 {
-				width: 100%;
-				box-sizing: border-box;
-				padding: 10px;
-				text-align: center;
-				font-size: 28px;
-				background: #f8f8f8;
-			}
-	
-
 		</style>
-		
-	 <link rel="stylesheet" type="text/css" href="css/mobile-slide.css"/>
+
+		<link rel="stylesheet" type="text/css" href="css/mobile.css" />
+		<link rel="stylesheet" type="text/css" href="css/cstfont/iconfont.css"/>
 	</head>
 
 	<body>
-		<h1>mobile 触摸页面</h1>
-
+		
+		<!--header-->
+		<header class="mobile-head">
+			<div class="mobile-back" href="javascript:;">
+				<span class="iconfont icon-zuojiantou"></span>
+			</div>
+			<h2>导航和轮播图</h2>
+		</header>
+		
+		<!--content-->
+		<section class="moblie-conetnt">
 		<!--导航区  data-link="跳转页面"  -->
 		<nav class="mobile-scroll"  data-link="跳转页面" >
 			<ul class="mobile-scroll-list" >
@@ -113,11 +93,55 @@
 				</li>
 			</ul>
 		</nav>
-	
-		
 			
+	
 		<!--轮播图 data-time="3000" data-auto="自动播放" -->
 		<div  class="mobile-slide " data-time="3000"  data-auto="自动播放" >
+				
+				<ul class="mobile-slide-list ">
+						<li>
+							<a href="http://www.baidu.com" id="a">
+								<div id="">
+										<img src="./img/2.jpg" alt="">
+									
+								</div>
+							</a>
+						</li>
+						<li>
+							<a href="http://www.51zxw.com">
+							<img src="./img/1.jpg" alt="">
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;">
+								<img src="./img/3.jpg" alt="">
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;">
+								<img src="./img/4.jpg" alt="">
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;">
+								<img src="./img/5.jpg" alt="">
+							</a>
+						</li>
+					</ul>
+						
+				<div class="mobile-slide-radius">
+						<span class="active"></span>
+						<span></span>
+						<span></span>
+						<span></span>
+						<span></span>
+				</div>
+
+			</div>
+	
+	
+		<!--轮播图 data-time="3000" data-auto="自动播放" -->
+		<div  class="mobile-slide " data-time="5000"  data-auto="自动播放" >
 				
 				<ul class="mobile-slide-list ">
 						<li>
@@ -159,12 +183,192 @@
 
 			</div>
 	
-		<p>1</p><p>1</p><p>1</p><p>1</p><p>1</p><p>1</p><p>1</p>
-		<p>1</p><p>1</p><p>1</p><p>1</p><p>1</p><p>1</p><p>1</p>
-		<p>1</p><p>1</p><p>1</p><p>1</p><p>1</p><p>1</p><p>1</p>
-		<p>1</p><p>1</p><p>1</p><p>1</p><p>1</p><p>1</p><p>1</p>
-		<p>1</p><p>1</p><p>1</p><p>1</p><p>1</p><p>1</p><p>1</p>
-		<p>1</p><p>1</p><p>1</p><p>1</p><p>1</p><p>1</p><p>1</p>
+	
+		<!--轮播图 data-time="3000" data-auto="自动播放" -->
+		<div  class="mobile-slide " data-time="4000"  data-auto="自动播放" >
+				
+				<ul class="mobile-slide-list ">
+						<li>
+							<a href="http://www.baidu.com" id="a">
+								<div id="">
+									
+										<img src="./img/3.jpg" alt="">
+								</div>
+							</a>
+						</li>
+						<li>
+							<a href="http://www.51zxw.com">
+								<img src="./img/2.jpg" alt="">
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;">
+								<img src="./img/1.jpg" alt="">
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;">
+								<img src="./img/4.jpg" alt="">
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;">
+								<img src="./img/5.jpg" alt="">
+							</a>
+						</li>
+					</ul>
+						
+				<div class="mobile-slide-radius">
+						<span class="active"></span>
+						<span></span>
+						<span></span>
+						<span></span>
+						<span></span>
+				</div>
+
+			</div>
+	
+		<!--轮播图 data-time="3000" data-auto="自动播放" -->
+		<div  class="mobile-slide " data-time="3000"  data-auto="自动播放" >
+				
+				<ul class="mobile-slide-list ">
+						<li>
+							<a href="http://www.baidu.com" id="a">
+								<div id="">
+										<img src="./img/2.jpg" alt="">
+									
+								</div>
+							</a>
+						</li>
+						<li>
+							<a href="http://www.51zxw.com">
+							<img src="./img/1.jpg" alt="">
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;">
+								<img src="./img/3.jpg" alt="">
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;">
+								<img src="./img/4.jpg" alt="">
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;">
+								<img src="./img/5.jpg" alt="">
+							</a>
+						</li>
+					</ul>
+						
+				<div class="mobile-slide-radius">
+						<span class="active"></span>
+						<span></span>
+						<span></span>
+						<span></span>
+						<span></span>
+				</div>
+
+			</div>
+	
+	
+		<!--轮播图 data-time="3000" data-auto="自动播放" -->
+		<div  class="mobile-slide " data-time="5000"  data-auto="自动播放" >
+				
+				<ul class="mobile-slide-list ">
+						<li>
+							<a href="http://www.baidu.com" id="a">
+								<div id="">
+									<img src="./img/1.jpg" alt="">
+								</div>
+							</a>
+						</li>
+						<li>
+							<a href="http://www.51zxw.com">
+								<img src="./img/2.jpg" alt="">
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;">
+								<img src="./img/3.jpg" alt="">
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;">
+								<img src="./img/4.jpg" alt="">
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;">
+								<img src="./img/5.jpg" alt="">
+							</a>
+						</li>
+					</ul>
+						
+				<div class="mobile-slide-radius">
+						<span class="active"></span>
+						<span></span>
+						<span></span>
+						<span></span>
+						<span></span>
+				</div>
+
+			</div>
+	
+	
+		<!--轮播图 data-time="3000" data-auto="自动播放" -->
+		<div  class="mobile-slide " data-time="4000"  data-auto="自动播放" >
+				
+				<ul class="mobile-slide-list ">
+						<li>
+							<a href="http://www.baidu.com" id="a">
+								<div id="">
+									
+										<img src="./img/3.jpg" alt="">
+								</div>
+							</a>
+						</li>
+						<li>
+							<a href="http://www.51zxw.com">
+								<img src="./img/2.jpg" alt="">
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;">
+								<img src="./img/1.jpg" alt="">
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;">
+								<img src="./img/4.jpg" alt="">
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;">
+								<img src="./img/5.jpg" alt="">
+							</a>
+						</li>
+					</ul>
+						
+				<div class="mobile-slide-radius">
+						<span class="active"></span>
+						<span></span>
+						<span></span>
+						<span></span>
+						<span></span>
+				</div>
+
+			</div>
+	
+		</section>
+
+		<!--footer-->
+		<footer>
+	
+		</footer>
+	
+	
 		<script src="js/mobile.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			mobile.scroll();

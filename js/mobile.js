@@ -1,19 +1,5 @@
 var mobile = (function() {
 
-	// 取消 document浏览器默认行为
-	var documentPreventDefault = function(el) {
-		el.addEventListener("touchstart", function(event) {
-			event.preventDefault();
-		});
-		el.addEventListener("touchend", function(event) {
-			event.preventDefault();
-		});
-		el.addEventListener("touchmove", function(event) {
-			event.preventDefault();
-		});
-
-	};
-
 	// css3 transform 函数
 	var transformCss = function(node, name, value) {
 		if(!node.transform) {
@@ -85,15 +71,15 @@ var mobile = (function() {
 			var navs = document.querySelectorAll(".mobile-scroll");
 
 			for(var i = 0; i < navs.length; i++) {
-				navsList(navs[i]);
+				navsListFun(navs[i]);
 				changeColor(navs[i], fn);
-				documentPreventDefault(navs[i]);
+
 			}
 
 		}
 
 		//导航拖拽fun
-		function navsList(navs) {
+		function navsListFun(navs) {
 
 			var navsList = navs.querySelector(".mobile-scroll-list");
 			transformCss(navsList, 'translateZ', 0.01)
@@ -103,17 +89,20 @@ var mobile = (function() {
 			var endValue = 0;
 			var disTime = 0;
 			var disValue = 0;
-
-			//  元素初始位置
-			var eleX = 0;
-			//手指初始位置
+			var eleX = 0; // 元素初始位置
 			var startX = 0;
-			var isFirst = true;
+			var startY = 0;
+			var isFirst = true; //手指初始位置
 			isX = true;
+			var isAddMoveEvent = true; // 判断是否top拖动
+			var isAddMoveEventFirst = true; // 判断是否第一往上拖动
 
-			navs.addEventListener("touchstart", function(event) {
+			navs.addEventListener("touchstart", start);
+
+			function start(event) {
 				var touch = event.changedTouches[0];
 				startX = touch.clientX;
+				startY = touch.clientY;
 				eleX = transformCss(navsList, "translateX");
 				beginTime = new Date().getTime();
 				beginValue = eleX;
@@ -121,46 +110,69 @@ var mobile = (function() {
 
 				// 过度时间0s
 				navsList.style.transition = 'none';
+				navs.addEventListener("touchmove", move);
+				
+			};
 
-			});
-
-			navs.addEventListener("touchmove", function(event) {
+			//navs.addEventListener("touchmove", move);
+			function move(event) {
 
 				var touch = event.changedTouches[0];
 				var nowX = touch.clientX;
+				var nowY = touch.clientY;
 				var dis = nowX - startX;
+
+				// 检查是否向上移动
+				if(Math.abs(nowY - startY) > Math.abs(nowX - startX) && isAddMoveEventFirst) {
+					// 取消 浏览器默认行为
+					navs.removeEventListener("touchmove", move);
+					isAddMoveEvent = true;
+					isAddMoveEventFirst = false;
+					
+					return;
+				} else {
+					if(isAddMoveEventFirst) {
+						event.preventDefault();
+						isAddMoveEvent = false;
+						
+					}
+
+				}
+
 				var window_w = window.innerWidth ||
 					document.documentElement.clientWidth ||
 					document.body.clientWidth;
 
 				var minX = window_w - navsList.offsetWidth;
 
-			//	transformCss(navsList, "translateX", eleX + dis);
 				var translateX = eleX + dis;
 				if(translateX > 0) {
-					var scale = 1 - translateX / window_w
-					//           console.log(scale)
+					var scale = 1 - translateX / window_w;
 					translateX = translateX * scale;
-					//           console.log(translateX)
 
 				} else if(translateX < minX) {
 					var over = minX - translateX;
 					var scale = 1 - over / window_w;
-					//              console.log(scale)
 					translateX = minX - over * scale;
-					//            console.log(translateX)
 
 				}
+
 				transformCss(navsList, "translateX", translateX);
 				endTime = new Date().getTime();
 				endValue = translateX;
 				disTime = endTime - beginTime;
 				disValue = endValue - beginValue;
+			}
 
-			});
+			navs.addEventListener("touchend", end);
 
-			navs.addEventListener("touchend", function(event) {
+			function end(event) {
 
+				// 检查是否向上移动
+				if(isAddMoveEventFirst === false) {
+					isAddMoveEventFirst = true;
+					return;
+				}
 				var touch = event.changedTouches[0];
 				var speed = disValue / (endTime - beginTime);
 				var window_w = window.innerWidth ||
@@ -169,7 +181,7 @@ var mobile = (function() {
 				var minX = window_w - navsList.offsetWidth;
 				var target = transformCss(navsList, "translateX") + speed * 250;
 				var bezier = '';
-				//           console.log(speed);
+
 				if(target > 0) {
 					target = 0;
 
@@ -181,9 +193,15 @@ var mobile = (function() {
 				// 过度时间0.5s
 				navsList.style.transition = '.8s ' + bezier;
 				transformCss(navsList, "translateX", target);
-
+			}
+			
+			//系统取消 重新加载页面
+			navs.addEventListener("touchcancel", function() {
+				window.location.reload();
+				
 			});
-
+		
+		
 		}
 
 		///导航点击选中样式
@@ -213,7 +231,7 @@ var mobile = (function() {
 
 						this.classList.add("active");
 						// a链接
-						if( isLink !==null) {
+						if(isLink !== null) {
 							var href = event.target.getAttribute("href") || "javascript:;";
 							window.location.assign(href);
 						}
@@ -248,42 +266,41 @@ var mobile = (function() {
 
 			var wrap = mobile_slide; //document.querySelector(".mobile-slide");
 			var list = wrap.querySelector(".mobile-slide-list");
+
 			// 轮播时间 
 			var time = wrap.getAttribute("data-time") || "3000";
-			var isAuto=wrap.getAttribute("data-auto"); //自动播放
-			
+			var isAuto = wrap.getAttribute("data-auto"); //自动播放
+
 			time = parseInt(time);
 			var timerId = 0;
-			
+			var elementX = 0;
+			var startX = 0;
+			var startY = 0;
+			var now = 0;
+			var isLink = true;
+			var isAddMoveEvent = true; // 判断是否往上拖动
+			var isAddMoveEventFirst = true; // 判断是否第一往上拖动
+
 			// 小圆点
 			var spanNodes = wrap.querySelectorAll(".mobile-slide-radius span");
-
-			// 取消 浏览器默认行为
-			documentPreventDefault(wrap);
-			
 			transformCss(list, 'translateZ', 0.01)
 			list.innerHTML += list.innerHTML
 			var liNodes = wrap.querySelectorAll(".mobile-slide-list li")
 
 			// 添加样式
-			mobile_slide.style.overflow="hidden"
+			mobile_slide.style.overflow = "hidden"
 			list.style.width = liNodes.length + '00%';
 
 			for(var l = 0; l < liNodes.length; l++) {
 				liNodes[l].style.width = (1 / liNodes.length * 100) + '%';
 			};
 
-			var elementX = 0;
-			var startX = 0;
+			wrap.addEventListener("touchstart", start);
 
-			var now = 0;
-			//           var disX =0
-			//           var  translateX =0;
-			var isLink = true;
-			wrap.addEventListener("touchstart", function(event) {
+			// start
+			function start(event) {
 
 				var touch = event.changedTouches[0];
-
 				isLink = true;
 				clearInterval(timerId);
 				list.style.transition = 'none';
@@ -297,25 +314,62 @@ var mobile = (function() {
 				}
 				transformCss(list, 'translateX', -now * document.documentElement.clientWidth)
 
-				//               elementX = list.offsetLeft;
-				startX = touch.clientX
-				//                elementX =translateX;
+				startX = touch.clientX;
+				startY = touch.clientY;
+
 				elementX = transformCss(list, 'translateX');
+				wrap.addEventListener("touchmove", move);
+			}
 
-			});
-
-			wrap.addEventListener("touchmove", function(event) {
-				clearInterval(timerId);
-				isLink = false;
+			//wrap.addEventListener("touchmove", move);
+			function move(event) {
 				var touch = event.changedTouches[0];
 				var nowX = touch.clientX;
+				var nowY = touch.clientY;
 				var disX = nowX - startX
-				//               translateX = elementX+disX
-				//               list.style.transform = 'translateX('+translateX +'px)';
-				transformCss(list, 'translateX', elementX + disX);
-			});
 
-			wrap.addEventListener("touchend", function(event) {
+				// 检查是否向上移动
+				if(Math.abs(nowY - startY) > Math.abs(nowX - startX) && isAddMoveEventFirst) {
+					// 取消 浏览器默认行为
+					wrap.removeEventListener("touchmove", move);
+					isAddMoveEvent = true;
+					isAddMoveEventFirst = false;
+
+					return;
+				} else {
+					if(isAddMoveEventFirst) {
+						event.preventDefault();
+						isAddMoveEvent = false;
+					}
+
+				}
+
+				clearInterval(timerId);
+				isLink = false;
+				transformCss(list, 'translateX', elementX + disX);
+
+			}
+
+			wrap.addEventListener("touchend", end);
+
+			//touchend
+			function end(event) {
+
+				var touch = event.changedTouches[0];
+				var nowX = touch.clientX;
+				var nowY = touch.clientY;
+
+				// 自动播放
+				if(isAuto !== null) {
+
+					timerId = auto(time);
+				}
+
+				// 检查是否向上移动
+				if(isAddMoveEventFirst === false) {
+					isAddMoveEventFirst = true;
+					return;
+				}
 
 				// a链接
 				if(isLink) {
@@ -332,65 +386,51 @@ var mobile = (function() {
 					window.location.assign(href);
 				}
 
-				event.preventDefault();
-
-				//               var left =list.offsetLeft;
-				//                   var left = translateX;
-				var left = transformCss(list, "translateX")
-				//               if(disX<0){
-				//                now = Math.ceil(-left/document.documentElement.clientWidth)
-				//               }else{
-				//                   now = Math.floor(-left/document.documentElement.clientWidth)
-				//
-				//               }
+				var left = transformCss(list, "translateX");
 				now = Math.round(-left / document.documentElement.clientWidth)
 				if(now < 0) {
 					now = 0
 				} else if(now > liNodes.length - 1) {
 					now = liNodes.length - 1
 				}
+
 				list.style.transition = '0.5s';
-				//               translateX = -now*document.documentElement.clientWidth;
-				//               list.style.transform = 'translateX('+translateX+'px)';
-				transformCss(list, 'translateX', -now * document.documentElement.clientWidth)
+				transformCss(list, 'translateX', -now * document.documentElement.clientWidth);
+
 				//同步小圆点
 				for(var i = 0; i < spanNodes.length; i++) {
-					spanNodes[i].className = ''
+					spanNodes[i].className = '';
 				}
 
 				spanNodes[now % spanNodes.length].className = 'active';
+			}
 
-				// 自动播放
-			if( isAuto!=null){
-			
-				timerId = auto(time);
-				}
-							
+			//系统取消 重新加载页面
+			wrap.addEventListener("touchcancel", function() {
+				window.location.reload();
 			});
 
-			// var now = 0;
-
 			// 自动播放
-		
-			if( isAuto!=null){
-			
+
+			if(isAuto !== null) {
+
 				timerId = auto(time);
 			}
 
 			function auto(t) {
 
 				return setInterval(function() {
-					list.style.transition = 'none'
+					list.style.transition = 'none';
 					if(now == liNodes.length - 1) {
-						now = spanNodes.length - 1
+						now = spanNodes.length - 1;
 					}
 					transformCss(list, 'translateX', -now * document.documentElement.clientWidth)
 					setTimeout(function() {
 						now++;
-						list.style.transition = '.8s ease-in-out'
+						list.style.transition = '.8s ease-in-out';
 						transformCss(list, 'translateX', -now * document.documentElement.clientWidth)
 						for(var i = 0; i < spanNodes.length; i++) {
-							spanNodes[i].className = ''
+							spanNodes[i].className = '';
 						}
 						spanNodes[now % spanNodes.length].className = 'active';
 
@@ -399,10 +439,6 @@ var mobile = (function() {
 				}, t);
 			}
 
-			// 页面skip
-			function link() {
-
-			}
 		}
 
 	}
@@ -412,6 +448,5 @@ var mobile = (function() {
 		slide: _slide
 
 	}
-	
-	
+
 })();

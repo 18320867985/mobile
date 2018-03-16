@@ -1,13 +1,90 @@
-
 /*clr*/
+
 .clr:before,
 .clr:after {
 	display: table;
 	content: " ";
 }
 
+* {
+	margin: 0;
+	padding: 0;
+}
+
+input {
+	outline: none;
+}
+
+ul {
+	list-style: none;
+}
+
+img {
+	display:  inline-block;
+}
+
 .clr:after {
 	clear: both;
+}
+
+a {
+	outline: none;
+	text-decoration: none;
+}
+
+
+a:active,
+a:focus {
+	outline: none;
+	background: none;
+}
+
+.mobile-head {
+	position: fixed;
+	width: 100%;
+	height: 44px;
+	line-height: 44px;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 9999;
+	background: #f0f0f0;
+}
+
+
+
+.mobile-head .mobile-back{
+	display: inline-block;
+	width: 15%;
+	 outline: none;
+	  background: none;
+}
+
+
+
+.mobile-head .mobile-back span {
+	margin-left: 10px;
+	font-size: 30px;
+	vertical-align: middle;
+	color:#777;
+}
+.mobile-head  .mobile-back span:active
+{
+	color:red;
+	outline: none;
+	background: none;
+}
+
+.mobile-head h2 {
+	display: inline-block;
+	width: 70%;
+	margin: 0 auto;
+	font-size: 18px;
+	text-align: center;
+}
+
+.mobile-head~.moblie-conetnt {
+	padding-top: 44px;
 }
 
 
@@ -15,6 +92,7 @@
 
 .mobile-scroll {
 	position: relative;
+	z-index: 99;
 	padding: 5px;
 	overflow: hidden;
 	box-shadow: 0 2px 5px #ccc inset, 0 -2px 5px #ccc inset;
@@ -23,21 +101,19 @@
 .mobile-scroll-list {
 	float: left;
 	white-space: nowrap;
-	text-align:center;
+	text-align: center;
 	font-size: 0;
 }
 
 .mobile-scroll-list li {
 	float: none;
 	display: inline-block;
-
-
 	font-size: 1rem;
 }
 
 .mobile-scroll-list li a {
 	display: block;
-		padding: .4rem 1rem;
+	padding: .4rem 1rem;
 	color: #020202;
 }
 
@@ -54,16 +130,16 @@
 
 .mobile-slide {
 	position: relative;
+	z-index: 9;
 	box-sizing: border-box;
 	width: 100%;
 	height: auto;
 	overflow: hidden;
-
 }
 
 .mobile-slide-list {
 	position: relative;
-	z-index: 9;
+	z-index: 2;
 	list-style: none;
 	overflow: hidden;
 }
@@ -102,4 +178,6 @@
 .mobile-slide-radius .active {
 	background: red;
 }
-			
+
+
+/*tab*/
