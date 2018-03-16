@@ -1,5 +1,11 @@
-/*clr*/
+body {
+    font-family: 'Helvetica Neue',Helvetica,sans-serif;
+    font-size: 17px;
+    line-height: 21px;
+    color: #000;
 
+    -webkit-overflow-scrolling: touch;
+}
 .clr:before,
 .clr:after {
 	display: table;
@@ -20,7 +26,7 @@ ul {
 }
 
 img {
-	display:  inline-block;
+	display: inline-block;
 }
 
 .clr:after {
@@ -32,13 +38,14 @@ a {
 	text-decoration: none;
 }
 
-
 a:active,
 a:focus {
 	outline: none;
 	background: none;
 }
 
+
+/**header**/
 .mobile-head {
 	position: fixed;
 	width: 100%;
@@ -51,26 +58,22 @@ a:focus {
 	background: #f0f0f0;
 }
 
-
-
-.mobile-head .mobile-back{
+.mobile-head .mobile-back {
 	display: inline-block;
 	width: 15%;
-	 outline: none;
-	  background: none;
+	outline: none;
+	background: none;
 }
-
-
 
 .mobile-head .mobile-back span {
 	margin-left: 10px;
 	font-size: 30px;
 	vertical-align: middle;
-	color:#777;
+	color: #777;
 }
-.mobile-head  .mobile-back span:active
-{
-	color:red;
+
+.mobile-head .mobile-back span:active {
+	color: red;
 	outline: none;
 	background: none;
 }
@@ -81,11 +84,35 @@ a:focus {
 	margin: 0 auto;
 	font-size: 18px;
 	text-align: center;
+	color:#444;
 }
 
 .mobile-head~.moblie-conetnt {
 	padding-top: 44px;
 }
+
+
+.mobile-head~.moblie-footer {
+	padding-bottom: 44px;
+}
+
+.mobile-footer{
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 9999;
+	height: 44px;
+	 line-height: 44px;
+	 background: #f0f0f0;
+}
+
+.mobile-footer h2{
+	font-size: 18px;
+	 text-align: center;
+	 color:#444;
+}
+
 
 
 /* mobile-scroll 导航左右滑动 */
@@ -181,3 +208,43 @@ a:focus {
 
 
 /*tab*/
+
+.mobile-tab{
+	box-sizing:  border-box;
+	width: 100%;
+	min-height: 200px;
+	overflow-y:  scroll;
+	
+}
+
+
+.mobile-tab-list{
+	width:200%;
+	overflow:hidden ;
+	white-space:  nowrap;
+	
+}
+
+
+.mobile-tab-list-item{
+	 float: left;
+	  box-sizing: border-box;
+	 width: 50%;
+	
+	 padding: 10px;
+	 border: 1px solid #ccc;
+	
+}
+
+
+.mobile-tab-list-item>ul li{
+	 width: 90%;
+	 padding: 5px;
+	 margin-bottom: 5px;
+	 white-space: normal;
+	  line-height: 30px;
+}
+
+.mobile-tab-list-item>ul li+li{
+	 border-top: 1px solid #ccc ;
+}

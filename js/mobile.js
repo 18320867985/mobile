@@ -443,9 +443,195 @@ var mobile = (function() {
 
 	}
 
+ 	//tab 选项卡
+ 	var _tab = function() {
+
+		window.addEventListener("load", function() {
+			var wrap = document.querySelectorAll(".mobile-tab");
+			for(var i = 0; i < wrap.length; i++) {
+				tabFn(wrap[i]);
+			}
+
+		});
+
+		function tabFn(mobile_slide) {
+
+// 设置tab 高度
+
+var window_w= Number(window.innerHeight);
+var   tab_heade =document.querySelector(".mobile-tab-head-h"); 
+var   tab_footer =document.querySelector(".mobile-tab-footer-h"); 
+var   tab_nav =document.querySelector(".mobile-tab-nav-h"); 
+
+var tab_heade_h=tab_heade?Number(tab_heade.offsetHeight):0;
+var tab_footer_h=tab_footer?Number(tab_footer.offsetHeight):0;
+var tab_nav_h=tab_nav?Number(tab_nav.offsetHeight):0;
+var tab_h=window_w-tab_heade_h-tab_footer_h-tab_nav_h;
+mobile_slide.style.height=tab_h+"px";
+
+
+
+
+			
+			var wrap = mobile_slide; //document.querySelector(".mobile-slide");
+			var list = wrap.querySelector(".mobile-tab-list");
+		var items=list.querySelectorAll(".mobile-tab-list-item");
+			list.style.height=tab_h+"px";
+			//list.style.overflowY="scroll";
+			for(var i=0;i<items.length;i++){
+				
+				items[i].style.height=tab_h+"px";
+				items[i].style.overflowY="scroll";
+			}
+			
+			
+			// 轮播时间 
+			var time = wrap.getAttribute("data-time") || "3000";
+			var isAuto = wrap.getAttribute("data-auto"); //自动播放
+
+			time = parseInt(time);
+			var timerId = 0;
+			var elementX = 0;
+			var startX = 0;
+			var startY = 0;
+			var now = 0;
+			var isLink = true;
+			var isAddMoveEvent = true; // 判断是否往上拖动
+			var isAddMoveEventFirst = true; // 判断是否第一往上拖动
+
+		
+			transformCss(list, 'translateZ', 0.01)
+			list.innerHTML += list.innerHTML
+			var liNodes = wrap.querySelectorAll(".mobile-tab-list-item")
+
+			// 添加样式
+			mobile_slide.style.overflow = "hidden"
+			list.style.width = liNodes.length + '00%';
+
+			for(var l = 0; l < liNodes.length; l++) {
+				liNodes[l].style.width = (1 / liNodes.length * 100) + '%';
+			};
+
+			wrap.addEventListener("touchstart", start);
+
+			// start
+			function start(event) {
+
+				var touch = event.changedTouches[0];
+				isLink = true;
+				clearInterval(timerId);
+				list.style.transition = 'none';
+				var left = transformCss(list, "translateX")
+				var now = Math.round(-left / document.documentElement.clientWidth)
+
+				if(now == 0) {
+					now = liNodes.length/2;
+				} else if(now == liNodes.length - 1) {
+					now = liNodes.length/2 - 1
+				}
+				transformCss(list, 'translateX', -now * document.documentElement.clientWidth)
+
+				startX = touch.clientX;
+				startY = touch.clientY;
+
+				elementX = transformCss(list, 'translateX');
+				wrap.addEventListener("touchmove", move);
+			}
+
+			//wrap.addEventListener("touchmove", move);
+			function move(event) {
+				var touch = event.changedTouches[0];
+				var nowX = touch.clientX;
+				var nowY = touch.clientY;
+				var disX = nowX - startX
+
+				// 检查是否向上移动
+				if(Math.abs(nowY - startY) > Math.abs(nowX - startX) && isAddMoveEventFirst) {
+					// 取消 浏览器默认行为
+					wrap.removeEventListener("touchmove", move);
+					isAddMoveEvent = true;
+					isAddMoveEventFirst = false;
+
+					return;
+				} else {
+					if(isAddMoveEventFirst) {
+						event.preventDefault();
+						isAddMoveEvent = false;
+					}
+
+				}
+
+				clearInterval(timerId);
+				isLink = false;
+				transformCss(list, 'translateX', elementX + disX);
+
+			}
+
+			wrap.addEventListener("touchend", end);
+
+			//touchend
+			function end(event) {
+
+				var touch = event.changedTouches[0];
+				var nowX = touch.clientX;
+				var nowY = touch.clientY;
+
+				// 自动播放
+				if(isAuto !== null) {
+
+					timerId = auto(time);
+				}
+
+				// 检查是否向上移动
+				if(isAddMoveEventFirst === false) {
+					isAddMoveEventFirst = true;
+					return;
+				}
+
+				// a链接
+				if(isLink) {
+					isLink = true;
+					var href = "";
+					if(event.target.parentElement.nodeName == "A") {
+						// 包裹一层
+						href = event.target.parentElement.getAttribute("href") || "javascript:;";
+					} else {
+						// 包裹两层
+						href = event.target.parentElement.parentElement.getAttribute("href") || "javascript:;";
+					}
+
+					window.location.assign(href);
+				}
+
+				var left = transformCss(list, "translateX");
+				now = Math.round(-left / document.documentElement.clientWidth)
+				if(now < 0) {
+					now = 0
+				} else if(now > liNodes.length - 1) {
+					now = liNodes.length - 1
+				}
+
+				list.style.transition = '0.5s';
+				transformCss(list, 'translateX', -now * document.documentElement.clientWidth);
+
+			}
+
+			//系统取消 重新加载页面
+			wrap.addEventListener("touchcancel", function() {
+				window.location.reload();
+			});
+
+		
+		}
+
+	}
+
+ 
+
 	return {
 		scroll: _scroll,
-		slide: _slide
+		slide: _slide,
+		tab:_tab
 
 	}
 
