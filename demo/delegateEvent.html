@@ -63,6 +63,8 @@
 
 			for(var i = 0; i < lis.length; i++) {
 				lis[i].addEventListener("click", function(event) {
+					var el=document.querySelector("li");
+					alert(el.nodeName+"0000")
 					if(event.target.nodeName.toLowerCase()==="li"){
 						alert(event.target.nodeName + "@@lievent")
 					}
@@ -114,6 +116,21 @@
 					
 				}
 			}
+			
+			var regId=/\#\w+[^\.]{0,}/img;
+			var regClass=/\.\w+[^\.|^#]{0,}/img;
+			var regTag=/^\w+[^\.]{0,}/img;
+			
+			var regAttr=/\[\w+\]/img
+			
+			//alert("#wwwewe.p".match(regClass))
+			
+			//alert("#div.p.uuu#eee".match(regClass))
+			
+			alert("div.pttt.uuu[]".match(regTag))
+			
+			alert("div.pttt.uuu[tt]".match(regAttr))
+			
 		</script>
 
 	</body>

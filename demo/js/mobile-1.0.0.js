@@ -706,137 +706,6 @@
 
 	});
 
-	/*bind enevt 绑定事件*/
-	Mobile.fn.extend({
-		on: function(type) {
-
-			// 第二个参数为函数 正常绑定事件
-			if(arguments.length >= 2 && typeof arguments[1] === "function") {
-				var handler = arguments[1];
-				var bl = typeof arguments[2] === "boolean" ? arguments[2] : false;
-				Mobile.each(this, function() {
-					if(this.addEventListener) {
-						this.addEventListener(type, handler, bl);
-					}
-					//ie8
-					//					else if(this.attachEvent) {
-					//						if(!this.attachEvent("on" + type, handler, bl)) {
-					//							window["on" + type] = handler;
-					//						}
-					//					}
-				});
-			}
-
-			// 委托绑定事件
-			if(arguments.length >= 3 && typeof arguments[1] === "string" && typeof arguments[2] === "function") {
-				var el = arguments[1].trim();
-				var handler = arguments[2];
-				var bl = typeof arguments[3] === "boolean" ? arguments[3] : false
-				Mobile.each(this, function() {
-					if(this.addEventListener) {
-						var delegateElement = this.querySelector(el);
-						this.addEventListener(type, function(event) {
-							if(event.target.isEqualNode(delegateElement)) {
-								handler.call(event.target, event);
-							}
-
-						}, bl);
-					}
-				});
-			}
-
-			return this;
-
-		},
-
-		off: function(type, handler, bl) {
-			if(typeof bl !== "boolean") {
-				bl = false;
-			}
-
-			Mobile.each(this, function() {
-				if(this.removeEventListener) {
-					this.removeEventListener(type, handler, bl);
-				}
-				//				else if(el.detachEvent) { //ie8
-				//					this.detachEvent("on" + type, handler, bl);
-				//				}
-			});
-
-			return this;
-
-		},
-
-		// 自定义事件
-		trigger: function trigger(type, obj) {
-
-			Mobile.each(this, function() {
-				obj = obj || {};
-				var btnEvent = document.createEvent("CustomEvent");
-				btnEvent.initCustomEvent(type, true, false, obj);
-				this.dispatchEvent(btnEvent);
-			});
-
-		},
-
-		// click
-		click: function(fn, bl) {
-			bl = bl || false;
-			Mobile.each(this, function() {
-				m(this).on("click", fn, bl);
-			});
-		},
-
-		//  touchstart
-		touchstart: function(fn, bl) {
-			bl = bl || false;
-			Mobile.each(this, function() {
-				m(this).on("touchstart", fn, bl);
-			});
-		},
-
-		//  touchend
-		touchend: function(fn, bl) {
-			bl = bl || false;
-			Mobile.each(this, function() {
-				m(this).on("touchend", fn, bl);
-			});
-		},
-
-		//  touchmove
-		touchmove: function(fn, bl) {
-			bl = bl || false;
-			Mobile.each(this, function() {
-				m(this).on("touchmove", fn, bl);
-			});
-		},
-
-		//  touchcancel
-		touchcancel: function(fn, bl) {
-			bl = bl || false;
-			Mobile.each(this, function() {
-				m(this).on("touchcancel", fn, bl);
-			});
-		},
-
-		//  tap
-		tap: function(fn, bl) {
-			bl = bl || false;
-			Mobile.each(this, function() {
-				m(this).on("touchstart", fn, bl);
-			});
-		},
-
-		//  scroll
-		scroll: function(fn, bl) {
-			bl = bl || false;
-			Mobile.each(this, function() {
-				m(this).on("scroll", fn, bl);
-			});
-		},
-
-	});
-
 	/*animate*/
 	Mobile.fn.extend({
 
@@ -1167,6 +1036,139 @@
 
 			});
 			return this;
+		},
+
+	});
+
+	/*bind enevt 绑定事件*/
+	Mobile.fn.extend({
+		on: function(type) {
+
+			// 第二个参数为函数 正常绑定事件
+			if(arguments.length >= 2 && typeof arguments[1] === "function") {
+				var handler = arguments[1];
+				var bl = typeof arguments[2] === "boolean" ? arguments[2] : false;
+				Mobile.each(this, function() {
+					if(this.addEventListener) {
+						this.addEventListener(type,function(event){
+							handler(event);
+						} , bl);
+					}
+					//ie8
+					//					else if(this.attachEvent) {
+					//						if(!this.attachEvent("on" + type, handler, bl)) {
+					//							window["on" + type] = handler;
+					//						}
+					//					}
+				});
+			}
+
+			// 委托绑定事件
+			if(arguments.length >= 3 && typeof arguments[1] === "string" && typeof arguments[2] === "function") {
+				var el = arguments[1].trim();
+				var handler = arguments[2];
+				var bl = typeof arguments[3] === "boolean" ? arguments[3] : false
+				Mobile.each(this, function() {
+					if(this.addEventListener) {
+						var delegateElement = this.querySelector(el);
+						this.addEventListener(type, function(event) {
+							if(event.target.isEqualNode(delegateElement)) {
+								handler.call(event.target, event);
+							}
+
+						}, bl);
+					}
+				});
+			}
+
+			return this;
+
+		},
+
+		off: function(type, handler, bl) {
+			if(typeof bl !== "boolean") {
+				bl = false;
+			}
+
+			Mobile.each(this, function() {
+				if(this.removeEventListener) {
+					this.removeEventListener(type, handler, bl);
+				}
+				//				else if(el.detachEvent) { //ie8
+				//					this.detachEvent("on" + type, handler, bl);
+				//				}
+			});
+
+			return this;
+
+		},
+
+		// 自定义事件
+		trigger: function trigger(type, obj) {
+
+			Mobile.each(this, function() {
+				obj = obj || {};
+				var btnEvent = document.createEvent("CustomEvent");
+				btnEvent.initCustomEvent(type, true, false, obj);
+				this.dispatchEvent(btnEvent);
+			});
+
+		},
+
+		// click
+		click: function(fn, bl) {
+			bl = bl || false;
+			Mobile.each(this, function() {
+				m(this).on("click", fn, bl);
+			});
+		},
+
+		//  touchstart
+		touchstart: function(fn, bl) {
+			bl = bl || false;
+			Mobile.each(this, function() {
+				m(this).on("touchstart", fn, bl);
+			});
+		},
+
+		//  touchend
+		touchend: function(fn, bl) {
+			bl = bl || false;
+			Mobile.each(this, function() {
+				m(this).on("touchend", fn, bl);
+			});
+		},
+
+		//  touchmove
+		touchmove: function(fn, bl) {
+			bl = bl || false;
+			Mobile.each(this, function() {
+				m(this).on("touchmove", fn, bl);
+			});
+		},
+
+		//  touchcancel
+		touchcancel: function(fn, bl) {
+			bl = bl || false;
+			Mobile.each(this, function() {
+				m(this).on("touchcancel", fn, bl);
+			});
+		},
+
+		//  tap
+		tap: function(fn, bl) {
+			bl = bl || false;
+			Mobile.each(this, function() {
+				m(this).on("touchstart", fn, bl);
+			});
+		},
+
+		//  scroll
+		scroll: function(fn, bl) {
+			bl = bl || false;
+			Mobile.each(this, function() {
+				m(this).on("scroll", fn, bl);
+			});
 		},
 
 	});
