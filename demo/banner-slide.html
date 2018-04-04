@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>轮播图左右滑动</title>
+		<link rel="stylesheet" href="" />
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!--[if lte IE 8]>
+			<script src="../../js/html5shiv.js" type="text/javascript" charset="utf-8"></script>
+			<script src="../../js/respond.min.js" type="text/javascript" charset="utf-8"></script>
+		<![endif]-->
+
+		<style type="text/css">
+			@charset "utf-8";
+			body {
+				/*padding: 10px;*/
+			}
+			
+			* {
+				padding: 0;
+				margin: 0;
+			}
+			
+			ul {
+				list-style: none;
+			}
+			
+			.clearfix:before,
+			.clearfix:after {
+				display: table;
+				content: "";
+			}
+			
+			.clearfix:after {
+				clear: both;
+			}
+			/******banner-slide ***********/
+			
+			.banner-slide {}
+			
+			.banner-slide .banner-wrap {
+				position: relative;
+				width: 1000px;  
+				margin: 0 auto;
+				height: 400px;
+				overflow: hidden;
+			}
+			
+			.banner-slide .banner-wrap ul {
+				position: relative;
+				white-space: nowrap;
+				/*overflow: hidden;*/
+				font-size: 0;
+			}
+			
+			.banner-slide .banner-wrap li {
+				display: inline-block;
+				width: 100%;
+				height: 100%;
+				float: none;
+				font-size: 12px;
+			}
+			
+			.banner-slide .banner-wrap li img {
+				width: 100%;
+				height: 400px;
+				
+			}
+			/**topbottom scroll**/
+			.banner-slide[data-topbottom] .banner-wrap {
+				position: relative;
+				margin: 0 auto;
+				padding: 0;
+				overflow: hidden;
+			}
+			
+			.banner-slide[data-topbottom] .banner-wrap ul {
+				position: relative;
+				white-space: normal;
+				width: 100%;
+				overflow: hidden;
+				font-size: 12px;
+			}
+			
+			.banner-slide[data-topbottom] .banner-wrap li {
+				display: block;
+				width: 100%;
+				height: 100%;
+				font-size: 12px;
+			}
+			
+			.banner-slide[data-topbottom] .banner-wrap li img {
+				display: block;
+				width: 100%;
+				height: 400px;
+				max-width: 100%;
+				max-height: 100%;
+			}
+			
+			
+			
+			.banner-slide .radius-list {
+				position: absolute;
+				left: 0;
+				bottom: 5px;
+				z-index: 99;
+				width: 100%;
+				height: 40px;
+				line-height: 40px;
+				text-align: center;
+			}
+			
+			.banner-slide .radius-list span {
+				display: inline-block;
+				padding: 0;
+				height: 12px;
+				width: 12px;
+				background: #999;
+				border-radius: 50%;
+				transition: .6s;
+			}
+			
+			.banner-slide .radius-list span.active {
+				background: red;
+			}
+			
+			.banner-slide .radius-list span+span {
+				margin-left: 5px;
+			}
+			
+			.banner-slide .banner-btn {
+				position: absolute;
+				top: 50%;
+				z-index: 999;
+				display: none;
+				height: 60px;
+				width: 30px;
+				padding: 0;
+				margin-top: -30px;
+				text-align: center;
+				font-size: 24px;
+				background: #444;
+				background: rgba(0, 0, 0, .4);
+				transition: .4s;
+			}
+			
+			.banner-slide .banner-btn-l {
+				left: 0;
+			}
+			
+			.banner-slide .banner-btn-l:hover {
+				background: rgba(0, 0, 0, .7);
+				color: #fff;
+			}
+			
+			.banner-slide .banner-btn-r {
+				right: 0;
+			}
+			
+			.banner-slide .banner-btn-r:hover {
+				background: rgba(0, 0, 0, .7);
+				color: #fff;
+			}
+			
+			.banner-slide .banner-btn span {
+				margin-top: 18px;
+				display: inline-block;
+				color: #f8f8f8;
+				font-size: 20px;
+				height: 30px;
+			}
+		</style>
+
+	</head>
+
+	<body>
+
+		<!--data-topbottom 属性上下scroll-->
+		<div class="banner-slide " data-time="3000" data-topbottom="scroll">
+
+			<div class="banner-wrap">
+				<ul class="clearfix">
+					<li class="active" data-bg="rgb(254,211,133)">
+						<img src="images/0.jpg" alt="" />
+					</li>
+					<li data-bg="rgb(200,47,52)">
+						<img src="images/1.jpg" alt="" />
+					</li>
+					<li data-bg="rgb(174,4,25)">
+						<img src="images/3.jpg" alt="" />
+					</li>
+					<li data-bg="rgb(219,51,51)">
+						<img src="images/2.jpg" alt="" />
+					</li>
+
+				</ul>
+				<a href="javascript:;" class="banner-btn banner-btn-l ">
+					<span class="glyphicon glyphicon-menu-left"></span>
+				</a>
+				<a href="javascript:;" class="banner-btn banner-btn-r">
+					<span class=" glyphicon glyphicon-menu-right"></span>
+				</a>
+				<div class="radius-list">
+					<span class="active"></span>
+					<span></span>
+					<span></span>
+					<span></span>
+				</div>
+
+			</div>
+
+		</div>
+
+		<hr />
+		
+		<div class="banner-slide " data-time="2000">
+
+			<div class="banner-wrap">
+				<ul class="clearfix">
+					<li class="active" data-bg="rgb(254,211,133)">
+						<img src="images/0.jpg" alt="" />
+					</li>
+					<li data-bg="rgb(200,47,52)">
+						<img src="images/1.jpg" alt="" />
+					</li>
+					<li data-bg="rgb(174,4,25)">
+						<img src="images/3.jpg" alt="" />
+					</li>
+
+				</ul>
+				<a href="javascript:;" class="banner-btn banner-btn-l ">
+					<span class="glyphicon glyphicon-menu-left"></span>
+				</a>
+				<a href="javascript:;" class="banner-btn banner-btn-r">
+					<span class=" glyphicon glyphicon-menu-right"></span>
+				</a>
+				<div class="radius-list">
+					<span class="active"></span>
+					<span></span>
+					<span></span>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<script src="js/jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script>
+		
+		<script type="text/javascript">
+			$(function() {
+				$(".banner-slide").bannerSlide();
+			});
+
+			/**jq extend**/
+			$.fn.extend({
+
+				bannerSlide: function() {
+
+					for(var i = 0; i < this.length; i++) {
+						checkObj(this[i]);
+					}
+
+					function checkObj(obj) {
+
+						var bannerUl = $(obj).find(".banner-wrap ul");
+						bannerUl[0].innerHTML += bannerUl[0].innerHTML;
+						obj.length = $(".banner-wrap ul li", $(obj)).length;
+						obj.index = obj.length / 2;
+						obj.clearAutoId = 0;
+						obj.time = Number($(obj).attr("data-time"));
+						obj.isTopbottom = obj.hasAttribute("data-topbottom"); // 是否上下scroll
+						//setImgBackground(obj);
+						fadeImg($(obj), obj.index, true);
+						auto(obj.time);
+						obj.isclick = true;
+
+						function auto(time) {
+
+							obj.clearAutoId = setInterval(function() {
+								obj.index = (obj.index + 1) % (obj.length);
+								fadeImg(obj, obj.index, false);
+							}, time);
+
+						}
+
+						$(".banner-wrap", $(obj)).hover(function() {
+							$(".banner-btn", $(obj)).stop().fadeIn();
+							clearInterval(obj.clearAutoId);
+						}, function() {
+							$(".banner-btn", $(obj)).stop().fadeOut();
+							auto(obj.time);
+						});
+
+						$(".banner-btn-l", $(obj)).on("click", function() {
+							if(obj.isclick) {
+								obj.isclick = false;
+								var seltid = setTimeout(function() {
+									obj.isclick = true;
+									clearTimeout(seltid)
+								}, 700);
+
+								if(obj.index <= 0) {
+									obj.index = obj.length - 1;
+								} else {
+									obj.index = obj.index - 1;
+								}
+								fadeImg(obj, obj.index, false);
+							}
+
+						});
+
+						$(".banner-btn-r", $(obj)).on("click", function() {
+							if(obj.isclick) {
+								obj.isclick = false;
+								var seltid = setTimeout(function() {
+									obj.isclick = true;
+									clearTimeout(seltid)
+								}, 700);
+
+								//obj.index = (obj.index + 1) % (obj.length);
+								if(obj.index >= obj.length - 1) {
+									obj.index = obj.length - 1;
+								} else {
+									obj.index = obj.index + 1;
+								}
+								fadeImg(obj, obj.index, false);
+							}
+
+						});
+						var seltid = 0;
+						$(".radius-list span", $(obj)).mouseenter(function() {
+
+							if(obj.isclick) {
+								obj.isclick = false;
+								seltid = setTimeout(function() {
+									obj.isclick = true;
+									clearTimeout(seltid)
+								}, 700);
+								var _index = 0;
+								var radius_index = Number($(this).index());
+								if(obj.index >= (obj.length / 2)) {
+									_index = (radius_index + (obj.length / 2));
+								} else {
+									_index = (radius_index);
+								}
+								fadeImg(obj, _index, false);
+							}
+
+						});
+
+				
+
+						function fadeImg(el, index, bl) {
+							var banner = $(el).closest($(obj));
+							var wrap = banner.find(".banner-wrap");
+							var ul = $(".banner-wrap ul ", banner);
+							var lis = $(".banner-wrap ul li", banner);
+
+							//	ul[0].style.transform="translateX(-"+wrap.outerWidth()*index+"px)"
+							//	ul[0].style.transition="1s"
+							var sildeTime = 600;
+
+							if(bl) {
+								sildeTime = 0;
+							}
+							
+							// is scroll topbottom 
+							if(obj.isTopbottom) {
+								var _top = wrap.height() * index;
+								ul.stop().animate({
+									top: "-" + _top
+								}, sildeTime).queue(function() {
+
+									if(index === obj.length - 1) {
+										obj.index = index = (obj.length / 2 - 1);
+										var _top2 = wrap.height() * index;
+										ul.stop().css("top", -_top2);
+									}
+
+									if(index === 0) {
+										obj.index = index = obj.length / 2;
+										var _top2 = wrap.height() * index;
+										ul.stop().css("top", -_top2);
+									}
+
+								})
+							} else {
+								var _left = wrap.outerWidth() * index;
+								ul.stop().animate({
+									left: "-" + _left
+								}, sildeTime).queue(function() {
+
+									if(index === obj.length - 1) {
+										obj.index = index = (obj.length / 2 - 1);
+										var _left2 = wrap.outerWidth() * index;
+										ul.stop().css("left", -_left2);
+									}
+
+									if(index === 0) {
+										obj.index = index = obj.length / 2;
+										var _left2 = wrap.outerWidth() * index;
+										ul.stop().css("left", -_left2);
+									}
+
+								})
+							}
+							//obj.isclick = true;
+							lis.eq(index).addClass("active");
+							setRadius(index % (obj.length / 2));
+
+						}
+
+						function setRadius(index) {
+							$(".radius-list span", obj).removeClass("active");
+							$(".radius-list span", obj).eq(index).addClass("active");
+						}
+					}
+
+				}
+
+			})
+		</script>
+
+	</body>
+
+</html>

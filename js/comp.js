@@ -111,7 +111,7 @@ var mobile = (function() {
 				// 过度时间0s
 				navsList.style.transition = 'none';
 				navs.addEventListener("touchmove", move);
-				
+
 			};
 
 			//navs.addEventListener("touchmove", move);
@@ -128,13 +128,13 @@ var mobile = (function() {
 					navs.removeEventListener("touchmove", move);
 					isAddMoveEvent = true;
 					isAddMoveEventFirst = false;
-					
+
 					return;
 				} else {
 					if(isAddMoveEventFirst) {
 						event.preventDefault();
 						isAddMoveEvent = false;
-						
+
 					}
 
 				}
@@ -194,14 +194,13 @@ var mobile = (function() {
 				navsList.style.transition = '.8s ' + bezier;
 				transformCss(navsList, "translateX", target);
 			}
-			
+
 			//系统取消 重新加载页面
 			navs.addEventListener("touchcancel", function() {
 				window.location.reload();
-				
+
 			});
-		
-		
+
 		}
 
 		///导航点击选中样式
@@ -443,8 +442,8 @@ var mobile = (function() {
 
 	}
 
- 	//tab 选项卡
- 	var _tab = function() {
+	//tab 选项卡
+	var _tab = function() {
 
 		window.addEventListener("load", function() {
 			var wrap = document.querySelectorAll(".mobile-tab");
@@ -455,36 +454,33 @@ var mobile = (function() {
 		});
 
 		function tabFn(mobile_slide) {
-
-// 设置tab 高度
-
-var window_w= Number(window.innerHeight);
-var   tab_heade =document.querySelector(".mobile-tab-head-h"); 
-var   tab_footer =document.querySelector(".mobile-tab-footer-h"); 
-var   tab_nav =document.querySelector(".mobile-tab-nav-h"); 
-
-var tab_heade_h=tab_heade?Number(tab_heade.offsetHeight):0;
-var tab_footer_h=tab_footer?Number(tab_footer.offsetHeight):0;
-var tab_nav_h=tab_nav?Number(tab_nav.offsetHeight):0;
-var tab_h=window_w-tab_heade_h-tab_footer_h-tab_nav_h;
-mobile_slide.style.height=tab_h+"px";
-
-
-
-
-			
 			var wrap = mobile_slide; //document.querySelector(".mobile-slide");
 			var list = wrap.querySelector(".mobile-tab-list");
-		var items=list.querySelectorAll(".mobile-tab-list-item");
-			list.style.height=tab_h+"px";
-			//list.style.overflowY="scroll";
-			for(var i=0;i<items.length;i++){
+			var items = list.querySelectorAll(".mobile-tab-list-item");
+			// 设置tab 高度
+			setTabHeight() ;
+			function setTabHeight() {
 				
-				items[i].style.height=tab_h+"px";
-				items[i].style.overflowY="scroll";
+				var window_w = Number(window.innerHeight);
+				var tab_heade = document.querySelector(".mobile-tab-head-h");
+				var tab_footer = document.querySelector(".mobile-tab-footer-h");
+				var tab_nav = document.querySelector(".mobile-tab-nav-h");
+
+				var tab_heade_h = tab_heade ? Number(tab_heade.offsetHeight) : 0;
+				var tab_footer_h = tab_footer ? Number(tab_footer.offsetHeight) : 0;
+				var tab_nav_h = tab_nav ? Number(tab_nav.offsetHeight) : 0;
+				var tab_h = window_w - tab_heade_h - tab_footer_h - tab_nav_h;
+				mobile_slide.style.height = tab_h + "px";
+				list.style.height = tab_h + "px";
+
+				for(var i = 0; i < items.length; i++) {
+
+					items[i].style.height = tab_h + "px";
+					items[i].style.overflowY = "scroll";
+				}
+
 			}
-			
-			
+		
 			// 轮播时间 
 			var time = wrap.getAttribute("data-time") || "3000";
 			var isAuto = wrap.getAttribute("data-auto"); //自动播放
@@ -499,7 +495,6 @@ mobile_slide.style.height=tab_h+"px";
 			var isAddMoveEvent = true; // 判断是否往上拖动
 			var isAddMoveEventFirst = true; // 判断是否第一往上拖动
 
-		
 			transformCss(list, 'translateZ', 0.01)
 			list.innerHTML += list.innerHTML
 			var liNodes = wrap.querySelectorAll(".mobile-tab-list-item")
@@ -525,9 +520,9 @@ mobile_slide.style.height=tab_h+"px";
 				var now = Math.round(-left / document.documentElement.clientWidth)
 
 				if(now == 0) {
-					now = liNodes.length/2;
+					now = liNodes.length / 2;
 				} else if(now == liNodes.length - 1) {
-					now = liNodes.length/2 - 1
+					now = liNodes.length / 2 - 1
 				}
 				transformCss(list, 'translateX', -now * document.documentElement.clientWidth)
 
@@ -621,17 +616,14 @@ mobile_slide.style.height=tab_h+"px";
 				window.location.reload();
 			});
 
-		
 		}
 
 	}
 
- 
-
 	return {
 		scroll: _scroll,
 		slide: _slide,
-		tab:_tab
+		tab: _tab
 
 	}
 

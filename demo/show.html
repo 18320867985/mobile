@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>show</title>
+		<link rel="stylesheet" href="" />
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!--[if lte IE 8]>
+			<script src="../../js/html5shiv.js" type="text/javascript" charset="utf-8"></script>
+			<script src="../../js/respond.min.js" type="text/javascript" charset="utf-8"></script>
+		<![endif]-->
+
+		<style type="text/css">
+			@charset "utf-8";
+			body {
+				padding: 10px;
+			}
+			
+			* {
+				padding: 0;
+				margin: 0;
+			}
+			
+			ul {
+				list-style: none;
+			}
+			
+			.clearfix:before,
+			.clearfix:after {
+				display: table;
+				content: "";
+			}
+			
+			.clearfix:after {
+				clear: both;
+			}
+			
+			.active {
+				font-size: 28px;
+				color: darkgoldenrod;
+			}
+			
+			.width {
+				position: relative;
+				box-sizing: border-box;
+				width: 250px;
+				height: 200px;
+				padding: 20px;
+				border: #3C763D solid 20px;
+				bottom left: 30px;
+			}
+			
+			ul li {
+				border-bottom: 1px solid red;
+			}
+			
+			.box {
+				border: 1px solid red;
+			}
+			
+			h1 {
+				display: none;
+			}
+			
+			.animate {
+			
+				width: 200px;
+				height: 200px;
+				margin-top: 20px;
+				background: orange;
+			}
+			
+			
+		</style>
+
+	</head>
+
+	<body>
+		<div>
+
+			<button class="btn" type="button">show</button>
+
+		</div>
+
+		<div class="animate">
+
+		</div>
+		<p>2</p>
+		<p>2</p>
+		<p>2</p>
+
+		<script src="js/mobile-1.0.0.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			m(".btn").click(function() {
+				m(".animate").toggle();
+			});
+		</script>
+	</body>
+
+</html>
