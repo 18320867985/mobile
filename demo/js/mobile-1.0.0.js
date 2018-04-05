@@ -24,7 +24,6 @@
 			if(fn(el.parentElement)) {
 				return el.parentElement;
 			}
-
 		}
 
 		if((el.nodeName || "").toLowerCase() === "html") {
@@ -330,35 +329,15 @@
 			return this;
 		},
 
-		// parentsByClassName
-		parentsByClassName: function(searchName, arg) {
-			arg = arg || "className";
+		// parents 
+		parents: function(selector) {
+			selector = typeof selector === "string" ? selector : "";
 			var arr = [];
 			for(var i = 0; i < this.length; i++) {
 
 				var p = _searchParents(this[i], function(elm) {
 					var bl = false;
-					switch(arg) {
-						case "className":
-							bl = elm.classList.contains(searchName.trim());
-							break;
-						case "tagName":
-							bl = elm.nodeName.toLowerCase().trim() == searchName.trim();
-							break;
-						case "name":
-							if(elm.getAttribute("name")) {
-								bl = (elm.getAttribute("name") || "").trim() == searchName.trim();
-							}
-							break;
-						case "id":
-							if(elm.getAttribute("id")) {
-								bl = (elm.getAttribute("id") || "").trim() == searchName.trim();
-							}
-							break;
-						default:
-							bl = false;
-					}
-
+					bl = Mobile.checkSelector(elm, selector);
 					return bl;
 				});
 
@@ -371,29 +350,30 @@
 			Array.prototype.push.apply(this, arr);
 			return this;
 		},
-
-		parentsByTagName: function(searchName) {
-			if(this.length > 0) {
-				return m(this).parentsByClassName(searchName, "tagName");
-			}
-
-			return this;
-		},
-
-		// parentsByName
-		parentsByName: function(searchName) {
-			if(this.length > 0) {
-				return m(this).parentsByClassName(searchName, "name");
-			}
-			return this;
-		},
-
-		// parentsById
-		parentsById: function(searchName) {
-			if(this.length > 0) {
-				return m(this).parentsByClassName(searchName, "id");
-			}
-
+		
+		
+		// closest 
+		closest: function(selector) {
+			selector = typeof selector === "string" ? selector : "";
+			var arr = [];
+			for(var i = 0; i < this.length; i++) {
+				var p;
+				if(Mobile.checkSelector(this[i], selector)){
+					arr.push(this[i]);
+				}else{
+				 p = _searchParents(this[i], function(elm) {
+					var bl = false;
+					bl = Mobile.checkSelector(elm, selector);
+					return bl;
+				});
+				}
+				delete this[i];
+				if(p) {
+					arr.push(p);
+				}
+			};
+			delete this.length;
+			Array.prototype.push.apply(this, arr);
 			return this;
 		},
 
@@ -1050,9 +1030,9 @@
 				var bl = typeof arguments[2] === "boolean" ? arguments[2] : false;
 				Mobile.each(this, function() {
 					if(this.addEventListener) {
-						this.addEventListener(type,function(event){
-							handler(event);
-						} , bl);
+						this.addEventListener(type, function(event) {
+							handler.call(this,event);
+						}, bl);
 					}
 					//ie8
 					//					else if(this.attachEvent) {
@@ -1070,9 +1050,8 @@
 				var bl = typeof arguments[3] === "boolean" ? arguments[3] : false
 				Mobile.each(this, function() {
 					if(this.addEventListener) {
-						var delegateElement = this.querySelector(el);
 						this.addEventListener(type, function(event) {
-							if(event.target.isEqualNode(delegateElement)) {
+							if(Mobile.checkSelector(event.target, el)) {
 								handler.call(event.target, event);
 							}
 
@@ -1246,6 +1225,139 @@
 			//			} catch(e) {}
 
 		},
+
+		checkSelector: function(el, txt) {
+			
+			txt = typeof txt === "string" ? txt : "";
+			if(txt.trim() === "") {
+				return false;
+			}
+			
+			var regId = /\#[a-zA-Z_][\w|-]*[^\.|^#|\[]{0,}/g;
+			var regClass = /\.[a-zA-Z_][\w|-]*[^\.|^#|\[]{0,}/g;
+			var regTag = /^[a-zA-Z][\w|-]*[^\.|^#|\[]{0,}/g;
+			var regAttr = /\[[a-zA-Z][\w-=]*\]/g;
+
+			var idList = txt.match(regId) || [];
+			idList = rep(idList, "#", "");
+			var isIdBl = isId(el, idList, txt);
+			//alert(isIdBl)
+
+			var classList = txt.match(regClass) || [];
+			classList = rep(classList, ".", "");
+			var isClassBl = isclass(el, classList, txt);
+			//alert(isClassBl)
+
+			var tagList = txt.match(regTag) || [];
+			var isTagBl = istag(el, tagList, txt);
+			//alert(tagList)
+
+			var attrList = txt.match(regAttr) || [];
+			attrList = rep(attrList, "[", "");
+			attrList = rep(attrList, "]", "");
+			var isAttrBl = isAttr(el, attrList, txt);
+			//alert(isAttrBl)
+
+			function rep(list, old, now) {
+				var arr = [];
+				for(var i = 0; i < list.length; i++) {
+					arr.push(list[i].replace(old, now));
+				}
+
+				return arr;
+			}
+
+			function isId(el, idList, searchTxt) {
+
+				if(searchTxt.search(/#/) === -1) {
+					return true;
+				} else if(searchTxt.search(/#/) !== -1 && idList.length === 0) {
+					return false;
+				}
+
+				// 上条件不符合  向下执行
+				var id = el.id || "";
+				for(var i = 0; i < idList.length; i++) {
+					if(idList[i] == id) {
+						return true;
+					}
+				}
+				return false;
+
+			}
+
+			function isclass(el, idList, searchTxt) {
+				if(searchTxt.search(/\./) === -1) {
+					return true;
+				} else if(searchTxt.search(/\./) !== -1 && idList.length === 0) {
+					return false;
+				}
+
+				// 上条件不符合  向下执行
+				var _class = el.classList || "";
+
+				for(var i = 0; i < idList.length; i++) {
+					if(!_class.contains(idList[i])) {
+						return false;
+					}
+				}
+				return true;
+
+			}
+
+			function istag(el, idList, searchTxt) {
+				if(searchTxt.search(/^[a-zA-Z]/) === -1) {
+					return true;
+				} else if(searchTxt.search(/^[a-zA-Z]/) !== -1 && idList.length === 0) {
+					return false;
+				}
+
+				// 上条件不符合  向下执行
+				var _tag = (el.nodeName || "").toLowerCase();
+
+				for(var i = 0; i < idList.length; i++) {
+					if(idList[i].trim() === _tag) {
+						return true;
+					}
+				}
+				return false;
+
+			}
+
+			function isAttr(el, idList, searchTxt) {
+
+				if(searchTxt.search(/\[.*\]/) === -1) {
+					return true;
+				} else if(searchTxt.search(/\[.*\]/) !== -1 && idList.length === 0) {
+					return false;
+				}
+
+				// 上条件不符合  向下执行
+				//var _tag = el.getat
+				var _reg2 = /=/g;
+				for(var i = 0; i < idList.length; i++) {
+
+					if(_reg2.test(idList[i])) {
+						//alert(idList[i]);
+						var arr2 = idList[i].split("=");
+						if((el.getAttribute(arr2[0]) || "").trim() !== (arr2[1] || "").trim()) {
+							return false;
+						}
+					} else {
+
+						if(!el.hasAttribute(idList[i])) {
+							return false;
+						}
+					}
+
+				}
+				return true;
+
+			}
+
+			return isIdBl && isClassBl && isTagBl && isAttrBl;
+		},
+
 		　
 	});
 

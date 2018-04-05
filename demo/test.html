@@ -93,12 +93,16 @@
 	</head>
 
 	<body>
-		<div>
+		<div class="abc" data-id>
+			<button class="btn abc" type="button">show</button>
+			<button class="btn2" type="button">status</button>
+		</div>
+<hr />
+		<div class="abc">
 			
 			<button class="btn" type="button">show</button>
 			<button class="btn2" type="button">status</button>
 		</div>
-
 		<div class="animate a">
 
 		</div>
@@ -116,10 +120,13 @@
 
 			
 			m(".btn2").click(function() {
+				
 				m(".animate").animatePalyToggle()
 			});
 
- 			m(".btn").siblings()
+ 		
+ 			
+ 			
 		</script>
 	</body>
 

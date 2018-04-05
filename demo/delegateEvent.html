@@ -42,96 +42,229 @@
 
 	<body id="body">
 
-		<button id="btn" type="button">btn</button>
+		<button id="a45" type="button">btn</button>
 		<button id="btn" type="button">btn2</button>
 
-		<ul>
-			<li>1111</li>
+		<ul class="">
+			<li class="a">1111</li>
 			<li>222</li>
 			<li>333</li>
 			<li>444</li>
 			<li>555</li>
-			
+
 		</ul>
 
 		</div>
 
+		<a href=""  data-url>aaa</a>
+
 		<script src="js/jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script>
-	
+		<script src="js/mobile-1.0.0.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
-			var lis = document.querySelectorAll("ul li");
+//			var lis = document.querySelectorAll("ul li");
+//
+//			for(var i = 0; i < lis.length; i++) {
+//				lis[i].addEventListener("click", function(event) {
+//					if(event.target.nodeName.toLowerCase() === "li") {
+//						alert(event.target.nodeName + "@@lievent")
+//					}
+//
+//				});
+//
+//			}
+//
+//			var ul = document.querySelector("ul");
+//
+//			ul.addEventListener("click", function(event) {
+//				if(checkElement(event.target,"li.a")){
+//					alert(event.target.nodeName + "===")
+//
+//				}
+//
+//			});
+//
+//			var btn = document.querySelector("button");
+//			btn.addEventListener("click", function() {
+//				var list = document.createDocumentFragment();
+//			
+//				for(var i = 0; i < 10; i++) {
+//					var li = document.createElement("li");
+//					li.textContent = i.toString();
+//					list.appendChild(li);
+//				}
+//				ul.appendChild(list);
+//			});
+//
+//			/**bing事件**/
+//			function onEvent(el, type, handler) {
+//
+//				if(el.addEventListener) {
+//					el.addEventListener(type, handler);
+//				} else if(el.attachEvent) {
+//					if(!el.attachEvent("on" + type, handler)) {
+//						window["on" + type] = handler;
+//					}
+//
+//				}
+//			}
+//
+//			function offEvent(el, type, handler) {
+//
+//				if(el.removeEventListener) {
+//					el.removeEventListener(type, handler);
+//				} else if(el.detachEvent) {
+//					el.detachEvent("on" + type, handler)
+//
+//				}
+//			}
+//			
+//			
+//			m("ul").on("click","li",function(){
+//				
+//				alert(this.nodeName)
+//			})
 
-			for(var i = 0; i < lis.length; i++) {
-				lis[i].addEventListener("click", function(event) {
-					var el=document.querySelector("li");
-					alert(el.nodeName+"0000")
-					if(event.target.nodeName.toLowerCase()==="li"){
-						alert(event.target.nodeName + "@@lievent")
-					}
-					
+			var el = document.querySelector("a");
+			//alert(el.hasAttribute("data-id"))
+		//alert(checkElement(el, ""));
 
-				});
-
-			}
-
-			var ul = document.querySelector("ul");
-
-			ul.addEventListener("click", function(event) {
-				alert(event.target.nodeName+"@@ul")
-
-			});
-
-			var btn = document.querySelector("button");
-			btn.addEventListener("click", function() {
-				var list = document.createDocumentFragment();
-				alert()
-				for(var i = 0; i < 10; i++) {
-					var li = document.createElement("li");
-					li.textContent = i.toString();
-					list.appendChild(li);
+		function checkElement(el, txt) {
+				txt=typeof txt ==="string"?txt:"";
+				if(txt.trim()===""){
+					return false;
 				}
-				ul.appendChild(list);
-			});
+				var regId = /\#[a-zA-Z_][\w|-]*[^\.|^#|\[]{0,}/g;
+				var regClass = /\.[a-zA-Z_][\w|-]*[^\.|^#|\[]{0,}/g;
+				var regTag = /^[a-zA-Z][\w|-]*[^\.|^#|\[]{0,}/g;  
+				var regAttr = /\[[a-zA-Z][\w-=]*\]/g;
+				
+				var idList = txt.match(regId) || [];
+				idList = rep(idList, "#", "");
+				var isIdBl = isId(el, idList,txt);
+				//alert(isIdBl)
+				
+				var classList = txt.match(regClass) || [];
+				classList = rep(classList, ".", "");
+				var isClassBl=isclass(el,classList,txt);
+				//alert(isClassBl)
+				
+				var tagList = txt.match(regTag) || [];
+				var isTagBl=istag(el,tagList,txt);
+				//alert(tagList)
+				
+				var attrList = txt.match(regAttr) || [];
+				attrList = rep(attrList, "[", "");
+				attrList = rep(attrList, "]", "");
+				var isAttrBl=isAttr(el,attrList,txt);
+				//alert(isAttrBl)
 
-			
-			/**bing事件**/
-			function onEvent(el, type, handler) {
-
-				if(el.addEventListener) {
-					el.addEventListener(type, handler);
-				}else if(el.attachEvent){
-					if(!el.attachEvent("on" + type, handler)){
-						window["on" + type]=handler;
+				function rep(list, old, now) {
+					var arr = [];
+					for(var i = 0; i < list.length; i++) {
+						arr.push(list[i].replace(old, now));
 					}
+
+					return arr;
+				}
+
+				function isId(el, idList,searchTxt) {
+					
+					if(searchTxt.search(/#/)===-1){
+						return true;
+					}
+					 else if(searchTxt.search(/#/)!==-1&&idList.length===0){
+						return  false;
+					}
+					 
+					// 上条件不符合  向下执行
+					var id = el.id || "";
+					for(var i = 0; i < idList.length; i++) {
+						if(idList[i] == id) {
+							return true;
+						}
+					}
+					return false;
+
+				}
+				
+				function isclass(el, idList,searchTxt) {
+					if(searchTxt.search(/\./)===-1){
+						return true;
+					}
+					 else if(searchTxt.search(/\./)!==-1&&idList.length===0){
+						return  false;
+					}
+					 
+					// 上条件不符合  向下执行
+					var _class = el.classList || "";
+					
+					for(var i = 0; i < idList.length; i++) {
+						if(!_class.contains(idList[i])) {
+							return  false;
+						}
+					}
+					return  true;
+
+				}
+				
+				function istag(el, idList,searchTxt) {
+					if(searchTxt.search(/^[a-zA-Z]/)===-1){
+						return true;
+					}
+					 else if(searchTxt.search(/^[a-zA-Z]/)!==-1&&idList.length===0){
+						return  false;
+					}
+					 
+					// 上条件不符合  向下执行
+					var _tag = (el.nodeName || "").toLowerCase();
+					
+					for(var i = 0; i < idList.length; i++) {
+						if(idList[i].trim()===_tag) {
+							return  true;
+						}
+					}
+					return   false;
+
+				}
+				
+				function isAttr(el, idList,searchTxt) {
+					
+					if(searchTxt.search(/\[.*\]/)===-1){
+						return true;
+					}
+					 else if(searchTxt.search(/\[.*\]/)!==-1&&idList.length===0){
+						return  false;
+					}
+					 
+					// 上条件不符合  向下执行
+					//var _tag = el.getat
+					var _reg2=/=/g;
+					for(var i = 0; i <idList.length; i++) {
 						
-				}
-			}
+						if(_reg2.test(idList[i])){
+							//alert(idList[i]);
+							var arr2=idList[i].split("=");
+							if((el.getAttribute(arr2[0])||"").trim()!==(arr2[1]||"").trim()){
+								return false;
+							}
+						}else{
+							
+							if(!el.hasAttribute(idList[i])){
+								return false;
+							}
+						}
+							
+						
+					}
+					return  true;
 
-			function offEvent(el, type, handler) {
-
-				if(el.removeEventListener) {
-					el.removeEventListener(type, handler);
-				}else if(el.detachEvent) {
-					el.detachEvent("on" + type, handler)
-					
 				}
+
+				return isIdBl&&isClassBl&&isTagBl&&isAttrBl;
 			}
-			
-			var regId=/\#\w+[^\.]{0,}/img;
-			var regClass=/\.\w+[^\.|^#]{0,}/img;
-			var regTag=/^\w+[^\.]{0,}/img;
-			
-			var regAttr=/\[\w+\]/img
-			
-			//alert("#wwwewe.p".match(regClass))
-			
-			//alert("#div.p.uuu#eee".match(regClass))
-			
-			alert("div.pttt.uuu[]".match(regTag))
-			
-			alert("div.pttt.uuu[tt]".match(regAttr))
-			
-		</script>
+	
+
+	</script>
 
 	</body>
 
