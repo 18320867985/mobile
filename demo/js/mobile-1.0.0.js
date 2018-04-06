@@ -350,22 +350,21 @@
 			Array.prototype.push.apply(this, arr);
 			return this;
 		},
-		
-		
+
 		// closest 
 		closest: function(selector) {
 			selector = typeof selector === "string" ? selector : "";
 			var arr = [];
 			for(var i = 0; i < this.length; i++) {
 				var p;
-				if(Mobile.checkSelector(this[i], selector)){
+				if(Mobile.checkSelector(this[i], selector)) {
 					arr.push(this[i]);
-				}else{
-				 p = _searchParents(this[i], function(elm) {
-					var bl = false;
-					bl = Mobile.checkSelector(elm, selector);
-					return bl;
-				});
+				} else {
+					p = _searchParents(this[i], function(elm) {
+						var bl = false;
+						bl = Mobile.checkSelector(elm, selector);
+						return bl;
+					});
 				}
 				delete this[i];
 				if(p) {
@@ -1031,7 +1030,7 @@
 				Mobile.each(this, function() {
 					if(this.addEventListener) {
 						this.addEventListener(type, function(event) {
-							handler.call(this,event);
+							handler.call(this, event);
 						}, bl);
 					}
 					//ie8
@@ -1227,15 +1226,13 @@
 		},
 
 		checkSelector: function(el, txt) {
-			
 			txt = typeof txt === "string" ? txt : "";
 			if(txt.trim() === "") {
 				return false;
 			}
-			
 			var regId = /\#[a-zA-Z_][\w|-]*[^\.|^#|\[]{0,}/g;
 			var regClass = /\.[a-zA-Z_][\w|-]*[^\.|^#|\[]{0,}/g;
-			var regTag = /^[a-zA-Z][\w|-]*[^\.|^#|\[]{0,}/g;
+			var regTag = /^[a-zA-Z][\w|-]*[^\.|^#|\[]{0,}|[\]][a-zA-Z][\w|-]*[^\.|^#|\[]{0,}/g;
 			var regAttr = /\[[a-zA-Z][\w-=]*\]/g;
 
 			var idList = txt.match(regId) || [];
@@ -1249,14 +1246,15 @@
 			//alert(isClassBl)
 
 			var tagList = txt.match(regTag) || [];
+			tagList = rep(tagList, "]", "")
 			var isTagBl = istag(el, tagList, txt);
-			//alert(tagList)
+			//alert(isTagBl)
 
 			var attrList = txt.match(regAttr) || [];
 			attrList = rep(attrList, "[", "");
 			attrList = rep(attrList, "]", "");
 			var isAttrBl = isAttr(el, attrList, txt);
-			//alert(isAttrBl)
+			//alert(attrList)
 
 			function rep(list, old, now) {
 				var arr = [];
@@ -1306,9 +1304,9 @@
 			}
 
 			function istag(el, idList, searchTxt) {
-				if(searchTxt.search(/^[a-zA-Z]/) === -1) {
+				if(searchTxt.search(/^[a-zA-Z]|[\]][a-zA-Z]/) === -1) {
 					return true;
-				} else if(searchTxt.search(/^[a-zA-Z]/) !== -1 && idList.length === 0) {
+				} else if(searchTxt.search(/^[a-zA-Z]|[\]][a-zA-Z]/) !== -1 && idList.length === 0) {
 					return false;
 				}
 
@@ -1316,11 +1314,11 @@
 				var _tag = (el.nodeName || "").toLowerCase();
 
 				for(var i = 0; i < idList.length; i++) {
-					if(idList[i].trim() === _tag) {
-						return true;
+					if(idList[i].trim() !== _tag) {
+						return false;
 					}
 				}
-				return false;
+				return true;
 
 			}
 

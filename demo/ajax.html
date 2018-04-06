@@ -70,76 +70,51 @@
 				width: 100px;
 				height: 100px;
 				margin-top: 20px;
-				
-				 background: orange;
-				
+				background: orange;
 			}
+			
 			@keyframes dh {
 				from {
-					transform:  rotate(0);
+					transform: rotate(0);
 				}
 				to {
-					transform:  rotate(360deg);
+					transform: rotate(360deg);
 				}
 			}
 			
-			 button:not(.btn){
-				color:red;
+			button:not(.btn) {
+				color: red;
 			}
-			
-			
 		</style>
 
 	</head>
 
 	<body>
 		<div class="abc" data-id>
-			<button class="btn abc" type="button">show</button>
-			<button class="btn2" type="button">status</button>
-		</div>
-<hr />
-		<div class="abc">
+			<button class="btn abc" type="button">ajax</button>
 			
-			<button class="btn" type="button">show</button>
-			<button class="btn2" type="button">status</button>
 		</div>
-		<div class="animate a">
-
-		</div>
-
+		
+		
 		<script src="js/mobile-1.0.0.js" type="text/javascript" charset="utf-8"></script>
 		<script src="js/jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			
-
+			// ajax
+			var xhr = new XMLHttpRequest();
 			m(".btn").click(function() {
-				
-				m(".animate").addAnimate("dh",1000,"linear",200,"infinite").animationFillMode();
-				
-				// ajax
- 		var xhr=new XMLHttpRequest();
- 		xhr.onreadystatechange=function(){
- 			if(xhr.readyState===4&&xhr.status===200){
- 				alert(xhr.responseText)
- 			}
- 			
- 		}
- 		xhr.open("GET","ajax.json",true);
- 		xhr.send({name:"123"});
-				
+				xhr.onreadystatechange = function() {
+					if(xhr.readyState === 4 && xhr.status === 200) {
+						alert(xhr.responseText)
+					}
+
+				}
+				xhr.open("GET", "ajax.json", true);
+				xhr.send({
+					name: "123"
+				});
+
 			});
-
-
-			
-			m(".btn2").click(function() {
-				
-				m(".animate").animatePalyToggle();
-			});
-
- 		
- 		
- 			
- 			
 		</script>
 	</body>
 
