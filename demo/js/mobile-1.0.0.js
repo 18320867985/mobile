@@ -1237,23 +1237,24 @@
 				params.push(encodeURIComponent(key) + '=' + encodeURIComponent(opt.data[key]));
 			}
 			var postData = params.join('&');
-			if(postData.length>0){
-				postData="&"+postData;
-			}
 
 			if(opt.type.toUpperCase() === 'POST' || opt.type.toUpperCase() === 'PUT' || opt.type.toUpperCase() === 'DELETE') {
+				opt.url = opt.url.indexOf("?") === -1 ? opt.url + "?" + "_=" + Math.random() : opt.url + "&_=" + Math.random();
 				xhr.open(opt.type, opt.url, opt.async);
 				xhr.setRequestHeader('Content-Type', opt.contentType);
 				xhr.send(postData);
 			} else if(opt.type.toUpperCase() === 'GET') {
-				opt.url = opt.url.indexOf("?") === -1 ? opt.url + "?"+"_="+Math.random()+ postData : opt.url +"&_="+Math.random()+ postData;
+				if(postData.length > 0) {
+					postData = "&" + postData;
+				}
+				opt.url = opt.url.indexOf("?") === -1 ? opt.url + "?" + "_=" + Math.random() + postData : opt.url + "&_=" + Math.random() + postData;
 				xhr.open(opt.type, opt.url, opt.async);
 				xhr.send(null);
 			}
 			xhr.onreadystatechange = function() {
-				
+
 				if(xhr.readyState === 4) {
-					if((xhr.status >= 200&&xhr.status<300)||xhr.status===304) {
+					if((xhr.status >= 200 && xhr.status < 300) || xhr.status === 304) {
 						if(typeof opt.success === "function") {
 							opt.success(JSON.parse(xhr.responseText), xhr.status, xhr.statusText);
 						}
