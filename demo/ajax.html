@@ -112,7 +112,7 @@
 				//					}
 				//				})
 
-				m.get("ajax.json", function(data) {
+				m.get("ajax.json?id=10000", {name:"mimi",age:12},function(data) {
 					alert(data[0].name);
 				}, function(data) {
 					alert(data)
