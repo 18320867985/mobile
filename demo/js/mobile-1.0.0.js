@@ -17,7 +17,7 @@
 	Mobile.version = "1.0.0"; // 版本号
 	Mobile.numberList = ["left", "top", "right", "bottom", "width", "height"]; // 可计算值 的列表
 
-	// 查找父元素
+	// 递归查找父元素
 	function _searchParents(el, fn) {
 
 		if(el.parentElement) {
@@ -31,6 +31,36 @@
 		}
 
 		return _searchParents(el.parentElement, fn);
+
+	}
+
+	// ajax type
+	function _ajaxFun(url, type, data, _arguments) {
+		var success;
+		var error;
+		var contentType;
+		if(typeof data === "object" && _arguments.length >= 3) {
+			success = _arguments[2];
+			if(_arguments.length >= 4) {
+				error = _arguments[3];
+				contentType = _arguments[4] || null;
+			}
+		} else if(typeof data === "function") {
+			success = data;
+			if(_arguments.length >= 3) {
+				error = _arguments[2];
+				contentType = _arguments[3] || null;
+			}
+		}
+
+		Mobile.ajax({
+			type: type,
+			url: url,
+			data: typeof data === "object" ? data : null,
+			success: success,
+			error: error,
+			contentType: contentType
+		});
 
 	}
 
@@ -1147,6 +1177,112 @@
 			Mobile.each(this, function() {
 				m(this).on("scroll", fn, bl);
 			});
+		},
+
+	});
+
+	// ajax static
+	Mobile.extend({
+
+		// create XHR Object
+		createXHR: function() {
+
+			if(window.XMLHttpRequest) {
+
+				//IE7+、Firefox、Opera、Chrome 和Safari
+				return new XMLHttpRequest();
+			} else if(window.ActiveXObject) {
+
+				//IE6 及以下
+				var versions = ['MSXML2.XMLHttp', 'Microsoft.XMLHTTP'];
+				for(var i = 0, len = versions.length; i < len; i++) {
+					try {
+						return new ActiveXObject(version[i]);
+						break;
+					} catch(e) {
+						//跳过
+					}
+				}
+			} else {
+				throw new Error('浏览器不支持XHR对象！');
+			}
+
+		},
+
+		/* 封装ajax函数
+			 @param {string}opt.type http连接的方式，包括POST和GET两种方式
+			 @param {string}opt.url 发送请求的url
+			 @param {boolean}opt.async 是否为异步请求，true为异步的，false为同步的
+			 @param {object}opt.data 发送的参数，格式为对象类型
+			 @param {function}opt.contentType   内容类型
+			@param {function}opt.success ajax发送并接收成功调用的回调函数
+			 @param {function}opt.error ajax发送并接收error调用的回调函数
+	 	*/
+		ajax: function(opt) {
+
+			// 参数object对象
+			opt = opt || {};
+			opt.type = typeof opt.type === "string" ? opt.type.toUpperCase() : "GET";
+			opt.url = typeof opt.url === "string" ? opt.url : '';
+			opt.async = typeof opt.async === "boolean" ? opt.async : true;
+			opt.data = typeof opt.data === "object" ? opt.data : {};
+			opt.success = opt.success || function() {};
+			opt.error = opt.error || function() {};
+			opt.contentType = opt.contentType || "application/x-www-form-urlencoded;charset=utf-8";
+			var xhr = Mobile.createXHR();
+
+			// 参数data对象字符
+			var params = [];
+			for(var key in opt.data) {
+				params.push(encodeURIComponent(key) + '=' + encodeURIComponent(opt.data[key]));
+			}
+			var postData = params.join('&');
+
+			if(opt.type.toUpperCase() === 'POST' || opt.type.toUpperCase() === 'PUT' || opt.type.toUpperCase() === 'DELETE') {
+				xhr.open(opt.type, opt.url, opt.async);
+				xhr.setRequestHeader('Content-Type', opt.contentType);
+				xhr.send(postData);
+			} else if(opt.type.toUpperCase() === 'GET') {
+				opt.url = opt.url.indexOf("?") === -1 ? opt.url + "?" + postData : opt.url + "&" + postData;
+				xhr.open(opt.type, opt.url, opt.async);
+				xhr.send(null);
+			}
+			xhr.onreadystatechange = function() {
+				
+				if(xhr.readyState === 4) {
+					if((xhr.status >= 200&&xhr.status<300)||xhr.status===304) {
+						if(typeof opt.success === "function") {
+							opt.success(JSON.parse(xhr.responseText), xhr.status, xhr.statusText);
+						}
+					} else {
+						if(typeof opt.error === "function") {
+							opt.error(xhr.status, xhr.statusText);
+						}
+					}
+
+				}
+			};
+
+		},
+
+		// get
+		get: function(url, data) {
+			_ajaxFun(url, "get", data, arguments);
+		},
+
+		// post
+		post: function(url, data) {
+			_ajaxFun(url, "post", data, arguments);
+		},
+
+		// put
+		put: function(url, data) {
+			_ajaxFun(url, "put", data, arguments);
+		},
+
+		// delete
+		delete: function(url, data) {
+			_ajaxFun(url, "delete", data, arguments);
 		},
 
 	});
