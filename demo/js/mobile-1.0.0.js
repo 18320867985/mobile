@@ -1288,6 +1288,49 @@
 		delete: function(url, data) {
 			_ajaxFun(url, "delete", data, arguments);
 		},
+		jsonp:function(url, data) {
+
+				var callback;
+					if(typeof data === "function") {
+						callback = data;
+					}
+					if(arguments.length >= 3) {
+						callback = arguments[2];
+					}
+
+					// 创建一个几乎唯一的id
+					var callbackName = "mobile" + (new Date()).getTime().toString().trim();
+					window[callbackName] = function(result) {
+
+						// 创建一个全局回调处理函数
+						if(typeof callback === "function") {
+							callback(result);
+						}
+					}
+
+					// 参数data对象字符
+					var params = [];
+					var postData = "";
+					if(typeof data === "object") {
+						for(var key in data) {
+							params.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
+						}
+						postData = params && params.join('&');
+					}
+
+					if(postData.length > 0) {
+						postData = "&" + postData;
+					}
+					url = url.indexOf("?") === -1 ? url + "?" + "callback=" + callbackName + postData : url + "&callback=" + callbackName + postData;
+
+					// 创建Script标签并执行window[id]函数
+					var script = document.createElement("script");
+					script.setAttribute("id", callbackName);
+					script.setAttribute("src", url);
+					script.setAttribute("type", "text/javascript");
+					document.body.appendChild(script);
+
+			}
 
 	});
 

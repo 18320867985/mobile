@@ -97,103 +97,79 @@
 		<script src="js/mobile-1.0.0.js" type="text/javascript" charset="utf-8"></script>
 		<script src="js/jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
-			m(".btn").click(function() {
-				//				m.ajax({
-				//					url: "ajax.json",
-				//					type: "post",
-				//					data: {
-				//						a: "你胜多负少"
-				//					},
-				//					success: function(data,i,v) {
-				//						alert(data)
-				//					},
-				//					error: function(i, v) {
-				//						alert(v)
-				//					}
-				//				})
-
-				m.get("ajax.json", {name:"mimi",age:12},function(data) {
-					alert(data[0].name);
-				}, function(data) {
-					alert(data)
-				});
-
-			});
-
-			/* 封装ajax函数
-			  @param {string}opt.type http连接的方式，包括POST和GET两种方式
-			  @param {string}opt.url 发送请求的url
-			  @param {boolean}opt.async 是否为异步请求，true为异步的，false为同步的
-			  @param {object}opt.data 发送的参数，格式为对象类型
-			  @param {function}opt.contentType   内容类型
-			  @param {function}opt.success ajax发送并接收成功调用的回调函数
-			  @param {function}opt.error ajax发送并接收error调用的回调函数
- 			  */
-			function ajax(opt) {
-
-				// 参数object对象
-				opt = opt || {};
-				opt.type = opt.type.toUpperCase() || 'GET';
-				opt.url = opt.url || '';
-				opt.async = opt.async || true;
-				opt.data = opt.data || null;
-				opt.success = opt.success || function() {};
-				opt.error = opt.error || function() {};
-				opt.contentType = opt.contentType || "application/x-www-form-urlencoded;charset=utf-8";
-				var xhr = createXHR();
-
-				// 参数data对象字符
-				var params = [];
-				for(var key in opt.data) {
-					params.push(encodeURIComponent(key) + '=' + encodeURIComponent(opt.data[key]));
+			mobile(".btn").click(function() {
+					//				m.ajax({
+					//					url: "ajax.json",
+					//					type: "post",
+					//					data: {
+					//						a: "你胜多负少"
+					//					},
+					//					success: function(data,i,v) {
+					//						alert(data)
+					//					},
+					//					error: function(i, v) {
+					//						alert(v)
+					//					}
+					//				})
+					//m.post("http://localhost:4015/api/values", { name: "mimi", age: 12 }, function (data) {
+					//	alert(JSON.stringify(data));
+					//}, function(data) {
+					//	alert(data)
+					//}, "application/xml" );
+					m.jsonp("http://localhost:4015/api/values?ids=111", function(data) {
+						alert(JSON.stringify(data));
+					});
+					
 				}
-				var postData = params.join('&');
 
-				if(opt.type.toUpperCase() === 'POST') {
-					xhr.open(opt.type, opt.url, opt.async);
-					xhr.setRequestHeader('Content-Type', opt.contentType);
-					xhr.send(postData);
-				} else if(opt.type.toUpperCase() === 'GET') {
-					opt.url = opt.url.indexOf("?") === -1 ? opt.url + "?" + postData : opt.url + "&" + postData;
-					xhr.open(opt.type, opt.url, opt.async);
-					xhr.send(null);
-				}
-				xhr.onreadystatechange = function() {
-					if(xhr.readyState === 4 && xhr.status === 200) {
-						if(typeof opt.success === "function") {
+			);
+			//function callback(data) {
+			//    alert(JSON.stringify( data))
+			//}
+			function jsonp(url, data) {
+				
+					var callback;
+					if(typeof data === "function") {
+						callback = data;
+					}
+					if(arguments.length >= 3) {
+						callback = arguments[2];
+					}
 
-							opt.success(xhr.responseText, xhr.status, xhr.statusText);
-						}
+					// 创建一个几乎唯一的id
+					var callbackName = "mobile" + (new Date()).getTime().toString().trim();
+					window[callbackName] = function(result) {
 
-					} else {
-						if(xhr.readyState === 4) {
-							if(typeof opt.error === "function") {
-								opt.error(xhr.status, xhr.statusText);
-							}
+						// 创建一个全局回调处理函数
+						if(typeof callback === "function") {
+							callback(result);
 						}
 					}
-				};
-			}
 
-			// create XHR Object
-			function createXHR() {
+					// 参数data对象字符
+					var params = [];
+					var postData = "";
+					if(typeof data === "object") {
 
-				if(window.XMLHttpRequest) { //IE7+、Firefox、Opera、Chrome 和Safari
-					return new XMLHttpRequest();
-				} else if(window.ActiveXObject) { //IE6 及以下
-					var versions = ['MSXML2.XMLHttp', 'Microsoft.XMLHTTP'];
-					for(var i = 0, len = versions.length; i < len; i++) {
-						try {
-							return new ActiveXObject(version[i]);
-							break;
-						} catch(e) {
-							//跳过
+						for(var key in data) {
+							params.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
 						}
-					}
-				} else {
-					throw new Error('浏览器不支持XHR对象！');
-				}
+						postData = params && params.join('&');
 
+					}
+
+					if(postData.length > 0) {
+						postData = "&" + postData;
+					}
+					url = url.indexOf("?") === -1 ? url + "?" + "callback=" + callbackName + postData : url + "&callback=" + callbackName + postData;
+
+					// 创建Script标签并执行window[id]函数
+					var script = document.createElement("script");
+					script.setAttribute("id", callbackName);
+					script.setAttribute("src", url);
+					script.setAttribute("type", "text/javascript");
+					document.body.appendChild(script);
+				
 			}
 		</script>
 	</body>
