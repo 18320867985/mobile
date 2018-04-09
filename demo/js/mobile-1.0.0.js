@@ -38,18 +38,18 @@
 	function _ajaxFun(url, type, data, _arguments) {
 		var success;
 		var error;
-		var contentType;
+		var getXHR;
 		if(typeof data === "object" && _arguments.length >= 3) {
 			success = _arguments[2];
 			if(_arguments.length >= 4) {
 				error = _arguments[3];
-				contentType = _arguments[4] || null;
+				getXHR = _arguments[4] || null;
 			}
 		} else if(typeof data === "function") {
 			success = data;
 			if(_arguments.length >= 3) {
 				error = _arguments[2];
-				contentType = _arguments[3] || null;
+				getXHR = _arguments[3] || null;
 			}
 		}
 
@@ -59,7 +59,7 @@
 			data: typeof data === "object" ? data : null,
 			success: success,
 			error: error,
-			contentType: contentType
+			getXHR: getXHR
 		});
 
 	}
@@ -1217,6 +1217,8 @@
 			 @param {function}opt.contentType   内容类型
 			@param {function}opt.success ajax发送并接收成功调用的回调函数
 			 @param {function}opt.error ajax发送并接收error调用的回调函数
+			 @param {function}opt.getXHR 获取xhr对象
+			 @param {number}opt.timeout // 超时
 	 	*/
 		ajax: function(opt) {
 
@@ -1228,9 +1230,11 @@
 			opt.data = typeof opt.data === "object" ? opt.data : {};
 			opt.success = opt.success || function() {};
 			opt.error = opt.error || function() {};
-			opt.contentType = opt.contentType || "application/x-www-form-urlencoded;charset=utf-8";
+			opt.contentType =  "application/x-www-form-urlencoded;charset=utf-8";
+			opt.getXHR=opt.getXHR||function(){};
+			opt.timeout=typeof	opt.timeout==="number"?opt.timeout:0;
 			var xhr = Mobile.createXHR();
-
+				xhr.timeout=opt.timeout;
 			// 参数data对象字符
 			var params = [];
 			for(var key in opt.data) {
@@ -1242,6 +1246,7 @@
 				opt.url = opt.url.indexOf("?") === -1 ? opt.url + "?" + "_=" + Math.random() : opt.url + "&_=" + Math.random();
 				xhr.open(opt.type, opt.url, opt.async);
 				xhr.setRequestHeader('Content-Type', opt.contentType);
+				opt.getXHR(xhr); // get xhr
 				xhr.send(postData);
 			} else if(opt.type.toUpperCase() === 'GET') {
 				if(postData.length > 0) {
@@ -1249,6 +1254,7 @@
 				}
 				opt.url = opt.url.indexOf("?") === -1 ? opt.url + "?" + "_=" + Math.random() + postData : opt.url + "&_=" + Math.random() + postData;
 				xhr.open(opt.type, opt.url, opt.async);
+				opt.getXHR(xhr); // getxhr
 				xhr.send(null);
 			}
 			xhr.onreadystatechange = function() {
@@ -1288,6 +1294,8 @@
 		delete: function(url, data) {
 			_ajaxFun(url, "delete", data, arguments);
 		},
+		
+		// jsonp
 		jsonp:function(url, data) {
 
 				var callback;

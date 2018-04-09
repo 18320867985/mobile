@@ -98,31 +98,42 @@
 		<script src="js/jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			mobile(".btn").click(function() {
-					//				m.ajax({
-					//					url: "ajax.json",
-					//					type: "post",
-					//					data: {
-					//						a: "你胜多负少"
-					//					},
-					//					success: function(data,i,v) {
-					//						alert(data)
-					//					},
-					//					error: function(i, v) {
-					//						alert(v)
-					//					}
-					//				})
-					//m.post("http://localhost:4015/api/values", { name: "mimi", age: 12 }, function (data) {
-					//	alert(JSON.stringify(data));
-					//}, function(data) {
-					//	alert(data)
-					//}, "application/xml" );
-					m.jsonp("http://localhost:4015/api/values?ids=111", function(data) {
+					
+					m.post("http://localhost:4015/api/values", function(data) {
 						alert(JSON.stringify(data));
+					},function(){},function(xhr){
+						console.log(xhr)
 					});
 					
-				}
+//					var xhr=new XMLHttpRequest();
+//					if(typeof xhr.withCredentials==="undefined"){
+//						alert("no supper")
+//					} else{
+//						alert("ok")
+//					}
+					});
 
-			);
+//$.ajax({
+//              type: "POST",
+//              url: "http://localhost:4015/api/values",
+//              dataType: "json",
+//              contentType: "application/json; charset=utf-8",
+//              cache: false,
+//              success: function (persons) {
+//                  $.each(persons, function (index, person) {
+//                      var html = "<li><ul>";
+//                      html += "<li>Name: " + person.Name + "</li>";
+//                      html += "<li>Age:" + person.Age + "</li>";
+//                      html += "<li>Gender: " + person.Gender + "</li>";
+//                      html += "</ul>";
+//                      $("#person").append($(html));
+//                  });
+//              }
+//          });
+//
+//				}
+//
+//			);
 			//function callback(data) {
 			//    alert(JSON.stringify( data))
 			//}
