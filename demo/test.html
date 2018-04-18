@@ -87,7 +87,9 @@
 				color:red;
 			}
 			
-			
+		input:checked~span{
+				font-size: 48px;
+			}
 		</style>
 
 	</head>
@@ -106,6 +108,15 @@
 		<div class="animate a">
 
 		</div>
+		
+		<div  class="ck">
+			<input type="checkbox" />
+			<span>checkbox</span>
+				<span>checkbox</span>
+					<span>checkbox</span>
+			
+		</div>
+		
 
 		<script src="js/mobile-1.0.0.js" type="text/javascript" charset="utf-8"></script>
 		<script src="js/jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script>
@@ -136,8 +147,9 @@
 				m(".animate").animatePalyToggle();
 			});
 
+ 		m(".ck input:checked").parent().css("fontSize","38px")
  		
- 		
+ 
  			
  			
 		</script>

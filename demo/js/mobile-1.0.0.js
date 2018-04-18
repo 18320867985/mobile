@@ -1546,7 +1546,14 @@
 
 			return isIdBl && isClassBl && isTagBl && isAttrBl;
 		},
-
+		
+		trim:function(txt){
+			var str="";
+			txt=typeof txt==="string"?txt:"";
+			
+			str = txt.replace(new RegExp("\\s*", "img"), "");
+			return str;
+		}
 		　
 	});
 
