@@ -1059,9 +1059,7 @@
 				var bl = typeof arguments[2] === "boolean" ? arguments[2] : false;
 				Mobile.each(this, function() {
 					if(this.addEventListener) {
-						this.addEventListener(type, function(event) {
-							handler.call(this, event);
-						}, bl);
+						this.addEventListener(type,handler, bl);
 					}
 					//ie8
 					//					else if(this.attachEvent) {
@@ -1551,7 +1549,7 @@
 			var str="";
 			txt=typeof txt==="string"?txt:"";
 			
-			str = txt.replace(new RegExp("\\s*", "img"), "");
+			str = txt.replace(/^\s*|\s*$/img,"");
 			return str;
 		}
 		　
