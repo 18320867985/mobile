@@ -17,6 +17,37 @@
 	Mobile.version = "1.0.0"; // 版本号
 	Mobile.numberList = ["left", "top", "right", "bottom", "width", "height"]; // 可计算值 的列表
 
+	/*私有函数*/
+	var _block = ["body", "div", "p", "table", "tr", "thead", "tbody", "tfoot", "h1", "h2", "h3", "h4", "h5", "h6", "article",
+		"aside", "details", "figcaption", "figure", "footer", "header", "hgroup", "main", "menu", "nav", "section", "summary",
+		"ul", "li", "ol", "dl", "dt", "dd", "fieldset"
+	]
+	var _inlineBlock = ["img", "audio", "canvas", "progress", "video", "text-area", "select", "input", "button"];
+
+	// 查找元素显示类型
+	function _getElementType(nodeName) {
+		var _type = "inline";
+
+		// block
+		Mobile.each(_block, function(i, v) {
+			if(v === nodeName) {
+				_type = "block";
+				return false;
+			}
+		});
+
+		// inlineblock
+		Mobile.each(_inlineBlock, function(i, v) {
+			if(v === nodeName) {
+				_type = "inline-block";
+				return false;
+			}
+		});
+
+		return _type;
+
+	}
+
 	// 递归查找父元素
 	function _searchParents(el, fn) {
 
@@ -722,8 +753,15 @@
 		show: function() {
 
 			Mobile.each(this, function(i, el) {
+
+				var _showType = this.showValue || "none";
+				var _nodeName = this.nodeName.toLowerCase();
+				if(_showType == "none") {
+					_showType = _getElementType(_nodeName);
+				}
+
+				this.style.display = _showType;
 				this.style.opacity = "0";
-				this.style.display = this.showValue || "block";
 				var time = 400;
 				var opt = 1000;
 				var fx = 30;
@@ -752,7 +790,8 @@
 		hide: function() {
 
 			Mobile.each(this, function(i, el) {
-				var _v = m(this).css("display");
+
+				var _v = m(this).css("display") || "none";
 				this.showValue = _v;
 				this.style.opacity = "1";
 				var time = 400;
@@ -780,7 +819,7 @@
 
 			Mobile.each(this, function() {
 
-				var _v = m(this).css("display") || "";
+				var _v = m(this).css("display") || "none";
 				if(_v.trim() != "none") {
 					m(this).hide();
 				} else {
@@ -1059,7 +1098,7 @@
 				var bl = typeof arguments[2] === "boolean" ? arguments[2] : false;
 				Mobile.each(this, function() {
 					if(this.addEventListener) {
-						this.addEventListener(type,handler, bl);
+						this.addEventListener(type, handler, bl);
 					}
 					//ie8
 					//					else if(this.attachEvent) {
@@ -1228,11 +1267,11 @@
 			opt.data = typeof opt.data === "object" ? opt.data : {};
 			opt.success = opt.success || function() {};
 			opt.error = opt.error || function() {};
-			opt.contentType =  "application/x-www-form-urlencoded;charset=utf-8";
-			opt.getXHR=opt.getXHR||function(){};
-			opt.timeout=typeof	opt.timeout==="number"?opt.timeout:0;
+			opt.contentType = "application/x-www-form-urlencoded;charset=utf-8";
+			opt.getXHR = opt.getXHR || function() {};
+			opt.timeout = typeof opt.timeout === "number" ? opt.timeout : 0;
 			var xhr = Mobile.createXHR();
-				xhr.timeout=opt.timeout;
+			xhr.timeout = opt.timeout;
 			// 参数data对象字符
 			var params = [];
 			for(var key in opt.data) {
@@ -1292,51 +1331,51 @@
 		delete: function(url, data) {
 			_ajaxFun(url, "delete", data, arguments);
 		},
-		
+
 		// jsonp
-		jsonp:function(url, data) {
+		jsonp: function(url, data) {
 
-				var callback;
-					if(typeof data === "function") {
-						callback = data;
-					}
-					if(arguments.length >= 3) {
-						callback = arguments[2];
-					}
-
-					// 创建一个几乎唯一的id
-					var callbackName = "mobile" + (new Date()).getTime().toString().trim();
-					window[callbackName] = function(result) {
-
-						// 创建一个全局回调处理函数
-						if(typeof callback === "function") {
-							callback(result);
-						}
-					}
-
-					// 参数data对象字符
-					var params = [];
-					var postData = "";
-					if(typeof data === "object") {
-						for(var key in data) {
-							params.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
-						}
-						postData = params && params.join('&');
-					}
-
-					if(postData.length > 0) {
-						postData = "&" + postData;
-					}
-					url = url.indexOf("?") === -1 ? url + "?" + "callback=" + callbackName + postData : url + "&callback=" + callbackName + postData;
-
-					// 创建Script标签并执行window[id]函数
-					var script = document.createElement("script");
-					script.setAttribute("id", callbackName);
-					script.setAttribute("src", url);
-					script.setAttribute("type", "text/javascript");
-					document.body.appendChild(script);
-
+			var callback;
+			if(typeof data === "function") {
+				callback = data;
 			}
+			if(arguments.length >= 3) {
+				callback = arguments[2];
+			}
+
+			// 创建一个几乎唯一的id
+			var callbackName = "mobile" + (new Date()).getTime().toString().trim();
+			window[callbackName] = function(result) {
+
+				// 创建一个全局回调处理函数
+				if(typeof callback === "function") {
+					callback(result);
+				}
+			}
+
+			// 参数data对象字符
+			var params = [];
+			var postData = "";
+			if(typeof data === "object") {
+				for(var key in data) {
+					params.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
+				}
+				postData = params && params.join('&');
+			}
+
+			if(postData.length > 0) {
+				postData = "&" + postData;
+			}
+			url = url.indexOf("?") === -1 ? url + "?" + "callback=" + callbackName + postData : url + "&callback=" + callbackName + postData;
+
+			// 创建Script标签并执行window[id]函数
+			var script = document.createElement("script");
+			script.setAttribute("id", callbackName);
+			script.setAttribute("src", url);
+			script.setAttribute("type", "text/javascript");
+			document.body.appendChild(script);
+
+		}
 
 	});
 
@@ -1544,15 +1583,19 @@
 
 			return isIdBl && isClassBl && isTagBl && isAttrBl;
 		},
-		
-		trim:function(txt){
-			var str="";
-			txt=typeof txt==="string"?txt:"";
-			
-			str = txt.replace(/^\s*|\s*$/img,"");
+
+		trim: function(txt) {
+			var str = "";
+			txt = typeof txt === "string" ? txt : "";
+
+			str = txt.replace(/^\s*|\s*$/img, "");
 			return str;
-		}
-		　
+		}　
 	});
+
+	// module
+	if(typeof module === "object" && typeof module.exports === "object") {
+		module.exports = Mobile;
+	}
 
 })();
