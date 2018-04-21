@@ -761,25 +761,7 @@
 				}
 
 				this.style.display = _showType;
-				this.style.opacity = "0";
-				var time = 400;
-				var opt = 1000;
-				var fx = 30;
-				var t = time / fx;
-				var speed = opt / t;
-				var clearTimeId = setInterval(function() {
-					var v = parseFloat(el.style.opacity) || 0;
-					v = v * 1000;
-					el.style.opacity = (speed + v) / 1000;
-					v = (parseFloat(el.style.opacity) || 0) * 1000;
-
-					if((v + speed) > opt) {
-						el.style.opacity = opt / 1000;
-
-						el.style.display = el.showValue;
-						clearInterval(clearTimeId);
-					}
-				}, fx);
+				this.style.opacity = 1;
 
 			});
 			return this;
@@ -793,7 +775,73 @@
 
 				var _v = m(this).css("display") || "none";
 				this.showValue = _v;
-				this.style.opacity = "1";
+				this.style.display = "none";
+				this.style.opacity = 0;
+
+			});
+			return this;
+		},
+
+		// toggle
+		toggle: function() {
+
+			Mobile.each(this, function() {
+
+				var _v = m(this).css("display") || "none";
+				if(_v.trim() != "none") {
+					m(this).hide();
+				} else {
+					m(this).show();
+				}
+			});
+			return this;
+		},
+
+		// fadeIn
+		fadeIn: function() {
+
+			Mobile.each(this, function(i, el) {
+
+				var _showType = this.showValue || "none";
+				var _nodeName = this.nodeName.toLowerCase();
+				if(_showType == "none") {
+					_showType = _getElementType(_nodeName);
+				}
+
+				this.style.display = _showType;
+				this.style.opacity = 0;
+				var time = 400;
+				var opt = 1000;
+				var fx = 30;
+				var t = time / fx;
+				var speed = opt / t;
+				var clearTimeId = setInterval(function() {
+					var v = parseFloat(el.style.opacity) || 0;
+					v = v * 1000;
+					el.style.opacity = (speed + v) / 1000;
+					v = (parseFloat(el.style.opacity) || 0) * 1000;
+
+					if((v + speed) > opt) {
+						el.style.opacity = opt / 1000;
+						el.style.opacity = 1;
+						el.style.display = _showType;
+						clearInterval(clearTimeId);
+					}
+				}, fx);
+
+			});
+			return this;
+
+		},
+
+		// fadeOut
+		fadeOut: function() {
+
+			Mobile.each(this, function(i, el) {
+
+				var _v = m(this).css("display") || "none";
+				this.showValue = _v;
+				this.style.opacity = 1;
 				var time = 400;
 				var opt = 1000;
 				var fx = 30;
@@ -814,16 +862,16 @@
 			return this;
 		},
 
-		// toggle
-		toggle: function() {
+		// fadeToggle
+		fadeToggle: function() {
 
 			Mobile.each(this, function() {
 
 				var _v = m(this).css("display") || "none";
 				if(_v.trim() != "none") {
-					m(this).hide();
+					m(this).fadeOut();
 				} else {
-					m(this).show();
+					m(this).fadeIn();
 				}
 			});
 			return this;

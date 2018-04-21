@@ -37,7 +37,7 @@
 			/*	display:none;*/
 			}
 			.btn2{
-				display: none;
+				
 				
 			}
 		</style>
@@ -49,27 +49,16 @@
 			<button class="btn abc" type="button">show</button>
 			<button class="btn2" type="button">status</button>
 		</div>
-<hr />
-		<div class="abc">
-			
-			<button class="btn" type="button">show</button>
-			<button class="btn2" type="button">status</button>
-		</div>
+
 		
 		 <div class="a">
 		 	
 		 </div>
 		 <span class="span">242423423423</span>
-		 <button class="btn2" type="button">status</button>
+		
 		 <label for="">qqqqqqqqqqqqqqqq</label>
 		
-<table border="" cellspacing="" cellpadding="">
-	<tr><th>Header</th></tr>
-	<tr><td>Data</td></tr>
-	<thead></thead>
-	<tbody></tbody>
-	<tfoot></tfoot>
-</table>
+
 		<script src="js/mobile-1.0.0.js" type="text/javascript" charset="utf-8"></script>
 	<!--	<script src="js/jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script>-->
 		<script type="text/javascript">
@@ -79,10 +68,16 @@
 			m(".btn").click(function(){
 				
 				
-				m(".a").toggle();
-				m(".span").toggle();
+				m(".a").fadeToggle();
+				//m(".span").fadeToggle();
 			});
 			
+			m(".btn2").click(function(){
+				
+				
+				m(".a").toggle();
+				//m(".span").fadeOut();
+			});
 		});
  			
 		</script>
