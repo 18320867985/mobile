@@ -1240,6 +1240,9 @@
 	
 	/*ajax static*/
 	
+	// init xhr
+	var _xhrCORS;
+	
 	// ajax type
 	function _ajaxFun(url, type, data, _arguments) {
 		var success;
@@ -1450,12 +1453,14 @@
 		},
 
 		/* CORS 跨域 加进度条*/
-		
-		// 是否支持cors跨域
+	
 		isCORS:function(){
-			var xhr=Mobile.createXHR();
-			if( typeof xhr.withCredentials!=="undefined"){
-				 return true;
+			
+			if(typeof _xhrCORS==="undefined"){
+				 _xhrCORS=Mobile.createXHR();
+			}			
+			if( typeof _xhrCORS.withCredentials!=="undefined"){
+				 return  true;
 			}
 			
 			  return false;
@@ -1463,7 +1468,7 @@
 		
 		// ajax
 		ajaxCORS:function(opt){
-			if(Mobile.isCORS){
+			if(Mobile.isCORS()){
 				Mobile.ajax(opt);
 			}else{
 				console.log("not support CORS")
@@ -1472,7 +1477,7 @@
 		
 		// get
 		getCORS:function(url,data){
-			if(Mobile.isCORS){
+			if(Mobile.isCORS()){
 				_ajaxFun(url, "get", data, arguments);
 			}else{
 				console.log("not support CORS")
@@ -1480,7 +1485,7 @@
 		},
 		// post
 		postCORS:function(url,data){
-			if(Mobile.isCORS){
+			if(Mobile.isCORS()){
 				_ajaxFun(url, "post", data, arguments);
 			}else{
 				console.log("not support CORS")
