@@ -65,36 +65,7 @@
 
 	}
 
-	// ajax type
-	function _ajaxFun(url, type, data, _arguments) {
-		var success;
-		var error;
-		var getXHR;
-		if(typeof data === "object" && _arguments.length >= 3) {
-			success = _arguments[2];
-			if(_arguments.length >= 4) {
-				error = _arguments[3];
-				getXHR = _arguments[4] || null;
-			}
-		} else if(typeof data === "function") {
-			success = data;
-			if(_arguments.length >= 3) {
-				error = _arguments[2];
-				getXHR = _arguments[3] || null;
-			}
-		}
-
-		Mobile.ajax({
-			type: type,
-			url: url,
-			data: typeof data === "object" ? data : null,
-			success: success,
-			error: error,
-			getXHR: getXHR
-		});
-
-	}
-
+	
 	// prototype
 	Mobile.fn = Mobile.prototype = {
 
@@ -1266,7 +1237,39 @@
 
 	});
 
-	// ajax static
+	
+	/*ajax static*/
+	
+	// ajax type
+	function _ajaxFun(url, type, data, _arguments) {
+		var success;
+		var error;
+		var  progress;
+		if(typeof data === "object" && _arguments.length > 2) {
+			success = _arguments[2];
+			if(_arguments.length >= 3) {
+				error = _arguments[3];
+				progress = _arguments[4] || null;
+			}
+		} else if(typeof data === "function") {
+			success = data;
+			if(_arguments.length > 2) {
+				error = _arguments[2];
+				progress = _arguments[3] || null;
+			}
+		}
+
+		Mobile.ajax({
+			type: type,
+			url: url,
+			data: typeof data === "object" ? data : null,
+			success: success,
+			error: error,
+			progress: progress
+		});
+
+	}
+
 	Mobile.extend({
 
 		// create XHR Object
@@ -1315,11 +1318,16 @@
 			opt.data = typeof opt.data === "object" ? opt.data : {};
 			opt.success = opt.success || function() {};
 			opt.error = opt.error || function() {};
-			opt.contentType = "application/x-www-form-urlencoded;charset=utf-8";
-			opt.getXHR = opt.getXHR || function() {};
-			opt.timeout = typeof opt.timeout === "number" ? opt.timeout : 0;
+			opt.contentType =opt.contentType || "application/x-www-form-urlencoded;charset=utf-8";
+			opt.progress = opt.progress || {};
+			
 			var xhr = Mobile.createXHR();
-			xhr.timeout = opt.timeout;
+			if(typeof opt.timeout === "number" ){
+				xhr.timeout =opt.timeout
+			}
+			
+			xhr.xhrFields=opt.xhrFields||{};
+		
 			// 参数data对象字符
 			var params = [];
 			for(var key in opt.data) {
@@ -1329,17 +1337,33 @@
 
 			if(opt.type.toUpperCase() === 'POST' || opt.type.toUpperCase() === 'PUT' || opt.type.toUpperCase() === 'DELETE') {
 				opt.url = opt.url.indexOf("?") === -1 ? opt.url + "?" + "_=" + Math.random() : opt.url + "&_=" + Math.random();
+				
+				// 进度条
+				if(typeof xhr.withCredentials!=="undefined"&&xhr.withCredentials===true){
+					 
+					xhr.upload.onprogress=opt.progress.onup||function(){};
+					xhr.onprogress=opt.progress.ondown||function(){};
+					xhr.onload=opt.progress.onload||function(){};
+					xhr.onerror=opt.progress.onerror||function(){};
+				}
 				xhr.open(opt.type, opt.url, opt.async);
 				xhr.setRequestHeader('Content-Type', opt.contentType);
-				opt.getXHR(xhr); // get xhr
 				xhr.send(postData);
 			} else if(opt.type.toUpperCase() === 'GET') {
 				if(postData.length > 0) {
 					postData = "&" + postData;
 				}
 				opt.url = opt.url.indexOf("?") === -1 ? opt.url + "?" + "_=" + Math.random() + postData : opt.url + "&_=" + Math.random() + postData;
+				
+				// 进度条
+				if(typeof xhr.withCredentials!=="undefined"&&xhr.withCredentials===true){
+					xhr.upload.onprogress=opt.progress.onup||function(){};
+					xhr.onprogress=opt.progress.ondown||function(){};
+					xhr.onload=opt.progress.onload||function(){};
+					xhr.onerror=opt.progress.onerror||function(){};
+				}
+				
 				xhr.open(opt.type, opt.url, opt.async);
-				opt.getXHR(xhr); // getxhr
 				xhr.send(null);
 			}
 			xhr.onreadystatechange = function() {
@@ -1386,10 +1410,10 @@
 			var callback;
 			if(typeof data === "function") {
 				callback = data;
-			}
-			if(arguments.length >= 3) {
+			}else if(arguments.length >= 3) {
 				callback = arguments[2];
 			}
+			
 
 			// 创建一个几乎唯一的id
 			var callbackName = "mobile" + (new Date()).getTime().toString().trim();
@@ -1423,9 +1447,50 @@
 			script.setAttribute("type", "text/javascript");
 			document.body.appendChild(script);
 
-		}
+		},
 
+		/* CORS 跨域 加进度条*/
+		
+		// 是否支持cors跨域
+		isCORS:function(){
+			var xhr=Mobile.createXHR();
+			if( typeof xhr.withCredentials!=="undefined"){
+				 return true;
+			}
+			
+			  return false;
+		},
+		
+		// ajax
+		ajaxCORS:function(opt){
+			if(Mobile.isCORS){
+				Mobile.ajax(opt);
+			}else{
+				console.log("not support CORS")
+			}
+		},
+		
+		// get
+		getCORS:function(url,data){
+			if(Mobile.isCORS){
+				_ajaxFun(url, "get", data, arguments);
+			}else{
+				console.log("not support CORS")
+			}
+		},
+		// post
+		postCORS:function(url,data){
+			if(Mobile.isCORS){
+				_ajaxFun(url, "post", data, arguments);
+			}else{
+				console.log("not support CORS")
+			}
+		}
+		
+		
+		
 	});
+
 
 	/*extend 静态方法*/
 	Mobile.extend({
