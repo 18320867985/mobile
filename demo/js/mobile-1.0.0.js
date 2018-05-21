@@ -262,6 +262,26 @@
 			return this;
 		},
 
+		// val
+		val: function(value) {
+
+			//set 对象的值
+			var _val = "";
+			if(arguments.length === 0) {
+				Mobile.each(this, function() {
+					_val += this.value;
+
+				});
+				return _val;
+			}
+			if(arguments.length === 1) {
+				Mobile.each(this, function() {
+					this.value = value;
+				});
+			}
+			return this;
+		},
+
 		// html
 		html: function(value) {
 
@@ -512,7 +532,8 @@
 				Mobile.each(this, function(i, v) {
 
 					// window
-					if(this.constructor === Window) {
+
+					if(this === window) {
 						_h = window.innerHeight || window.document.documentElement.clientHeight || window.document.body.clientHeight;
 					} else if(this.constructor === HTMLDocument) {
 						_h = m(document.documentElement).css("height"); //document.documentElement.offsetHeight;
@@ -547,7 +568,7 @@
 				Mobile.each(this, function() {
 
 					// window
-					if(this.constructor === Window) {
+					if(this === window) {
 						_w = window.innerWidth || window.document.documentElement.clientWidth || window.document.body.clientWidth;
 					} else if(this.constructor === HTMLDocument) {
 						_w = m(document.documentElement).css("width"); //document.documentElement.offsetWidth;
@@ -576,24 +597,24 @@
 		},
 
 		// clientTop   目前高级浏览器支持都不一样   以后版本全部支持
-		//		clientTop: function() {
-		//			var _top = 0;
-		//			Mobile.each(this, function() {
-		//				_top = this.getBoundingClientRect().top;
-		//				return false;
-		//			});
-		//			return _top;
-		//		},
-		//
-		//		// clientLeft 目前高级浏览器支持都不一样   以后版本全部支持
-		//		clientLeft: function() {
-		//			var _left = 0;
-		//			Mobile.each(this, function() {
-		//				_left = this.getBoundingClientRect().left;
-		//				return false;
-		//			});
-		//			return _left;
-		//		},
+		clientTop: function() {
+			var _top = 0;
+			Mobile.each(this, function() {
+				_top = this.getBoundingClientRect().top;
+				return false;
+			});
+			return _top;
+		},
+
+		// clientLeft 目前高级浏览器支持都不一样   以后版本全部支持
+		clientLeft: function() {
+			var _left = 0;
+			Mobile.each(this, function() {
+				_left = this.getBoundingClientRect().left;
+				return false;
+			});
+			return _left;
+		},
 
 		// offsetTop
 		offsetTop: function() {
@@ -650,7 +671,7 @@
 			Mobile.each(this, function(i, v) {
 				if(v.parentElement) {
 					var els = this.parentElement;
-					_indexObj = els.removeChild(this);
+					var _indexObj = els.removeChild(this);
 					arr.push(_indexObj);
 				}
 				delete $this[i]
@@ -1234,7 +1255,78 @@
 				m(this).on("scroll", fn, bl);
 			});
 		},
+		
+		// resize
+		resize: function(fn, bl) {
+			bl = bl || false;
+			Mobile.each(this, function() {
+				m(this).on("resize", fn, bl);
+			});
+		},
+		
+		// change
+		change: function(fn, bl) {
+			bl = bl || false;
+			Mobile.each(this, function() {
+				m(this).on("change", fn, bl);
+			});
+		},
 
+		//  blur
+		blur: function(fn, bl) {
+			if(arguments.length===0){
+				$(this).each(function(){
+					this.blur();
+					
+				});
+				
+				return ;
+			}
+			bl = bl || false;
+			Mobile.each(this, function() {
+				m(this).on("blur", fn, bl);
+			});
+		},
+		
+		// focus
+		focus: function(fn, bl) {
+			if(arguments.length===0){
+				$(this).each(function(){
+					this.focus();
+					
+				});
+				
+				return ;
+			}
+			bl = bl || false;
+			Mobile.each(this, function() {
+				m(this).on("focus", fn, bl);
+			});
+		},
+		
+		// keyup
+		keyup: function(fn, bl) {
+			bl = bl || false;
+			Mobile.each(this, function() {
+				m(this).on("keyup", fn, bl);
+			});
+		},
+		
+		// keyup
+		keydown: function(fn, bl) {
+			bl = bl || false;
+			Mobile.each(this, function() {
+				m(this).on("keydown", fn, bl);
+			});
+		},
+		
+		// keypress
+		keypress: function(fn, bl) {
+			bl = bl || false;
+			Mobile.each(this, function() {
+				m(this).on("keypress", fn, bl);
+			});
+		},
 	});
 
 	/*ajax static*/
@@ -1294,7 +1386,7 @@
 						var data3 = data2[key2];
 						if(typeof data3 === "object" && data3.constructor !== Array) {
 							for(var key3 in data3) {
-								var _key = key + "[" + key2 + "]" + "["+key3+"]";
+								var _key = key + "[" + key2 + "]" + "[" + key3 + "]";
 								var _value = data3[key3];
 								params.push(encodeURIComponent(_key) + '=' + encodeURIComponent(_value));
 
@@ -1308,8 +1400,8 @@
 			}
 
 		}
-		
-		return params.join("&")||"";
+
+		return params.join("&") || "";
 
 	}
 
@@ -1370,9 +1462,9 @@
 			}
 
 			xhr.xhrFields = opt.xhrFields || {};
-			
+
 			// 连接参数
-			var postData = _JoinParams(opt.data);// params.join('&');
+			var postData = _JoinParams(opt.data); // params.join('&');
 
 			if(opt.type.toUpperCase() === 'POST' || opt.type.toUpperCase() === 'PUT' || opt.type.toUpperCase() === 'DELETE') {
 				opt.url = opt.url.indexOf("?") === -1 ? opt.url + "?" + "_=" + Math.random() : opt.url + "&_=" + Math.random();
@@ -1724,7 +1816,7 @@
 
 			str = txt.replace(/^\s*|\s*$/img, "");
 			return str;
-		}　
+		}
 	});
 
 	// module
