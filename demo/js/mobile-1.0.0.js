@@ -607,7 +607,7 @@
 					if(this === window) {
 						_w = window.innerWidth || window.document.documentElement.clientWidth || window.document.body.clientWidth;
 					} else if(this===document) {
-						_w = m(document.documentElement).eq(0) || m(document.documentElement).eq(0)[0].offsetWidth; //document.documentElement.offsetWidth;
+						_w = m(document.documentElement).eq(0)&& m(document.documentElement).eq(0)[0].offsetWidth; //document.documentElement.offsetWidth;
 
 					} else {
 						_w = m(this).eq(0) && m(this).eq(0)[0].offsetWidth;
@@ -1934,7 +1934,6 @@
 			on: function(eventName, fn) {
 				this.props[eventName] = this.props[eventName] || [];
 				this.props[eventName].push(fn);
-
 			},
 			off: function(eventName, fn) {
 				if(arguments.length === 1) {
