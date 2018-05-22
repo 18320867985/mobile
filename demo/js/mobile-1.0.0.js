@@ -184,16 +184,13 @@
 							_css = parseFloat(_css) || 0;
 						}
 					}
-
 					// ie8
-					/*
 					else if(v.currentStyle) {
-						alert("ooo")
 						_css = v.currentStyle[attr];
 					} else {
 						_css = v.style[attr];
 					}
-					*/
+
 					return false;
 
 				});
@@ -205,7 +202,7 @@
 
 				Mobile.each(this, function() {
 					if(Mobile.isEqual(Mobile.numberList, attr.trim())) {
-						this.style[attr.trim()] = parseFloat(value) ? parseFloat(value).toString() + "px" : value;
+						this.style[attr.trim()] = Number(value) ? Number(value).toString() + "px" : value;
 					} else {
 						this.style[attr.trim()] = value;
 					}
@@ -218,7 +215,12 @@
 			if(arguments.length === 1 && typeof attr === "object") {
 				Mobile.each(this, function(i, v) {
 					for(var _attr in attr) {
-						this.style[_attr] = attr[_attr];
+						if(Mobile.isEqual(Mobile.numberList, _attr.trim())) {
+							this.style[_attr] = Number(attr[_attr]) ? Number(attr[_attr]).toString() + "px" : attr[_attr];
+						}else{
+							this.style[_attr] = attr[_attr];
+						}
+						
 					}
 				});
 
@@ -535,7 +537,7 @@
 
 					if(this === window) {
 						_h = window.innerHeight || window.document.documentElement.clientHeight || window.document.body.clientHeight;
-					} else if(this.constructor === HTMLDocument) {
+					} else if(this===document) {
 						_h = m(document.documentElement).css("height"); //document.documentElement.offsetHeight;
 					} else {
 						_h = m(this).css("height");
@@ -559,6 +561,78 @@
 			return this;
 		},
 
+		//  outerHeight
+		outerHeight: function() {
+
+			if(arguments.length === 0) {
+				var _h = 0;
+				Mobile.each(this, function(i, v) {
+
+					// window
+
+					if(this === window) {
+						_h = window.innerHeight || window.document.documentElement.clientHeight || window.document.body.clientHeight;
+					} else if(this===document) {
+						_h = m(document.documentElement).eq(0) && m(document.documentElement).eq(0)[0].offsetHeight; //document.documentElement.offsetHeight;
+					} else {
+						_h = m(this).eq(0) && m(this).eq(0)[0].offsetHeight;
+					}
+					_h = parseFloat(_h);
+
+					return false;
+
+				});
+				return _h;
+			}
+
+			// set
+			else if(arguments.length === 1) {
+				var _value = arguments[0]
+				Mobile.each(this, function() {
+					m(this).css("height", _value);
+
+				});
+			}
+			return this;
+		},
+
+		//  outWidth
+		outerWidth: function() {
+
+			if(arguments.length === 0) {
+				var _w = 0;
+				Mobile.each(this, function() {
+
+					// window
+					if(this === window) {
+						_w = window.innerWidth || window.document.documentElement.clientWidth || window.document.body.clientWidth;
+					} else if(this===document) {
+						_w = m(document.documentElement).eq(0) || m(document.documentElement).eq(0)[0].offsetWidth; //document.documentElement.offsetWidth;
+
+					} else {
+						_w = m(this).eq(0) && m(this).eq(0)[0].offsetWidth;
+
+					}
+					_w = parseFloat(_w);
+					return false;
+
+				});
+
+				return _w;
+
+			}
+
+			// set
+			else if(arguments.length === 1) {
+				var _value = arguments[0]
+				Mobile.each(this, function() {
+					m(this).css("width", _value);
+
+				});
+			}
+
+			return this;
+		},
 		//  width
 		width: function() {
 
@@ -569,8 +643,9 @@
 
 					// window
 					if(this === window) {
+
 						_w = window.innerWidth || window.document.documentElement.clientWidth || window.document.body.clientWidth;
-					} else if(this.constructor === HTMLDocument) {
+					} else if(this === document) {
 						_w = m(document.documentElement).css("width"); //document.documentElement.offsetWidth;
 
 					} else {
@@ -580,6 +655,7 @@
 					return false;
 
 				});
+
 				return _w;
 
 			}
@@ -634,6 +710,17 @@
 
 			});
 			return _left;
+		},
+
+		// offset
+		offset: function() {
+			var obj = {};
+			Mobile.each(this, function() {
+				obj.left = this.offsetLeft;
+				obj.top = this.offsetTop;
+
+			});
+			return obj;
 		},
 
 		// index
@@ -1141,12 +1228,14 @@
 						this.addEventListener(type, handler, bl);
 					}
 					//ie8
-					//					else if(this.attachEvent) {
-					//						if(!this.attachEvent("on" + type, handler, bl)) {
-					//							window["on" + type] = handler;
-					//						}
-					//					}
+					else if(this.attachEvent) {
+						this.attachEvent("on" + type, handler, bl)
+					} else {
+						this["on" + type] = handler /*直接赋给事件*/
+					}
 				});
+				
+				m.events.on(type, handler);
 			}
 
 			// 委托绑定事件
@@ -1164,24 +1253,41 @@
 						}, bl);
 					}
 				});
+				
+				m.events.on(type, handler);
 			}
+
+		
 
 			return this;
 
 		},
 
-		off: function(type, handler, bl) {
-			if(typeof bl !== "boolean") {
-				bl = false;
-			}
+		off: function(type, handler) {
+			
+			if(arguments.length=== 1) {
+				Mobile.each(this, function() {
+					for(var vet in m.events.props[type]) {
+						if(this.removeEventListener){
+							this.removeEventListener(type, m.events.props[type][vet], false);
+						}else{
+							this.deattachEvent("on"+type, m.events.props[type][vet]);
+						}
+						
+					}
+				});
 
+				return;
+			}
 			Mobile.each(this, function() {
-				if(this.removeEventListener) {
-					this.removeEventListener(type, handler, bl);
+				if(this.removeEventListener)
+					this.removeEventListener(type, handler, false);
+				else if(this.deattachEvent) { /*IE*/
+					this.deattachEvent('on' + type, handler);
+				} else {
+					this["on" + type] = null;
+					/*直接赋给事件*/
 				}
-				//				else if(el.detachEvent) { //ie8
-				//					this.detachEvent("on" + type, handler, bl);
-				//				}
 			});
 
 			return this;
@@ -1255,7 +1361,7 @@
 				m(this).on("scroll", fn, bl);
 			});
 		},
-		
+
 		// resize
 		resize: function(fn, bl) {
 			bl = bl || false;
@@ -1263,7 +1369,7 @@
 				m(this).on("resize", fn, bl);
 			});
 		},
-		
+
 		// change
 		change: function(fn, bl) {
 			bl = bl || false;
@@ -1274,36 +1380,36 @@
 
 		//  blur
 		blur: function(fn, bl) {
-			if(arguments.length===0){
-				$(this).each(function(){
+			if(arguments.length === 0) {
+				$(this).each(function() {
 					this.blur();
-					
+
 				});
-				
-				return ;
+
+				return;
 			}
 			bl = bl || false;
 			Mobile.each(this, function() {
 				m(this).on("blur", fn, bl);
 			});
 		},
-		
+
 		// focus
 		focus: function(fn, bl) {
-			if(arguments.length===0){
-				$(this).each(function(){
+			if(arguments.length === 0) {
+				$(this).each(function() {
 					this.focus();
-					
+
 				});
-				
-				return ;
+
+				return;
 			}
 			bl = bl || false;
 			Mobile.each(this, function() {
 				m(this).on("focus", fn, bl);
 			});
 		},
-		
+
 		// keyup
 		keyup: function(fn, bl) {
 			bl = bl || false;
@@ -1311,7 +1417,7 @@
 				m(this).on("keyup", fn, bl);
 			});
 		},
-		
+
 		// keyup
 		keydown: function(fn, bl) {
 			bl = bl || false;
@@ -1319,7 +1425,7 @@
 				m(this).on("keydown", fn, bl);
 			});
 		},
-		
+
 		// keypress
 		keypress: function(fn, bl) {
 			bl = bl || false;
@@ -1816,6 +1922,47 @@
 
 			str = txt.replace(/^\s*|\s*$/img, "");
 			return str;
+		}
+	});
+
+	/**绑定自定义事件函数**/
+	Mobile.extend({
+		events: {
+			props: {},
+
+			// bind events
+			on: function(eventName, fn) {
+				this.props[eventName] = this.props[eventName] || [];
+				this.props[eventName].push(fn);
+
+			},
+			off: function(eventName, fn) {
+				if(arguments.length === 1) {
+
+					this.props[eventName] = [];
+
+				} else if(arguments.length === 2) {
+					var $events = this.props[eventName] || [];
+					for(var i = 0; i < $events.length; i++) {
+						if($events[i] === fn) {
+							$events.splice(i, 1);
+							break;
+						}
+
+					}
+
+				}
+
+			},
+			emit: function(eventName, data) {
+
+				if(this.events[eventName]) {
+					for(var i = 0; i < this.events[eventName].length; i++) {
+						this.events[eventName][i](data);
+					}
+
+				}
+			}
 		}
 	});
 
