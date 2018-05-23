@@ -217,10 +217,10 @@
 					for(var _attr in attr) {
 						if(Mobile.isEqual(Mobile.numberList, _attr.trim())) {
 							this.style[_attr] = Number(attr[_attr]) ? Number(attr[_attr]).toString() + "px" : attr[_attr];
-						}else{
+						} else {
 							this.style[_attr] = attr[_attr];
 						}
-						
+
 					}
 				});
 
@@ -537,7 +537,7 @@
 
 					if(this === window) {
 						_h = window.innerHeight || window.document.documentElement.clientHeight || window.document.body.clientHeight;
-					} else if(this===document) {
+					} else if(this === document) {
 						_h = m(document.documentElement).css("height"); //document.documentElement.offsetHeight;
 					} else {
 						_h = m(this).css("height");
@@ -572,7 +572,7 @@
 
 					if(this === window) {
 						_h = window.innerHeight || window.document.documentElement.clientHeight || window.document.body.clientHeight;
-					} else if(this===document) {
+					} else if(this === document) {
 						_h = m(document.documentElement).eq(0) && m(document.documentElement).eq(0)[0].offsetHeight; //document.documentElement.offsetHeight;
 					} else {
 						_h = m(this).eq(0) && m(this).eq(0)[0].offsetHeight;
@@ -606,8 +606,8 @@
 					// window
 					if(this === window) {
 						_w = window.innerWidth || window.document.documentElement.clientWidth || window.document.body.clientWidth;
-					} else if(this===document) {
-						_w = m(document.documentElement).eq(0)&& m(document.documentElement).eq(0)[0].offsetWidth; //document.documentElement.offsetWidth;
+					} else if(this === document) {
+						_w = m(document.documentElement).eq(0) && m(document.documentElement).eq(0)[0].offsetWidth; //document.documentElement.offsetWidth;
 
 					} else {
 						_w = m(this).eq(0) && m(this).eq(0)[0].offsetWidth;
@@ -956,8 +956,8 @@
 			return this;
 		},
 
-		//  scrollTop
-		scrollTop: function(y, time) {
+		//  windowTop
+		windowTop: function(y, time) {
 
 			// get
 			if(arguments.length === 0) {
@@ -966,48 +966,81 @@
 
 			// set
 			time = typeof time === "number" ? time : 400;
-			y = typeof y === "number" ? y : 0;
+			y = typeof y === "number" ? y : parseFloat(y);
+			y = isNaN(y) ? 0 : y;
 			var fx = 20;
 			var speed = 20;
 			Mobile.each(this, function() {
 				this.clearTimeId = this.clearTimeId || 0;
-				clearInterval(this.clearTimeId)
-				if(this.constructor === Window) {
-					var speed1 = time / fx;
-					var windowStartTop = parseFloat(window.pageYOffset) || 0;
-					var speed2 = Math.abs(windowStartTop - y);
-					speed = speed2 / speed1;
-
-					if(windowStartTop > y) {
-						this.clearTimeId = setInterval(function() {
-							windowStartTop = (windowStartTop - speed);
-							window.scrollTo(0, windowStartTop);
-							if((windowStartTop - speed) < y) {
-								window.scrollTo(0, y);
-								clearInterval(this.clearTimeId);
-							}
-
-						}, fx);
-
-					} else {
-						if(windowStartTop == y) {
-							return;
-						}
-						this.clearTimeId = setInterval(function() {
-							windowStartTop = (windowStartTop + speed);
-							window.scrollTo(0, windowStartTop);
-							if((windowStartTop + speed) > y) {
-								window.scrollTo(0, y);
-								clearInterval(this.clearTimeId);
-							}
-
-						}, fx);
-					}
-
+				clearInterval(this.clearTimeId);
+				
+				if(this !== window) {
+					 throw new Error("element must is window");
 				}
+				var speed1 = time / fx;
+				var windowStartTop = parseFloat(window.pageYOffset) || 0;
+				var speed2 = Math.abs(windowStartTop - y);
+				speed = speed2 / speed1;
+
+				if(windowStartTop > y) {
+					this.clearTimeId = setInterval(function() {
+						windowStartTop = (windowStartTop - speed);
+						window.scrollTo(0, windowStartTop);
+						if((windowStartTop - speed) < y) {
+							window.scrollTo(0, y);
+							clearInterval(this.clearTimeId);
+						}
+
+					}, fx);
+
+				} else {
+					if(windowStartTop === y) {
+						return;
+					}
+					this.clearTimeId = setInterval(function() {
+						windowStartTop = (windowStartTop + speed);
+						window.scrollTo(0, windowStartTop);
+						if((windowStartTop + speed) > y) {
+							window.scrollTo(0, y);
+							clearInterval(this.clearTimeId);
+						}
+
+					}, fx);
+				}
+
 				return false;
 			});
 			return this;
+		},
+
+		//  scrollTop
+		scrollTop: function(size) {
+
+			// get
+			if(arguments.length === 0) {
+				var _size = 0;
+				Mobile.each(this, function() {
+					if(this === window || this === document) {
+						_size = window.pageYOffset || 0;
+					} else {
+						_size = this.scrollTop;
+					}
+					return false;
+				});
+				return _size;
+			} else {
+				Mobile.each(this, function() {
+					if(this === window || this === document) {
+						window.scrollTo(0, parseFloat(size));
+
+					} else {
+						this.scrollTop = parseFloat(size);
+					}
+				});
+
+				// set
+				return this;
+			}
 		},
 
 		// transition
@@ -1234,7 +1267,7 @@
 						this["on" + type] = handler /*直接赋给事件*/
 					}
 				});
-				
+
 				m.events.on(type, handler);
 			}
 
@@ -1253,27 +1286,25 @@
 						}, bl);
 					}
 				});
-				
+
 				m.events.on(type, handler);
 			}
-
-		
 
 			return this;
 
 		},
 
 		off: function(type, handler) {
-			
-			if(arguments.length=== 1) {
+
+			if(arguments.length === 1) {
 				Mobile.each(this, function() {
 					for(var vet in m.events.props[type]) {
-						if(this.removeEventListener){
+						if(this.removeEventListener) {
 							this.removeEventListener(type, m.events.props[type][vet], false);
-						}else{
-							this.deattachEvent("on"+type, m.events.props[type][vet]);
+						} else {
+							this.deattachEvent("on" + type, m.events.props[type][vet]);
 						}
-						
+
 					}
 				});
 
