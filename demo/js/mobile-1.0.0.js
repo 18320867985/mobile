@@ -1298,13 +1298,15 @@
 
 			if(arguments.length === 1) {
 				Mobile.each(this, function() {
-					for(var vet in m.events.props[type]) {
+					for(var i=m.events.props[type].length-1; i>=0; i--) {
+						
 						if(this.removeEventListener) {
-							this.removeEventListener(type, m.events.props[type][vet], false);
+							this.removeEventListener(type, m.events.props[type][i], false);
 						} else {
-							this.deattachEvent("on" + type, m.events.props[type][vet]);
+							this.deattachEvent("on" + type, m.events.props[type][i]);
 						}
-
+						
+						Mobile.events.off(type,m.events.props[type][i]);
 					}
 				});
 
@@ -1319,6 +1321,7 @@
 					this["on" + type] = null;
 					/*直接赋给事件*/
 				}
+				Mobile.events.off(type,handler);
 			});
 
 			return this;

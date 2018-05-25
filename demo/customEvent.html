@@ -54,9 +54,11 @@
 			// 绑定事件
 			onEvent("test", function(event) {
 				alert("event11:" + event.detail.age);
+				console.log(event);
 			})
 			onEvent("test2", function() {
 				alert("event22:" + event.detail.age);
+				console.log(event);
 			});
 
 			/*触发事件*/
