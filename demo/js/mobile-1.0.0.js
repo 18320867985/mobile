@@ -11,7 +11,8 @@
 
 	/*创建mobile对象*/
 	var Mobile = window.$ = window.m = window.mobile = function(selector, content) {
-		Mobile.ready(selector);
+		
+		if(typeof selector ==="function"&&arguments.length===1){Mobile.ready(selector); return;};
 		return new Mobile.fn.init(selector, content);
 	};
 
@@ -1626,7 +1627,12 @@
 				if(xhr.readyState === 4) {
 					if((xhr.status >= 200 && xhr.status < 300) || xhr.status === 304) {
 						if(typeof opt.success === "function") {
-							opt.success(JSON.parse(xhr.responseText), xhr.status, xhr.statusText);
+							try {
+								opt.success(JSON.parse(xhr.responseText), xhr.status, xhr.statusText);
+							} catch(e) {
+								//TODO handle the exception
+								opt.success(xhr.responseText, xhr.status, xhr.statusText);
+							}
 						}
 					} else {
 						if(typeof opt.error === "function") {
