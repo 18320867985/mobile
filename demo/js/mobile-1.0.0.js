@@ -2005,6 +2005,7 @@
 		}
 	});
 
+
 	//  cmd commonjs
 	if(typeof module === "object" && typeof module.exports === "object") {
 		module.exports = Mobile;
@@ -2012,7 +2013,7 @@
 
 	// amd requirejs
 	if(typeof define === "function" && define.amd) {
-		define("Mobile", [], function() {
+		define(function() {
 			return Mobile;
 		});
 	}
