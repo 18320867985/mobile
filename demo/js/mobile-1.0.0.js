@@ -2012,8 +2012,8 @@
 
 	// amd requirejs
 	if(typeof define === "function" && define.amd) {
-		define("jquery", [], function() {
-			return jQuery;
+		define("Mobile", [], function() {
+			return Mobile;
 		});
 	}
 	// cmd seajs
