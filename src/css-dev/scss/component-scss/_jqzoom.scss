@@ -1,0 +1,73 @@
+//  缩略图
+.jqzoom {
+    width: 100%;
+}
+
+.jqzoom-img {
+    position: relative;
+    padding: 0;
+}
+
+//商品列表图
+.jqzoom-content {
+    position: relative;
+    width: 100%;
+    margin-top: 10px;
+    
+    overflow: hidden;
+}
+
+.jqzoom-content-wrap {
+    position: relative;
+      background: #fff;
+    .left-btn,
+    .right-btn {
+        position: absolute;
+        top: 50%;
+        z-index: 999;
+        display: none;
+        width: 25px;
+        height: 50px;
+        margin-top: -25px;
+        color: #fff;
+        text-align: center;
+        background: #333;
+        background: rgba(#333,.5);
+        border: none;
+        outline: none;
+        
+        &:hover{
+             background: rgba(#333,.8);
+        }
+    }
+    .left-btn {
+        left: 8px;
+    }
+    .right-btn {
+        right: 8px;
+    }
+}
+
+
+.jqzoom-content-imgs {
+    position: relative;
+    white-space: nowrap;
+    font-size: 0;
+    li {
+        display: inline-block;
+        box-sizing: border-box;
+       font-size: 12px;
+        img{
+             box-sizing: border-box;
+             padding: 2px;
+             border: 1px solid #eee; 
+        }
+        
+        &.active{
+            img{
+                 border: 1px solid  orangered;  
+            }
+           
+        }
+    }
+}

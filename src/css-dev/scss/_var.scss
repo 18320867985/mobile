@@ -1,0 +1,84 @@
+/*var*/
+
+//
+//@brand-primary:         darken(#428bca, 6.5%); // #337ab7
+//@brand-success:         #5cb85c;
+//@brand-info:            #5bc0de;
+//@brand-warning:         #f0ad4e;
+//@brand-danger:          #d9534f;
+
+$font-family:"微软雅黑","宋体","Helvetica Neue", Helvetica, Arial, sans-serif !default;
+$font-color:#333 !default;
+$font-size:12px !default;
+$bg-color:#f7f7f7 !default;
+
+$text-default: #8e8e8e; // 默认
+$text-primary: #2d80f6; // 选中
+$text-info : #5bc0de; // 信息
+$text-success: #5cb85c; // 警告 
+$text-warning: #f0ad4e; // 警告   
+$text-danger : #f05a00; // 危险 
+
+
+$text-777: #777;    
+$text-999: #999;      
+$text-h:rgb(50,50,50);   // h1-h6
+$text-ash: #aab2bd;     // 谈灰
+$text-ash-2: #e6e9ed;
+$text-ash-3: #f0f3f5; 
+           
+$text-label: $text-777;            //  label
+$text-alert: #323232; // 提示
+$text-disabled:#8ad5f1; // 不可用的
+
+
+// text-color  class 
+.text-default {
+    color: $text-default; // 默认
+}
+
+.text-primary {
+    color: $text-primary; // 选中
+}
+
+.text-info {
+    color: $text-info; // 信息
+}
+
+.text-warning {
+    color: $text-warning; // 警告   
+}
+
+.text-danger {
+    color: $text-danger; // 危险   
+}
+
+.text-ash {
+    color: $text-ash;
+}
+
+.text-ash-2 {
+    color: $text-ash-2;
+}
+
+.text-ash-3 {
+    color: $text-ash-3;
+}
+
+.text-h {
+    color: $text-h;
+}
+
+.text-label {
+    color: $text-label;
+}
+
+.text-777 {
+    color: $text-777;
+}
+
+.text-999 {
+    color: $text-999;
+}
+
+
