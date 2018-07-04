@@ -1,5 +1,24 @@
 
-// 人民币tub
-.iconfont.renminbi{
-    margin-right: -5px;
+// 圆点
+.mui-slider-indicator {
+    .mui-indicator {
+        background: #ccc;
+        box-shadow: none;
+        &.mui-active {
+            background: $text-primary;
+        }
+        &+.mui-indicator {
+            margin-left: 1px;
+        }
+    }
+}
+
+// 人民币
+.icon-renminbi {
+    position: relative;
+    top: -1px;
+    margin-right: -7px;
+    margin-left: -7px;
+    vertical-align: middle;
+    font-size: 24px;
 }
