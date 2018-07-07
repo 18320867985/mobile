@@ -1,4 +1,4 @@
-var mobile = (function() {
+var mobile2 = (function() {
 
 	// css3 transform 函数
 	var transformCss = function(node, name, value) {
@@ -15,23 +15,24 @@ var mobile = (function() {
 					case 'rotate':
 					case 'rotateX':
 					case 'rotateY':
+					case 'rotateZ':
 					case 'skew':
 					case 'skewX':
 					case 'skewY':
 					case 'skewZ':
-						result += item + '(' + node.transform[item] + 'deg) ';
+						result += item + '(' + node.transform[item] + 'deg)  ';
 						break;
 					case 'scale':
 					case 'scaleX':
 					case 'scaleY':
 					case 'scaleZ':
-						result += item + '(' + node.transform[item] + ') ';
+						result += item + '(' + node.transform[item] + ')  ';
 						break;
 					case 'translate':
 					case 'translateX':
 					case 'translateY':
 					case 'translateZ':
-						result += item + '(' + node.transform[item] + 'px) ';
+						result += item + '(' + node.transform[item] + 'px)  ';
 						break;
 
 				};

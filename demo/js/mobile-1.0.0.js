@@ -11,8 +11,11 @@
 
 	/*创建mobile对象*/
 	var Mobile = window.$ = window.m = window.mobile = function(selector, content) {
-		
-		if(typeof selector ==="function"&&arguments.length===1){Mobile.ready(selector); return;};
+
+		if(typeof selector === "function" && arguments.length === 1) {
+			Mobile.ready(selector);
+			return;
+		};
 		return new Mobile.fn.init(selector, content);
 	};
 
@@ -974,9 +977,9 @@
 			Mobile.each(this, function() {
 				this.clearTimeId = this.clearTimeId || 0;
 				clearInterval(this.clearTimeId);
-				
+
 				if(this !== window) {
-					 throw new Error("element must is window");
+					throw new Error("element must is window");
 				}
 				var speed1 = time / fx;
 				var windowStartTop = parseFloat(window.pageYOffset) || 0;
@@ -1046,9 +1049,25 @@
 
 		// transition
 		transition: function(option, time, ease, delay, fn) {
+			
 			ease = typeof ease === "string" ? ease : "ease";
 			delay = typeof delay === "number" ? delay : 0;
 			var _transition = "all " + time / 1000 + "s  " + ease + " " + (delay / 1000) + "s";
+			
+			if(typeof option==="string"){
+				
+				 _transition = option +" "+ time / 1000 + "s  " + ease + " " + (delay / 1000) + "s";
+				Mobile.each(this, function() {
+					this.style.MozTransition = _transition;
+					this.style.msTransition = _transition;
+					this.style.webkitTransition = _transition;
+					this.style.OTransition = _transition;
+					this.style.transition = _transition;	
+				});
+					
+				return this;
+			}
+			
 			Mobile.each(this, function(i, el) {
 				time = typeof time === "number" ? time : 400;
 				el.setTimeout = el.setTimeout || 0; // 第一次执行
@@ -1299,15 +1318,15 @@
 
 			if(arguments.length === 1) {
 				Mobile.each(this, function() {
-					for(var i=m.events.props[type].length-1; i>=0; i--) {
-						
+					for(var i = m.events.props[type].length - 1; i >= 0; i--) {
+
 						if(this.removeEventListener) {
 							this.removeEventListener(type, m.events.props[type][i], false);
 						} else {
 							this.deattachEvent("on" + type, m.events.props[type][i]);
 						}
-						
-						Mobile.events.off(type,m.events.props[type][i]);
+
+						Mobile.events.off(type, m.events.props[type][i]);
 					}
 				});
 
@@ -1322,7 +1341,7 @@
 					this["on" + type] = null;
 					/*直接赋给事件*/
 				}
-				Mobile.events.off(type,handler);
+				Mobile.events.off(type, handler);
 			});
 
 			return this;
@@ -1723,32 +1742,6 @@
 			return false;
 		},
 
-		//		// ajax
-		//		ajaxCORS: function(opt) {
-		//			if(Mobile.isCORS()) {
-		//				Mobile.ajax(opt);
-		//			} else {
-		//				console.log("not support CORS")
-		//			}
-		//		},
-		//
-		//		// get
-		//		getCORS: function(url, data) {
-		//			if(Mobile.isCORS()) {
-		//				_ajaxFun(url, "get", data, arguments);
-		//			} else {
-		//				console.log("not support CORS")
-		//			}
-		//		},
-		//		// post
-		//		postCORS: function(url, data) {
-		//			if(Mobile.isCORS()) {
-		//				_ajaxFun(url, "post", data, arguments);
-		//			} else {
-		//				console.log("not support CORS")
-		//			}
-		//		}
-
 	});
 
 	/*extend 静态方法*/
@@ -2005,6 +1998,148 @@
 		}
 	});
 
+	// transform 
+	Mobile.fn.extend({
+
+		// setTransform
+		setTransform: function(transforName, value) {
+
+			Mobile.each(this, function() {
+				if(!this.transform) {
+					this.transform = {};
+				}
+				this.transform[transforName] = value;
+				var result = '';
+
+				for(var item in this.transform) {
+					switch(item) {
+						case 'rotate':
+						case 'rotateX':
+						case 'rotateY':
+						case 'rotateZ':
+						case 'skewX':
+						case 'skewY':
+						case 'skewZ':
+							result += item + '(' + parseFloat(this.transform[item]) + 'deg)  ';
+							break;
+						case 'skew':
+							var arrs = this.transform[item].split(",");
+							if(arrs.length === 2) {
+								result += item + '(' + parseFloat(arrs[0]) + 'deg,' + parseFloat(arrs[1]) + 'deg)  ';
+							} else {
+								result += item + '(' + parseFloat(arrs) + 'deg,' +0+ 'deg)  ';
+							}
+							break;
+
+						case 'scaleX':
+						case 'scaleY':
+						case 'scaleZ':
+							result += item + '(' + parseFloat(this.transform[item]) + ')  ';
+							break;
+
+						case 'scale':
+							var arrs = this.transform[item].split(",");
+
+							if(arrs.length === 2) {
+								result += item + '(' + parseFloat(arrs[0]) + ',' + parseFloat(arrs[1]) + ')  ';
+							} else {
+								result += item + '(' + parseFloat(arrs) + ',' + parseFloat(arrs) + ')  ';
+							}
+							break;
+
+						case 'translateX':
+						case 'translateY':
+						case 'translateZ':
+							result += item + '(' + parseFloat(this.transform[item]) + 'px)  ';
+							break;
+						case 'translate':
+							var arrs = this.transform[item].split(",");
+
+							if(arrs.length === 2) {
+								result += item + '(' + parseFloat(arrs[0]) + 'px,' + parseFloat(arrs[1]) + 'px)  ';
+							} else {
+								result += item + '(' + parseFloat(arrs) + 'px,' + 0 + 'px)  ';
+							}
+							break;
+
+					};
+
+				};
+
+				this.style.WebkitTransform = result;
+				this.style.MozTransform = result;
+				this.style.msTransform = result;
+				this.style.OTransform = result;
+				this.style.transform = result;
+
+			});
+
+			return this;
+		},
+
+		// getTransform
+		getTransform: function(transforName) {
+
+			var result = 0;
+			Mobile.each(this, function() {
+				if(!this.transform) {
+					this.transform = {};
+				}
+
+				//读
+				if(typeof this.transform[transforName] == 'undefined') {
+					if(transforName == 'scale' || transforName == 'scaleX' || transforName == 'scaleY') {
+						result = 1
+						if(transforName==="scale"){
+							result = [1,1];
+						}
+						
+
+					} else {
+						result = 0;
+						if(transforName==="skew"||transforName==="translate"){
+							result=[0,0];
+						}
+					}
+
+				} else {
+					if(transforName==="skew"||transforName==="translate"||transforName==="scale"){
+							var strs = this.transform[transforName].split(",");
+							var arrs=[];
+							for(var y=0;y<strs.length;y++){
+							var v=	parseFloat(	strs[y]);
+								if(transforName==="scale"){
+									v=isNaN(v)?1:v;
+									
+								}else{
+										v=isNaN(v)?0:v;
+								}
+								
+								arrs.push(v);
+							}
+							
+							if(arrs.length===1){
+								if(transforName==="scale"){
+									arrs.push(arrs[0]);
+								}else{
+									arrs.push(0);
+								}
+							}
+						result=arrs;
+						
+					}else{
+						result = parseFloat(this.transform[transforName]);
+					}
+					
+
+				}
+
+			});
+
+			return result;
+		},
+
+	});
 
 	//  cmd commonjs
 	if(typeof module === "object" && typeof module.exports === "object") {
@@ -2017,13 +2152,13 @@
 			return Mobile;
 		});
 	}
+
 	// cmd seajs
-	if(typeof define === "function"&& define.cmd) {
+	if(typeof define === "function" && define.cmd) {
 		define(function(require, exports, module) {
 			module.exports = Mobile;
 		});
 
 	}
-
 
 })();
