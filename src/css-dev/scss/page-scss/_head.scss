@@ -1,77 +1,68 @@
 /*head*/
 
-// 首页
-.head.mui-bar {
-    // background: rgba(0,0,0,0.2);
-    // 菜单图标 
-    .mui-icon-bars {
-        color: #fff;
-    }
-    // input
-    .mui-title input {
-        position: relative;
-        top:0;
-        font-size: 14px;
-        color: $text-default;
-        background: #fff;
-    }
-    // 右边的按钮
-    .head-right-btn {
-        position: absolute;
-        right: 3px;
-        top: 12px;
-        font-size: 16px;
-        color: #fff;
-         &:active{
-           color: $text-danger;
-       }
-    }
-    // mui-active 上拉的
-    &.mui-active {
-        // 菜单图标 
-         .login-link,
-        .head-right-btn {
-            color: $text-default;
-        }
-    }
-    
-    .mui-action-back:active {
-        
-       color:$text-warning;
-    }
-    
-    // 登陆链接
-    .login-link{
-        position: absolute;
-        top:14px;
-        left: 10px;
-        z-index: 2;
-       font-size: 18px;
-       color:#fff;
-       
-       &:active{
-           color: $text-danger;
-       }
+.mobile-head {
+    position: fixed;
+    width: 100%;
+    height: 44px;
+    line-height: 44px;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    background: #f0f0f0;
+}
 
-    }
+.mobile-head .mobile-back {
+    display: inline-block;
+    width: 15%;
+    outline: none;
+    background: none;
+}
+
+.mobile-head .mobile-back span {
+    margin-left: 10px;
+    font-size: 30px;
+    vertical-align: middle;
+    color: #777;
+}
+
+.mobile-head .mobile-back span:active {
+    color: red;
+    outline: none;
+    background: none;
+}
+
+.mobile-head h2 {
+    display: inline-block;
+    width: 70%;
+    margin: 0 auto;
+    font-size: 18px;
+    text-align: center;
+    color:#444;
+}
+
+.mobile-head~.moblie-conetnt {
+    padding-top: 44px;
 }
 
 
-// 返回 头部
-.child-head{
-    
-    .mui-icon.iconfont{
-        color:$text-back;
-    } 
-    
-    .child-right-btn{
-        
-        position: absolute;
-        right: 10px;
-    }
-    
+.mobile-head~.moblie-footer {
+    padding-bottom: 44px;
 }
 
-.iconfont.icon-back{
-     color:$text-back;
+.mobile-footer{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    height: 44px;
+     line-height: 44px;
+     background: #f0f0f0;
+}
+
+.mobile-footer h2{
+    font-size: 18px;
+     text-align: center;
+     color:#444;
 }

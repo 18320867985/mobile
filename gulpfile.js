@@ -9,6 +9,8 @@ var gulp = require('gulp');
 var del = require("del");
 var minCss = require('gulp-minify-css'); //gulp-minify-css:压缩css文件 npm install gulp-minify-css 
 var connect = require('gulp-connect'); //gulp-connect 创建服务器  npm install --save-dev gulp-connect
+var minJs = require('gulp-uglify'); //压缩javascript文件  npm install gulp-uglify
+var img = require('gulp-imagemin'); //gulp-imagemin:压缩png、jpj、git、svg格式图片 npm install --save-dev gulp-imagemin
 
 var rollup = require('rollup');
 var babel = require('rollup-plugin-babel');
@@ -39,9 +41,9 @@ var paths = {
 	// sass文件
 	scssPath: ['./src/css-dev/scss/**/*.scss'],
 	
-	allscss: ['./src/css-dev/scss/all.scss'],
+	allscss: ['./src/css-dev/scss/mobile.scss'],
 
-	htmlPath: ['./src/*.html'],
+	htmlPath: ['./src/**/*.html'],
 
 }
 
@@ -64,16 +66,22 @@ gulp.task('release', ['concat'], function() {
 	//gulp.dest() 是复制文件
 
     gulp.src(['./src/*.html']).pipe(gulp.dest('./dist/')); //复制html
-	gulp.src('./src/css/**/*.*').pipe(gulp.dest('./dist//css'));  //复制css
-	gulp.src('./src/js/**/*.*').pipe(gulp.dest('./dist/js/'));  //复制js
+	gulp.src('./src/css/**/*.css').pipe(gulp.dest('./dist//css'));  //复制css
+	gulp.src('./src/js/**/*.js').pipe(gulp.dest('./dist/js/'));  //复制js
 	gulp.src('./src/images/**/*.*')
-	.pipe(img())                     // 压缩图片
+	//.pipe(img())                     // 压缩图片
 	.pipe(gulp.dest('./dist/images/')); //复制img
 	
 });
 
 // 发布的合并js和css文件
-gulp.task("concat", ["scss","build"]);
+gulp.task("concat", ["scss","build"],function(){
+	
+	return 	gulp.src("./src/js/mobile.js")
+			.pipe(minJs("mobile.js")) // 压缩js文件
+			.pipe(gulp.dest('./src/js/'));
+});
+
 
 // 发布css
 gulp.task("scss",function(){
@@ -82,7 +90,7 @@ gulp.task("scss",function(){
 	return	gulp.src(paths.allscss)
 		.pipe(sass().on('error', sass.logError)) // sass编译
 		.pipe(postcss([autoprefixer]))  // 自动添加css3缀-webkit-  适合用于手机端 
-		.pipe(minCss("all.css")) // 压缩css文件
+		.pipe(minCss("mobile.css")) // 压缩css文件
 		.pipe(gulp.dest('./src/css'));
 
 });
@@ -122,7 +130,7 @@ gulp.task('connect', function() {
 gulp.task("watch", ['connect'], function() {
 
 	//合拼压缩js文件
-	gulp.watch("./src/*.js", ["build"]);
+	gulp.watch("./src/js-dev/**/*.js", ["build"]);
 
 	//sass合并压缩css文件
 	gulp.watch(paths.scssPath, ['t_scss']);
@@ -146,13 +154,13 @@ gulp.task('t_eslint', function() {
 
 gulp.task('build', async function () {
   const bundle = await rollup.rollup({
-  	input: './src/js-dev/main.js',
+  	input: './src/js-dev/app.js',
     plugins: [
     npm({
 			jsnext: true,
 			main: true
 		}),
-		//commonjs(),
+		//commonjs(),  // commonjs 转换 es6 
 		babel({
 			exclude: 'node_modules/**',
 			presets: ["es2015-rollup"]
@@ -163,10 +171,13 @@ gulp.task('build', async function () {
   });
 
   await bundle.write({
-    file: './src/js/all.js',
+    file: './src/js/mobile.js',
     format: 'umd',
-    name: 'libs',
+    name: 'mobileui',
     //sourcemap: true,
      strict: false,  //在生成的包中省略`"use strict";`
   });
+
+
+  
 });

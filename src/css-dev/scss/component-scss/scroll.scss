@@ -1,0 +1,37 @@
+
+/* mobile-scroll 导航左右滑动 */
+
+.mobile-scroll {
+    position: relative;
+    z-index: 99;
+    padding: 5px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px #ccc inset, 0 -2px 5px #ccc inset;
+}
+
+.mobile-scroll-list {
+    float: left;
+    white-space: nowrap;
+    text-align: center;
+    font-size: 0;
+}
+
+.mobile-scroll-list li {
+    float: none;
+    display: inline-block;
+    font-size: 20rem/$rem;
+}
+
+.mobile-scroll-list li a {
+    display: block;
+    padding: .4rem 1rem;
+    color: #020202;
+}
+
+.mobile-scroll-list .active {
+    background: #690;
+}
+
+.mobile-scroll-list li.active a {
+    color: #fff;
+}

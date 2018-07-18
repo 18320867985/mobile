@@ -1,4 +1,4 @@
-var mobile2 = (function() {
+var mobileui = (function() {
 
 	// css3 transform 函数
 	var transformCss = function(node, name, value) {

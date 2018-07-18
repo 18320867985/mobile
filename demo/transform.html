@@ -15,16 +15,14 @@
 				width: 100px;
 				height: 100px;
 				 background: orangered;
-				/*;transition: all 2s; */
-			/*	//transform: scaleX(.4);*/
-				transform-origin: left top;
+				transform-origin: center;
 				
 			}
 			
 		</style>
 
-		<link rel="stylesheet" type="text/css" href="css/mobile.css" />
-		<link rel="stylesheet" type="text/css" href="css/cstfont/iconfont.css"/>
+		<link rel="stylesheet" type="text/css" href="./css/mobile.css" />
+		<link rel="stylesheet" type="text/css" href="./css/cstfont/iconfont.css"/>
 	</head>
 
 	<body>
@@ -35,15 +33,16 @@
 		
 		<script src="./js/mobile-1.0.0.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
-		
-			//$(".scroll").setTransform("rotate","1080")
-			
-		
-		$(".scroll").setTransform("rotate","1080")
-		var v=$(".scroll").getTransform("translate");
-		$(".scroll").transition("all","2000","linear","1000");
-		
+
+		$.ready(function(){
+			$(".scroll").setTransform("rotate","1080")
+			var v=$(".scroll").getTransform("rotate");
+			$(".scroll").transition("all","2000","linear","1000");
 			console.log(v)
+			
+		})
+		
+			
 		</script>
 	
 	</body>
