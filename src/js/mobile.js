@@ -1,8 +1,8 @@
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-	typeof define === 'function' && define.amd ? define(['exports'], factory) :
-	(factory((global.mobileui = {})));
-}(this, (function (exports) {
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory() :
+	typeof define === 'function' && define.amd ? define(factory) :
+	(factory());
+}(this, (function () {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
   return typeof obj;
@@ -2069,71 +2069,20 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 })();
 
 // css3 transform 函数
-var transformCss = function transformCss(node, name, value) {
-	if (!node.transform) {
-		node.transform = {};
-	}
-	if (arguments.length > 2) {
-		//写
-		//把名值对添加到对象
-		node.transform[name] = value;
-		var result = '';
-		for (var item in node.transform) {
-			switch (item) {
-				case 'rotate':
-				case 'rotateX':
-				case 'rotateY':
-				case 'rotateZ':
-				case 'skew':
-				case 'skewX':
-				case 'skewY':
-				case 'skewZ':
-					result += item + '(' + node.transform[item] + 'deg)  ';
-					break;
-				case 'scale':
-				case 'scaleX':
-				case 'scaleY':
-				case 'scaleZ':
-					result += item + '(' + node.transform[item] + ')  ';
-					break;
-				case 'translate':
-				case 'translateX':
-				case 'translateY':
-				case 'translateZ':
-					result += item + '(' + node.transform[item] + 'px)  ';
-					break;
-
-			}
-		}
-		node[0].style.transform = result;
-	} else {
-		//读
-		if (typeof node.transform[name] == 'undefined') {
-			if (name == 'scale' || name == 'scaleX' || name == 'scaleY') {
-				value = 1;
-			} else {
-				value = 0;
-			}
-		} else {
-			value = node.transform[name];
-		}
-		return value;
-	}
-};
 
 // 菜单滑动
-var scroll = function scroll(fn) {
+var scroll = function () {
 
 	window.addEventListener("load", function () {
-		navSlide(fn);
+		navSlide();
 	});
 	//导航拖拽
-	function navSlide(fn) {
+	function navSlide() {
 		var navs = m(".mobile-scroll");
 
 		for (var i = 0; i < navs.length; i++) {
 			navsListFun(navs[i]);
-			changeColor(navs[i], fn);
+			changeColor(navs[i]);
 		}
 	}
 
@@ -2153,7 +2102,7 @@ var scroll = function scroll(fn) {
 		isX = true;
 		var isAddMoveEventFirst = true; // 判断是否第一往上拖动
 
-		navs.addEventListener("touchstart", start);
+		m(navs).on("touchstart", start);
 
 		function start(event) {
 			var touch = event.changedTouches[0];
@@ -2166,10 +2115,9 @@ var scroll = function scroll(fn) {
 
 			// 过度时间0s
 			navsList[0].style.transition = 'none';
-			navs.addEventListener("touchmove", move);
+			m(navs).on("touchmove", move);
 		}
 
-		//navs.addEventListener("touchmove", move);
 		function move(event) {
 
 			var touch = event.changedTouches[0];
@@ -2193,7 +2141,7 @@ var scroll = function scroll(fn) {
 
 			var window_w = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
 
-			var minX = window_w - navsList.offsetWidth;
+			var minX = window_w - navsList[0].offsetWidth;
 
 			var translateX = eleX + dis;
 			if (translateX > 0) {
@@ -2211,7 +2159,7 @@ var scroll = function scroll(fn) {
 			disValue = endValue - beginValue;
 		}
 
-		navs.addEventListener("touchend", end);
+		m(navs).on("touchend", end);
 
 		function end(event) {
 
@@ -2223,8 +2171,9 @@ var scroll = function scroll(fn) {
 			var touch = event.changedTouches[0];
 			var speed = disValue / (endTime - beginTime);
 			var window_w = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-			var minX = window_w - navsList.offsetWidth;
-			var target = transformCss(navsList, "translateX") + speed * 250;
+			var minX = window_w - navsList[0].offsetWidth;
+
+			var target = m(navsList).getTransform("translateX") + speed * 50;
 			var bezier = '';
 
 			if (target > 0) {
@@ -2234,24 +2183,29 @@ var scroll = function scroll(fn) {
 			} else if (target < minX) {
 				target = minX;
 				bezier = 'cubic-bezier(.17,.67,.81,.9)';
+				if (m(navsList).width() < window_w) {
+					target = 0;
+				}
 			}
 			// 过度时间0.5s
-			navsList[0].style.transition = '.8s ' + bezier;
-			transformCss(navsList, "translateX", target);
+			navsList[0].style.transition = '.5s ' + bezier;
+			m(navsList).setTransform("translateX", target);
 		}
 
 		//系统取消 重新加载页面
-		navs.addEventListener("touchcancel", function () {
-			window.location.reload();
-		});
+		//			navs.addEventListener("touchcancel", function() {
+		//				//window.location.reload();
+		//
+		//			});
 	}
 
 	///导航点击选中样式
 	function changeColor(navs, fn) {
-		var Linodes = navs.querySelectorAll(".mobile-scroll-list li ");
+		var Linodes = m(navs).find(".mobile-scroll-list li ");
 		var isLink = navs.getAttribute("data-link");
 		// 对li进行遍历
-		for (var i = 0; i < Linodes.length; i++) {
+		var _length = Linodes.length;
+		for (var i = 0; i < _length; i++) {
 
 			//误触解决
 			Linodes[i].addEventListener("touchmove", function () {
@@ -2285,10 +2239,6 @@ var scroll = function scroll(fn) {
 			});
 		}
 	}
-};
-
-exports.scroll = scroll;
-
-Object.defineProperty(exports, '__esModule', { value: true });
+}();
 
 })));

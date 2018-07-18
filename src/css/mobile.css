@@ -2,7 +2,6 @@
 /*设计图width*/
 /*rem 分数*/
 /*html rem比例*/
-/*var*/
 @media screen and (max-width: 319px) {
   html {
     font-size: 21.33333px; } }
@@ -623,3 +622,48 @@ a .spin {
 
 .mobile-scroll-list li.active a {
   color: #fff; }
+
+/*head*/
+.mobile-head {
+  position: fixed;
+  width: 100%;
+  height: 2rem;
+  line-height: 2rem;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  background: #f0f0f0; }
+
+.mobile-head .mobile-back {
+  display: inline-block;
+  width: 15%;
+  outline: none;
+  background: none; }
+
+.mobile-head .mobile-back span {
+  margin-left: 0.2rem;
+  font-size: 0.6rem;
+  vertical-align: middle;
+  color: #777; }
+
+.mobile-head .mobile-back span:active {
+  color: red;
+  outline: none;
+  background: none; }
+
+.mobile-head h2 {
+  display: inline-block;
+  width: 70%;
+  margin: 0 auto;
+  font-size: 0.72rem;
+  text-align: center;
+  color: #444; }
+
+.mobile-head ~ .moblie-conetnt {
+  padding-top: 2rem; }
+
+.mobile-head ~ .moblie-footer {
+  padding-bottom: 2rem; }
+
+/*footer*/
