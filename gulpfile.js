@@ -65,7 +65,7 @@ gulp.task('release', ['concat'], function() {
 	//pipe是进入流管道
 	//gulp.dest() 是复制文件
 
-    gulp.src(['./src/*.html']).pipe(gulp.dest('./dist/')); //复制html
+    gulp.src(['./src/**/*.html']).pipe(gulp.dest('./dist/')); //复制html
 	gulp.src('./src/css/**/*.css').pipe(minCss()).pipe(gulp.dest('./dist/css'));  //复制css
 	gulp.src('./src/js/**/*.js').pipe(minJs()).pipe(gulp.dest('./dist/js/'));  //复制js
 	gulp.src('./src/images/**/*.*')
