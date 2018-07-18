@@ -66,8 +66,8 @@ gulp.task('release', ['concat'], function() {
 	//gulp.dest() 是复制文件
 
     gulp.src(['./src/*.html']).pipe(gulp.dest('./dist/')); //复制html
-	gulp.src('./src/css/**/*.css').pipe(gulp.dest('./dist//css'));  //复制css
-	gulp.src('./src/js/**/*.js').pipe(gulp.dest('./dist/js/'));  //复制js
+	gulp.src('./src/css/**/*.css').pipe(minCss()).pipe(gulp.dest('./dist/css'));  //复制css
+	gulp.src('./src/js/**/*.js').pipe(minJs()).pipe(gulp.dest('./dist/js/'));  //复制js
 	gulp.src('./src/images/**/*.*')
 	//.pipe(img())                     // 压缩图片
 	.pipe(gulp.dest('./dist/images/')); //复制img
@@ -75,32 +75,13 @@ gulp.task('release', ['concat'], function() {
 });
 
 // 发布的合并js和css文件
-gulp.task("concat", ["scss","build"],function(){
-	
-	return 	gulp.src("./src/js/mobile.js")
-			.pipe(minJs("mobile.js")) // 压缩js文件
-			.pipe(gulp.dest('./src/js/'));
-});
-
-
-// 发布css
-gulp.task("scss",function(){
- 
-	// scss 合并css
-	return	gulp.src(paths.allscss)
-		.pipe(sass().on('error', sass.logError)) // sass编译
-		.pipe(postcss([autoprefixer]))  // 自动添加css3缀-webkit-  适合用于手机端 
-		.pipe(minCss("mobile.css")) // 压缩css文件
-		.pipe(gulp.dest('./src/css'));
-
-});
-
+gulp.task("concat", ["scss","build"]);
 
 
 /*******************开发*************************/
 
 //sass合并css文件
-gulp.task("t_scss", function() {
+gulp.task("scss", function() {
 
 	gulp.src(paths.allscss)
 		.pipe(sass().on('error', sass.logError)) // sass编译
@@ -133,7 +114,7 @@ gulp.task("watch", ['connect'], function() {
 	gulp.watch("./src/js-dev/**/*.js", ["build"]);
 
 	//sass合并压缩css文件
-	gulp.watch(paths.scssPath, ['t_scss']);
+	gulp.watch(paths.scssPath, ['scss']);
 
 
 	//监听html
