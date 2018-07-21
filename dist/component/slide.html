@@ -30,7 +30,8 @@
 			<!--content-->
 			<section class="mobile-scroll-topbottom-content">
 
-				<!--轮播图 data-time="3000" data-auto="自动播放" -->
+				<!--轮播图 data-time="3000" data-auto="自动播放"  data-no-loop="禁止循环" -->
+				<h4>自动轮播</h4>
 				<div class="mobile-slide " data-time="3000" data-auto="自动播放">
 
 					<ul class="mobile-slide-list ">
@@ -74,8 +75,9 @@
 
 				</div>
 				<hr />
-				<!--轮播图 data-time="3000" data-auto="自动播放" -->
-				<div class="mobile-slide " data-time="2000">
+				<!--轮播图 data-time="3000" data-auto="自动播放"  data-no-loop="禁止循环" -->
+				<h4>禁止自动轮播</h4>
+				<div class="mobile-slide " >
 
 					<ul class="mobile-slide-list ">
 						<li>
@@ -113,6 +115,34 @@
 						<span></span>
 						<span></span>
 						<span></span>
+						<span></span>
+					</div>
+
+				</div>
+				<hr />
+				<h4>禁止自动轮播和禁止循环</h4>
+				<!--轮播图 data-time="3000" data-auto="自动播放"  data-no-loop="禁止循环" -->
+				<div class="mobile-slide "  data-no-loop="禁止循环">
+
+					<ul class="mobile-slide-list ">
+						<li>
+							<a href="#" id="a">
+								<div id="">
+									<img src="../images/1.jpg" alt="">
+
+								</div>
+							</a>
+						</li>
+						<li>
+							<a href="http://www.51zxw.com">
+								<img src="../images/2.jpg" alt="">
+							</a>
+						</li>
+						
+					</ul>
+
+					<div class="mobile-slide-radius">
+						<span class="active"></span>
 						<span></span>
 					</div>
 
@@ -207,7 +237,7 @@
 		</div>
 		<script src="../js/mobile.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
-			//mobileui.scroll()
+		
 		</script>
 
 	</body>

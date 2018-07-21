@@ -2121,6 +2121,7 @@ var scrollTopBottom = function () {
 		var eleY = 0; // 元素初始位置
 		var startY = 0;
 		var startX = 0;
+		var isLink = true;
 		var isAddMoveEvent = false; // 判断是否往上拖动
 		var isAddMoveEventFirst = true; // 判断是否第一往上拖动
 
@@ -2129,9 +2130,9 @@ var scrollTopBottom = function () {
 		function start(event) {
 			event.preventDefault();
 			var touch = event.changedTouches[0];
-
 			startY = touch.clientY;
 			startX = touch.clientX;
+			isLink = true;
 			eleY = m(topbottomContent).getTransform("translateY");
 			beginTime = new Date().getTime();
 			beginValue = eleY;
@@ -2149,6 +2150,7 @@ var scrollTopBottom = function () {
 			var nowY = touch.clientY;
 			var dis = nowY - startY;
 			var nowX = touch.clientX;
+			isLink = false;
 
 			// 检查是否向上移动
 			if (Math.abs(nowX - startX) > Math.abs(nowY - startY) && isAddMoveEventFirst) {
@@ -2207,8 +2209,20 @@ var scrollTopBottom = function () {
 			isAddMoveEvent = false; // 判断是否top拖动
 			isAddMoveEventFirst = true; // 判断是否第一往上拖动
 
-			var minY = window_h - topbottomContent[0].offsetHeight;
+			// a链接
+			if (isLink) {
+				event.stopPropagation();
+				// a链接
+				if (this.tagName === "A") {
+					var href = this.getAttribute("href") || "javascript:;";
+					window.location.assign(href);
+				} else {
+					var href = m(this).find("a").attr("href") || "javascript:;";
+					window.location.assign(href);
+				}
+			}
 
+			var minY = window_h - topbottomContent[0].offsetHeight;
 			var target = m(topbottomContent).getTransform("translateY") + speed * 100;
 			var bezier = '';
 
@@ -2260,6 +2274,7 @@ var scroll = function () {
 		var eleX = 0; // 元素初始位置
 		var startX = 0;
 		var startY = 0;
+
 		var isAddMoveEvent = false; // 判断是否top拖动
 		var isAddMoveEventFirst = true; // 判断是否第一往上拖动
 
@@ -2373,6 +2388,7 @@ var scroll = function () {
 
 				//对每个li绑定touchend，添加classname
 				if (!this.isMove) {
+					event.stopPropagation();
 					for (var j = 0; j < _length; j++) {
 
 						Linodes[j].classList.remove("active");
@@ -2380,17 +2396,12 @@ var scroll = function () {
 
 					this.classList.add("active");
 					// a链接
-					if (event.target.tagName === "A") {
-						var href = event.target.getAttribute("href") || "javascript:;";
+					if (this.tagName === "A") {
+						var href = this.getAttribute("href") || "javascript:;";
 						window.location.assign(href);
 					} else {
-						var href = m(event.target).find("a").attr("href") || "javascript:;";
+						var href = m(this).find("a").attr("href") || "javascript:;";
 						window.location.assign(href);
-					}
-
-					// 点击回调函数
-					if (typeof fn === "function") {
-						fn(this);
 					}
 				}
 				this.isMove = false;
@@ -2416,7 +2427,8 @@ var slide = function () {
 
 		// 轮播时间 
 		var time = wrap.getAttribute("data-time") || "3000";
-		var isAuto = wrap.getAttribute("data-auto"); //自动播放
+		var isAuto = m(wrap).hasAttr("data-auto"); //自动播放
+		var isLoop = m(wrap).hasAttr("data-no-loop"); //禁止循环
 
 		time = parseInt(time);
 		var timerId = 0;
@@ -2431,7 +2443,10 @@ var slide = function () {
 		// 小圆点
 		var spanNodes = wrap.querySelectorAll(".mobile-slide-radius span");
 		m(list).setTransform('translateZ', 0.01);
-		list.innerHTML += list.innerHTML;
+		if (!isLoop) {
+			list.innerHTML += list.innerHTML;
+		}
+
 		var liNodes = wrap.querySelectorAll(".mobile-slide-list li");
 
 		// 添加样式
@@ -2446,7 +2461,7 @@ var slide = function () {
 
 		// start
 		function start(event) {
-
+			event.preventDefault();
 			var touch = event.changedTouches[0];
 			isLink = true;
 			clearInterval(timerId);
@@ -2454,26 +2469,31 @@ var slide = function () {
 			var left = m(list).getTransform("translateX");
 			var now = Math.round(-left / document.documentElement.clientWidth);
 
-			if (now == 0) {
-				now = spanNodes.length;
-			} else if (now == liNodes.length - 1) {
-				now = spanNodes.length - 1;
+			// 是否循环
+			if (!isLoop) {
+				if (now == 0) {
+					now = spanNodes.length;
+				} else if (now == liNodes.length - 1) {
+					now = spanNodes.length - 1;
+				}
 			}
+
 			m(list).setTransform('translateX', -now * document.documentElement.clientWidth);
 
 			startX = touch.clientX;
 			startY = touch.clientY;
-
 			elementX = m(list).getTransform('translateX');
 		}
 
 		wrap.addEventListener("touchmove", move);
+
 		function move(event) {
 			event.preventDefault();
 			var touch = event.changedTouches[0];
 			var nowX = touch.clientX;
 			var nowY = touch.clientY;
 			var disX = nowX - startX;
+			isLink = false;
 
 			// 检查是否向上移动
 			if (Math.abs(nowY - startY) > Math.abs(nowX - startX) && isAddMoveEventFirst) {
@@ -2483,12 +2503,37 @@ var slide = function () {
 			}
 
 			if (isAddMoveEvent) {
+
 				return;
 			}
 
-			clearInterval(timerId);
-			isLink = false;
-			m(list).setTransform('translateX', elementX + disX);
+			// 禁止循环
+			if (isLoop) {
+				var window_w = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+				var minX = Math.abs(list.offsetWidth * spanNodes.length - window_w);
+				//elementX = m(list).getTransform('translateX');
+				console.log(list.offsetWidth);
+				var translateX = elementX + disX;
+				if (translateX > 0) {
+					var scale = 1 - translateX / window_w;
+					translateX = translateX * scale;
+				} else if (Math.abs(translateX) > minX) {
+					var over = Math.abs(translateX) - Math.abs(minX);
+					var scale = 1 - over / window_w;
+					translateX = -minX - over * scale;
+
+					//console.log(translateX)
+					//console.log(minX)
+				}
+
+				clearInterval(timerId);
+				m(list).setTransform('translateX', translateX);
+			}
+
+			if (!isLoop) {
+				clearInterval(timerId);
+				m(list).setTransform('translateX', elementX + disX);
+			}
 		}
 
 		wrap.addEventListener("touchend", end);
@@ -2504,26 +2549,26 @@ var slide = function () {
 			isAddMoveEventFirst = true; // 判断是否第一往上拖动
 
 			// 自动播放
-			if (isAuto !== null) {
-
+			if (isAuto && !isLoop) {
 				timerId = auto(time);
 			}
 
 			// a链接
 			if (isLink) {
-				isLink = true;
-				var href = "";
-				var _a = m(event.target).find("a");
-
-				if (_a.nodeName == "A") {
-					// 包裹一层
-					href = _a.attr("href") || "javascript:;";
+				event.stopPropagation();
+				// a链接
+				if (this.tagName === "A") {
+					var href = this.getAttribute("href") || "javascript:;";
+					window.location.assign(href);
+				} else {
+					var href = m(this).find("a").attr("href") || "javascript:;";
 					window.location.assign(href);
 				}
 			}
 
 			var left = m(list).getTransform("translateX");
 			now = Math.round(-left / document.documentElement.clientWidth);
+
 			if (now < 0) {
 				now = 0;
 			} else if (now > liNodes.length - 1) {
@@ -2535,16 +2580,14 @@ var slide = function () {
 
 			//同步小圆点
 			for (var i = 0; i < spanNodes.length; i++) {
-				spanNodes[i].className = '';
+				spanNodes[i].classList.remove("active");
 			}
 
-			spanNodes[now % spanNodes.length].className = 'active';
+			spanNodes[now % spanNodes.length].classList.add("active");
 		}
 
 		// 自动播放
-
-		if (isAuto !== null) {
-
+		if (isAuto && !isLoop) {
 			timerId = auto(time);
 		}
 
@@ -2552,8 +2595,12 @@ var slide = function () {
 
 			return setInterval(function () {
 				list.style.transition = 'none';
-				if (now == liNodes.length - 1) {
-					now = spanNodes.length - 1;
+
+				// 是否循环
+				if (!isLoop) {
+					if (now == liNodes.length - 1) {
+						now = spanNodes.length - 1;
+					}
 				}
 				m(list).setTransform('translateX', -now * document.documentElement.clientWidth);
 				setTimeout(function () {

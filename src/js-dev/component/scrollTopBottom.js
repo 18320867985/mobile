@@ -41,6 +41,7 @@ var scrollTopBottom = (function() {
 		var eleY = 0; // 元素初始位置
 		var startY = 0;
 		var startX = 0;
+		var isLink = true;
 		var isAddMoveEvent = false; // 判断是否往上拖动
 		var isAddMoveEventFirst = true; // 判断是否第一往上拖动
 
@@ -49,9 +50,9 @@ var scrollTopBottom = (function() {
 		function start(event) {
 			event.preventDefault();
 			var touch = event.changedTouches[0];
-
 			startY = touch.clientY;
 			startX = touch.clientX;
+			isLink=true;
 			eleY = m(topbottomContent).getTransform("translateY");
 			beginTime = new Date().getTime();
 			beginValue = eleY;
@@ -70,19 +71,19 @@ var scrollTopBottom = (function() {
 			var nowY = touch.clientY;
 			var dis = nowY - startY;
 			var nowX = touch.clientX;
-			
-			// 检查是否向上移动
-				if( Math.abs(nowX - startX)>Math.abs(nowY - startY)  && isAddMoveEventFirst) {
-					
-					isAddMoveEvent = true;
-					isAddMoveEventFirst = false;
-					
-				} 
-				
-				if(isAddMoveEvent){
-					return;
-				}
+			isLink = false;
 
+			// 检查是否向上移动
+			if(Math.abs(nowX - startX) > Math.abs(nowY - startY) && isAddMoveEventFirst) {
+
+				isAddMoveEvent = true;
+				isAddMoveEventFirst = false;
+
+			}
+
+			if(isAddMoveEvent) {
+				return;
+			}
 
 			var window_h = window.innerHeight ||
 				document.documentElement.clientHeight ||
@@ -133,12 +134,26 @@ var scrollTopBottom = (function() {
 			var window_h = window.innerHeight ||
 				document.documentElement.clientHeight ||
 				document.body.clientHeight;
-				
-			isAddMoveEvent =false; // 判断是否top拖动
-			isAddMoveEventFirst = true; // 判断是否第一往上拖动
-			
-			var minY = window_h - topbottomContent[0].offsetHeight;
 
+			isAddMoveEvent = false; // 判断是否top拖动
+			isAddMoveEventFirst = true; // 判断是否第一往上拖动
+
+			// a链接
+			if(isLink) {
+				event.stopPropagation();
+				// a链接
+				if(this.tagName === "A") {
+					var href = this.getAttribute("href") || "javascript:;";
+					window.location.assign(href);
+				} else {
+					var href = m(this).find("a").attr("href") || "javascript:;";
+					window.location.assign(href);
+				}
+
+			}
+			
+
+			var minY = window_h - topbottomContent[0].offsetHeight;
 			var target = m(topbottomContent).getTransform("translateY") + speed * 100;
 			var bezier = '';
 

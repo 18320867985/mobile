@@ -31,7 +31,7 @@ var scroll = (function() {
 		var eleX = 0; // 元素初始位置
 		var startX = 0;
 		var startY = 0;
-		var isFirst = true; //手指初始位置
+		
 		var isAddMoveEvent = false; // 判断是否top拖动
 		var isAddMoveEventFirst = true; // 判断是否第一往上拖动
 
@@ -157,6 +157,7 @@ var scroll = (function() {
 
 				//对每个li绑定touchend，添加classname
 				if(!this.isMove) {
+					event.stopPropagation();
 					for(var j = 0; j < _length; j++) {
 
 						Linodes[j].classList.remove("active");
@@ -164,18 +165,15 @@ var scroll = (function() {
 
 					this.classList.add("active");
 					// a链接
-					if(event.target.tagName === "A") {
-						var href = event.target.getAttribute("href") || "javascript:;";
+					if(this.tagName === "A") {
+						var href = this.getAttribute("href") || "javascript:;";
 						window.location.assign(href);
 					} else {
-						var href = m(event.target).find("a").attr("href") || "javascript:;";
+						var href = m(this).find("a").attr("href") || "javascript:;";
 						window.location.assign(href);
 					}
 
-					// 点击回调函数
-					if(typeof fn === "function") {
-						fn(this);
-					}
+					
 				}
 				this.isMove = false;
 
