@@ -13,6 +13,10 @@ body {
     //background: $body-bg;
 }
 
+html,body{
+    height: 100%;
+    overflow: hidden;
+}
 img {
     display: inline-block;
 }
@@ -462,6 +466,7 @@ select option {
 
 .clr:after {
     clear: both;
+    overflow: hidden;
 }
 
 

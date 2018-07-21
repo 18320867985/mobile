@@ -94,7 +94,7 @@ var mobileui = (function() {
 			var startX = 0;
 			var startY = 0;
 			var isFirst = true; //手指初始位置
-			isX = true;
+			var isX = true;
 			var isAddMoveEvent = true; // 判断是否top拖动
 			var isAddMoveEventFirst = true; // 判断是否第一往上拖动
 
@@ -108,6 +108,9 @@ var mobileui = (function() {
 				beginTime = new Date().getTime();
 				beginValue = eleX;
 				disValue = 0;
+				isX = true;
+			 isAddMoveEvent = true; // 判断是否top拖动
+			 isAddMoveEventFirst = true; // 判断是否第一往上拖动
 
 				// 过度时间0s
 				navsList.style.transition = 'none';

@@ -330,6 +330,23 @@
 			return this;
 		},
 
+		// hasAttr
+		hasAttr: function(attr) {
+			
+			// 是否含有元素的属性
+			var _attr=false;
+			if(arguments.length === 1 && typeof attr === "string") {
+				
+				Mobile.each(this, function() {
+					_attr = this.hasAttribute(attr);
+					return false;
+				});
+				return _attr;
+			}
+
+		},
+
+		
 		// removeAttr
 		removeAttr: function(attr) {
 

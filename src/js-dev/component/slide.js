@@ -25,8 +25,8 @@
 			var startY = 0;
 			var now = 0;
 			var isLink = true;
-			var isAddMoveEvent = true; // 判断是否往上拖动
-		//	var isAddMoveEventFirst = true; // 判断是否第一往上拖动
+			var isAddMoveEvent = false; // 判断是否往上拖动
+			var isAddMoveEventFirst = true; // 判断是否第一往上拖动
 
 			// 小圆点
 			var spanNodes = wrap.querySelectorAll(".mobile-slide-radius span");
@@ -63,9 +63,9 @@
 
 				startX = touch.clientX;
 				startY = touch.clientY;
-
+				
 				elementX = m(list).getTransform('translateX');
-				//wrap.addEventListener("touchmove", move);
+				
 			}
 
 			wrap.addEventListener("touchmove", move);
@@ -75,6 +75,17 @@
 				var nowX = touch.clientX;
 				var nowY = touch.clientY;
 				var disX = nowX - startX;
+				
+				// 检查是否向上移动
+				if(Math.abs(nowY - startY) > Math.abs(nowX - startX) && isAddMoveEventFirst) {
+					
+					isAddMoveEvent = true;
+					isAddMoveEventFirst = false;
+				} 
+				
+				if(isAddMoveEvent){
+					return;
+				}
 				
 				clearInterval(timerId);
 				isLink = false;
@@ -90,6 +101,9 @@
 				var touch = event.changedTouches[0];
 				var nowX = touch.clientX;
 				var nowY = touch.clientY;
+				
+				isAddMoveEvent =false; // 判断是否top拖动
+			 	isAddMoveEventFirst = true; // 判断是否第一往上拖动
 
 				// 自动播放
 				if(isAuto !== null) {
@@ -131,10 +145,6 @@
 				spanNodes[now % spanNodes.length].className = 'active';
 			}
 
-			//系统取消 重新加载页面
-//			wrap.addEventListener("touchcancel", function() {
-//				//window.location.reload();
-//			});
 
 			// 自动播放
 
