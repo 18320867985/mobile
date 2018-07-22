@@ -1316,6 +1316,11 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 				this.dispatchEvent(btnEvent);
 			});
 		},
+		emit: function emit(type, obj) {
+			Mobile.each(this, function () {
+				m(this).trigger(type, obj);
+			});
+		},
 
 		// click
 		click: function click(fn, bl) {
@@ -2176,6 +2181,9 @@ var scrollTopBottom = function () {
 				if (!isScrollTop) {
 					translateY = 0;
 				}
+
+				// scroll顶部 自定义事件
+				m(this).trigger("scrolltop", topbottomContent[0]);
 			} else if (translateY < minY) {
 				var over = Math.abs(translateY - minY);
 				var scale = 1 - over / window_h;
@@ -2190,6 +2198,9 @@ var scrollTopBottom = function () {
 				if (m(topbottomContent).height() < window_h) {
 					translateY = 0;
 				}
+
+				// scroll底部 自定义事件
+				m(this).trigger("scrollbottom", topbottomContent[0]);
 			}
 
 			m(topbottomContent).setTransform("translateY", translateY);
@@ -2212,14 +2223,8 @@ var scrollTopBottom = function () {
 			// a链接
 			if (isLink) {
 				event.stopPropagation();
-				// a链接
-				if (this.tagName === "A") {
-					var href = this.getAttribute("href") || "javascript:;";
-					window.location.assign(href);
-				} else {
-					var href = m(this).find("a").attr("href") || "javascript:;";
-					window.location.assign(href);
-				}
+				var href = m(event.target).closest("a").attr("href") || "javascript:;";
+				window.location.assign(href);
 			}
 
 			var minY = window_h - topbottomContent[0].offsetHeight;
@@ -2393,16 +2398,10 @@ var scroll = function () {
 
 						Linodes[j].classList.remove("active");
 					}
-
 					this.classList.add("active");
-					// a链接
-					if (this.tagName === "A") {
-						var href = this.getAttribute("href") || "javascript:;";
-						window.location.assign(href);
-					} else {
-						var href = m(this).find("a").attr("href") || "javascript:;";
-						window.location.assign(href);
-					}
+
+					var href = m(event.target).closest("a").attr("href") || "javascript:;";
+					window.location.assign(href);
 				}
 				this.isMove = false;
 			});
@@ -2422,7 +2421,7 @@ var slide = function () {
 
 	function banner(mobile_slide) {
 
-		var wrap = mobile_slide; //document.querySelector(".mobile-slide");
+		var wrap = mobile_slide;
 		var list = wrap.querySelector(".mobile-slide-list");
 
 		// 轮播时间 
@@ -2486,7 +2485,6 @@ var slide = function () {
 		}
 
 		wrap.addEventListener("touchmove", move);
-
 		function move(event) {
 			event.preventDefault();
 			var touch = event.changedTouches[0];
@@ -2511,8 +2509,6 @@ var slide = function () {
 			if (isLoop) {
 				var window_w = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
 				var minX = Math.abs(list.offsetWidth * spanNodes.length - window_w);
-				//elementX = m(list).getTransform('translateX');
-				console.log(list.offsetWidth);
 				var translateX = elementX + disX;
 				if (translateX > 0) {
 					var scale = 1 - translateX / window_w;
@@ -2521,12 +2517,8 @@ var slide = function () {
 					var over = Math.abs(translateX) - Math.abs(minX);
 					var scale = 1 - over / window_w;
 					translateX = -minX - over * scale;
-
-					//console.log(translateX)
-					//console.log(minX)
 				}
 
-				clearInterval(timerId);
 				m(list).setTransform('translateX', translateX);
 			}
 
@@ -2557,13 +2549,9 @@ var slide = function () {
 			if (isLink) {
 				event.stopPropagation();
 				// a链接
-				if (this.tagName === "A") {
-					var href = this.getAttribute("href") || "javascript:;";
-					window.location.assign(href);
-				} else {
-					var href = m(this).find("a").attr("href") || "javascript:;";
-					window.location.assign(href);
-				}
+				var href = m(event.target).closest("a").attr("href") || "javascript:;";
+				window.location.assign(href);
+				//console.log(href);
 			}
 
 			var left = m(list).getTransform("translateX");

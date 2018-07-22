@@ -11,7 +11,7 @@ var slide = (function() {
 
 	function banner(mobile_slide) {
 
-		var wrap = mobile_slide; //document.querySelector(".mobile-slide");
+		var wrap = mobile_slide;
 		var list = wrap.querySelector(".mobile-slide-list");
 
 		// 轮播时间 
@@ -73,9 +73,8 @@ var slide = (function() {
 			startY = touch.clientY;
 			elementX = m(list).getTransform('translateX');
 		}
-
+		
 		wrap.addEventListener("touchmove", move);
-
 		function move(event) {
 			event.preventDefault();
 			var touch = event.changedTouches[0];
@@ -102,8 +101,6 @@ var slide = (function() {
 					document.documentElement.clientWidth ||
 					document.body.clientWidth;
 				var minX = Math.abs(list.offsetWidth * spanNodes.length - window_w);
-				//elementX = m(list).getTransform('translateX');
-				console.log(list.offsetWidth)
 				var translateX = elementX + disX;
 				if(translateX > 0) {
 					var scale = 1 - translateX / window_w;
@@ -113,12 +110,8 @@ var slide = (function() {
 					var over = Math.abs(translateX) - Math.abs(minX);
 					var scale = 1 - over / window_w;
 					translateX = -minX - over * scale;
-
-					//console.log(translateX)
-					//console.log(minX)
 				}
 
-				clearInterval(timerId);
 				m(list).setTransform('translateX', translateX);
 			}
 
@@ -150,14 +143,9 @@ var slide = (function() {
 			if(isLink) {
 				event.stopPropagation();
 				// a链接
-				if(this.tagName === "A") {
-					var href = this.getAttribute("href") || "javascript:;";
-					window.location.assign(href);
-				} else {
-					var href = m(this).find("a").attr("href") || "javascript:;";
-					window.location.assign(href);
-				}
-
+				var href=m(event.target).closest("a").attr("href")||"javascript:;";
+				window.location.assign(href);
+				//console.log(href);
 			}
 
 			var left = m(list).getTransform("translateX");

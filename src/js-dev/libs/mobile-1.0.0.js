@@ -1365,7 +1365,7 @@
 		},
 
 		// 自定义事件
-		trigger: function trigger(type, obj) {
+		trigger: function(type, obj) {
 
 			Mobile.each(this, function() {
 				obj = obj || {};
@@ -1374,6 +1374,11 @@
 				this.dispatchEvent(btnEvent);
 			});
 
+		},
+		emit: function(type, obj) {
+			Mobile.each(this, function() {
+				m(this).trigger(type,obj);
+			});
 		},
 
 		// click

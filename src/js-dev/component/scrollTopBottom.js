@@ -100,6 +100,9 @@ var scrollTopBottom = (function() {
 				if(!isScrollTop) {
 					translateY = 0;
 				}
+				
+				// scroll顶部 自定义事件
+				m(this).trigger("scrolltop",topbottomContent[0]);
 
 			} else if(translateY < minY) {
 				var over = Math.abs(translateY - minY);
@@ -115,7 +118,9 @@ var scrollTopBottom = (function() {
 				if((m(topbottomContent).height()) < (window_h)) {
 					translateY = 0;
 				}
-
+				
+				// scroll底部 自定义事件
+				m(this).trigger("scrollbottom",topbottomContent[0]);
 			}
 
 			m(topbottomContent).setTransform("translateY", translateY);
@@ -141,14 +146,8 @@ var scrollTopBottom = (function() {
 			// a链接
 			if(isLink) {
 				event.stopPropagation();
-				// a链接
-				if(this.tagName === "A") {
-					var href = this.getAttribute("href") || "javascript:;";
-					window.location.assign(href);
-				} else {
-					var href = m(this).find("a").attr("href") || "javascript:;";
-					window.location.assign(href);
-				}
+				var href=m(event.target).closest("a").attr("href")||"javascript:;";
+				window.location.assign(href);
 
 			}
 			

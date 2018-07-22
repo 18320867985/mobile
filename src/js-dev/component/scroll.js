@@ -162,18 +162,10 @@ var scroll = (function() {
 
 						Linodes[j].classList.remove("active");
 					}
-
 					this.classList.add("active");
-					// a链接
-					if(this.tagName === "A") {
-						var href = this.getAttribute("href") || "javascript:;";
-						window.location.assign(href);
-					} else {
-						var href = m(this).find("a").attr("href") || "javascript:;";
-						window.location.assign(href);
-					}
-
 					
+					var href=m(event.target).closest("a").attr("href")||"javascript:;";
+					window.location.assign(href);
 				}
 				this.isMove = false;
 

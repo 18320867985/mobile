@@ -18,7 +18,7 @@
 
 	<body>
 		<!-- data-scrolltop 是否下拉#   data-scrollbottom 是否上拉-->
-		<div class="mobile-scroll-topbottom" data-scrolltop data-scrollbottom >
+		<div class="mobile-scroll-topbottom a" data-scrolltop data-scrollbottom >
 
 			<!--header-->
 			<header class="mobile-head">
@@ -79,7 +79,19 @@
 		</div>
 		<script src="../js/mobile.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
-			//mobileui.scroll()
+			
+			m(".mobile-scroll-topbottom.a").on("scrollbottom",function(event){
+				
+				//console.log(event.detail);
+				console.log("bottom");
+			})
+			
+			m(".mobile-scroll-topbottom.a").on("scrolltop",function(event){
+				
+				//console.log(event.detail);
+				console.log("top");
+			})
+			
 		</script>
 
 	</body>
