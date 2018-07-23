@@ -52,7 +52,7 @@ var scrollTopBottom = (function() {
 			var touch = event.changedTouches[0];
 			startY = touch.clientY;
 			startX = touch.clientX;
-			isLink=true;
+			isLink = true;
 			eleY = m(topbottomContent).getTransform("translateY");
 			beginTime = new Date().getTime();
 			beginValue = eleY;
@@ -89,8 +89,10 @@ var scrollTopBottom = (function() {
 				document.documentElement.clientHeight ||
 				document.body.clientHeight;
 
-			var minY = window_h - topbottomContent[0].offsetHeight;
+			// scroll底部 scrolltopbottom自定义事件
+			m(this).trigger("scrolltopbottom", topbottomContent[0]);
 
+			var minY = window_h - topbottomContent[0].offsetHeight;
 			var translateY = eleY + dis;
 			if(translateY > 0) {
 				var scale = 1 - translateY / window_h;
@@ -100,9 +102,9 @@ var scrollTopBottom = (function() {
 				if(!isScrollTop) {
 					translateY = 0;
 				}
-				
-				// scroll顶部 自定义事件
-				m(this).trigger("scrolltop",topbottomContent[0]);
+
+				// scroll顶部 scrolltop自定义事件
+				m(this).trigger("scrolltop", topbottomContent[0]);
 
 			} else if(translateY < minY) {
 				var over = Math.abs(translateY - minY);
@@ -118,9 +120,9 @@ var scrollTopBottom = (function() {
 				if((m(topbottomContent).height()) < (window_h)) {
 					translateY = 0;
 				}
-				
-				// scroll底部 自定义事件
-				m(this).trigger("scrollbottom",topbottomContent[0]);
+
+				// scroll底部 scrollbottom自定义事件
+				m(this).trigger("scrollbottom", topbottomContent[0]);
 			}
 
 			m(topbottomContent).setTransform("translateY", translateY);
@@ -146,11 +148,10 @@ var scrollTopBottom = (function() {
 			// a链接
 			if(isLink) {
 				event.stopPropagation();
-				var href=m(event.target).closest("a").attr("href")||"javascript:;";
+				var href = m(event.target).closest("a").attr("href") || "javascript:;";
 				window.location.assign(href);
 
 			}
-			
 
 			var minY = window_h - topbottomContent[0].offsetHeight;
 			var target = m(topbottomContent).getTransform("translateY") + speed * 100;

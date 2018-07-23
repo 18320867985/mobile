@@ -1973,10 +1973,38 @@
 		trim: function(txt) {
 			var str = "";
 			txt = typeof txt === "string" ? txt : "";
-
 			str = txt.replace(/^\s*|\s*$/img, "");
 			return str;
-		}
+		},
+		
+		round: function(value,ratio ) {
+			
+			if(arguments.length===1){
+				
+				if(typeof value==="number"){
+					return	Math.round(value);
+				}
+				
+			}else if(arguments.length===2){
+				if(typeof value==="number" && typeof ratio==="number"){
+					
+					var _v=Math.floor(value);
+					_v=_v+ratio;
+					
+					if(value>_v){
+						return Math.ceil(value);
+					}else{
+						return Math.floor(value);
+					}
+						
+				}
+
+			}
+
+			return null;
+		},
+		
+		
 	});
 
 	/**绑定自定义事件函数**/

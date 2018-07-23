@@ -73,8 +73,9 @@ var slide = (function() {
 			startY = touch.clientY;
 			elementX = m(list).getTransform('translateX');
 		}
-		
+
 		wrap.addEventListener("touchmove", move);
+
 		function move(event) {
 			event.preventDefault();
 			var touch = event.changedTouches[0];
@@ -143,13 +144,19 @@ var slide = (function() {
 			if(isLink) {
 				event.stopPropagation();
 				// a链接
-				var href=m(event.target).closest("a").attr("href")||"javascript:;";
+				var href = m(event.target).closest("a").attr("href") || "javascript:;";
 				window.location.assign(href);
 				//console.log(href);
 			}
 
 			var left = m(list).getTransform("translateX");
-			now = Math.round(-left / document.documentElement.clientWidth);
+			var ratio = -left / document.documentElement.clientWidth;
+			if(nowX > startX) {
+				now = m.round(ratio, 0.8);
+
+			} else {
+				now = m.round(ratio, 0.2);
+			}
 
 			if(now < 0) {
 				now = 0

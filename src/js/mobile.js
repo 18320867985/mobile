@@ -1894,10 +1894,34 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 		trim: function trim(txt) {
 			var str = "";
 			txt = typeof txt === "string" ? txt : "";
-
 			str = txt.replace(/^\s*|\s*$/img, "");
 			return str;
+		},
+
+		round: function round(value, ratio) {
+
+			if (arguments.length === 1) {
+
+				if (typeof value === "number") {
+					return Math.round(value);
+				}
+			} else if (arguments.length === 2) {
+				if (typeof value === "number" && typeof ratio === "number") {
+
+					var _v = Math.floor(value);
+					_v = _v + ratio;
+
+					if (value > _v) {
+						return Math.ceil(value);
+					} else {
+						return Math.floor(value);
+					}
+				}
+			}
+
+			return null;
 		}
+
 	});
 
 	/**绑定自定义事件函数**/
@@ -2170,8 +2194,10 @@ var scrollTopBottom = function () {
 
 			var window_h = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
 
-			var minY = window_h - topbottomContent[0].offsetHeight;
+			// scroll底部 scrolltopbottom自定义事件
+			m(this).trigger("scrolltopbottom", topbottomContent[0]);
 
+			var minY = window_h - topbottomContent[0].offsetHeight;
 			var translateY = eleY + dis;
 			if (translateY > 0) {
 				var scale = 1 - translateY / window_h;
@@ -2182,7 +2208,7 @@ var scrollTopBottom = function () {
 					translateY = 0;
 				}
 
-				// scroll顶部 自定义事件
+				// scroll顶部 scrolltop自定义事件
 				m(this).trigger("scrolltop", topbottomContent[0]);
 			} else if (translateY < minY) {
 				var over = Math.abs(translateY - minY);
@@ -2199,7 +2225,7 @@ var scrollTopBottom = function () {
 					translateY = 0;
 				}
 
-				// scroll底部 自定义事件
+				// scroll底部 scrollbottom自定义事件
 				m(this).trigger("scrollbottom", topbottomContent[0]);
 			}
 
@@ -2485,6 +2511,7 @@ var slide = function () {
 		}
 
 		wrap.addEventListener("touchmove", move);
+
 		function move(event) {
 			event.preventDefault();
 			var touch = event.changedTouches[0];
@@ -2555,7 +2582,12 @@ var slide = function () {
 			}
 
 			var left = m(list).getTransform("translateX");
-			now = Math.round(-left / document.documentElement.clientWidth);
+			var ratio = -left / document.documentElement.clientWidth;
+			if (nowX > startX) {
+				now = m.round(ratio, 0.8);
+			} else {
+				now = m.round(ratio, 0.2);
+			}
 
 			if (now < 0) {
 				now = 0;
