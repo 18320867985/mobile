@@ -2170,7 +2170,9 @@ var scrollTopBottom = function () {
 		var sale_bar = bar_wrap_h / bar_h;
 		var scroll_bar_h = window_h * sale_bar;
 		var mobile_scroll_bar = m(scrolltb).find(".mobile-scroll-bar");
-		mobile_scroll_bar.height(scroll_bar_h);
+		if (isScrollBar) {
+			mobile_scroll_bar.height(scroll_bar_h);
+		}
 
 		m(scrolltb).on("touchstart", start);
 
@@ -2199,7 +2201,7 @@ var scrollTopBottom = function () {
 				scroll_bar_h = window_h * sale_bar;
 				mobile_scroll_bar = m(scrolltb).find(".mobile-scroll-bar");
 				mobile_scroll_bar.height(scroll_bar_h);
-				mobile_scroll_bar.css("opacity", 0.8);
+				//mobile_scroll_bar.css("opacity",0.8);
 			}
 		}
 
@@ -2211,13 +2213,18 @@ var scrollTopBottom = function () {
 			var nowY = touch.clientY;
 			var dis = nowY - startY;
 			var nowX = touch.clientX;
-			isLink = false;
+
+			if (Math.abs(nowX - startX) > 1 || Math.abs(nowY - startY) > 1) {
+				isLink = false;
+			}
 
 			// 滚动条
-			var scroll_Y = m(topbottomContent).getTransform("translateY");
-			var scroll_box_h = m(topbottomContent).height();
-			var scroll_box_sale = scroll_Y / scroll_box_h;
-			mobile_scroll_bar.setTransform("translateY", -bar_wrap_h * scroll_box_sale);
+			if (isScrollBar) {
+				var scroll_Y = m(topbottomContent).getTransform("translateY");
+				var scroll_box_h = m(topbottomContent).height();
+				var scroll_box_sale = scroll_Y / scroll_box_h;
+				mobile_scroll_bar.setTransform("translateY", -bar_wrap_h * scroll_box_sale);
+			}
 
 			// 检查是否向上移动
 			if (Math.abs(nowX - startX) > Math.abs(nowY - startY) && isAddMoveEventFirst) {
@@ -2282,6 +2289,7 @@ var scrollTopBottom = function () {
 
 			// a链接
 			if (isLink) {
+
 				event.stopPropagation();
 				var href = m(event.target).closest("a").attr("href") || "javascript:;";
 				window.location.assign(href);
@@ -2463,7 +2471,7 @@ var scroll = function () {
 
 				//对每个li绑定touchend，添加classname
 				if (!this.isMove) {
-					event.stopPropagation();
+
 					for (var j = 0; j < _length; j++) {
 
 						Linodes[j].classList.remove("active");
@@ -2562,7 +2570,10 @@ var slide = function () {
 			var nowX = touch.clientX;
 			var nowY = touch.clientY;
 			var disX = nowX - startX;
-			isLink = false;
+
+			if (Math.abs(nowX - startX) > 1 || Math.abs(nowY - startY) > 1) {
+				isLink = false;
+			}
 
 			// 检查是否向上移动
 			if (Math.abs(nowY - startY) > Math.abs(nowX - startX) && isAddMoveEventFirst) {

@@ -82,7 +82,10 @@ var slide = (function() {
 			var nowX = touch.clientX;
 			var nowY = touch.clientY;
 			var disX = nowX - startX;
-			isLink = false;
+			
+			if(Math.abs(nowX-startX)>1||Math.abs(nowY-startY)>1){
+				isLink = false;
+			}
 
 			// 检查是否向上移动
 			if(Math.abs(nowY - startY) > Math.abs(nowX - startX) && isAddMoveEventFirst) {

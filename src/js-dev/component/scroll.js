@@ -157,7 +157,7 @@ var scroll = (function() {
 
 				//对每个li绑定touchend，添加classname
 				if(!this.isMove) {
-					event.stopPropagation();
+					
 					for(var j = 0; j < _length; j++) {
 
 						Linodes[j].classList.remove("active");
