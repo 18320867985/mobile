@@ -32,6 +32,14 @@ var scrollTopBottom = (function() {
 		m(topbottomContent).setTransform('translateZ', 0.01);
 		var isScrollTop = m(scrolltb).hasAttr("data-scrolltop"); // 是否下拉
 		var isScrollBottom = m(scrolltb).hasAttr("data-scrollbottom"); // 是否上拉
+
+		var isScrollBar = m(scrolltb).hasAttr("data-scroll-bar") // 是否显示滚动条
+		if(isScrollBar) {
+			var scrollBar = document.createElement("div"); // 创建滚动条
+			scrollBar.classList.add("mobile-scroll-bar");
+			scrolltb.appendChild(scrollBar)
+		}
+
 		var beginTime = 0;
 		var beginValue = 0;
 		var endTime = 0;
@@ -44,6 +52,18 @@ var scrollTopBottom = (function() {
 		var isLink = true;
 		var isAddMoveEvent = false; // 判断是否往上拖动
 		var isAddMoveEventFirst = true; // 判断是否第一往上拖动
+
+		var window_h = window.innerHeight ||
+			document.documentElement.clientHeight ||
+			document.body.clientHeight;
+
+		// 滚动条
+		var bar_h = m(topbottomContent).height();
+		var bar_wrap_h = m(scrolltb).height();
+		var sale_bar = bar_wrap_h / bar_h;
+		var scroll_bar_h = window_h * sale_bar;
+		var mobile_scroll_bar = m(scrolltb).find(".mobile-scroll-bar");
+		mobile_scroll_bar.height(scroll_bar_h);
 
 		m(scrolltb).on("touchstart", start);
 
@@ -58,8 +78,25 @@ var scrollTopBottom = (function() {
 			beginValue = eleY;
 			disValue = 0;
 
+			window_h = window.innerHeight ||
+				document.documentElement.clientHeight ||
+				document.body.clientHeight;
+
 			// 过度时间0s
 			topbottomContent[0].style.transition = 'none';
+
+			// 滚动条
+			if(isScrollBar) {
+				mobile_scroll_bar.transition("null", 0);
+				bar_h = m(topbottomContent).height();
+				bar_wrap_h = m(scrolltb).height();
+				sale_bar = bar_wrap_h / bar_h;
+				scroll_bar_h = window_h * sale_bar;
+				mobile_scroll_bar = m(scrolltb).find(".mobile-scroll-bar");
+				mobile_scroll_bar.height(scroll_bar_h);
+				mobile_scroll_bar.css("opacity",0.8);
+
+			}
 
 		};
 
@@ -73,6 +110,13 @@ var scrollTopBottom = (function() {
 			var nowX = touch.clientX;
 			isLink = false;
 
+			// 滚动条
+			var scroll_Y = m(topbottomContent).getTransform("translateY");
+			var scroll_box_h = m(topbottomContent).height();
+			var scroll_box_sale = scroll_Y / scroll_box_h;
+			mobile_scroll_bar.setTransform("translateY", -bar_wrap_h * scroll_box_sale);
+			
+
 			// 检查是否向上移动
 			if(Math.abs(nowX - startX) > Math.abs(nowY - startY) && isAddMoveEventFirst) {
 
@@ -85,11 +129,7 @@ var scrollTopBottom = (function() {
 				return;
 			}
 
-			var window_h = window.innerHeight ||
-				document.documentElement.clientHeight ||
-				document.body.clientHeight;
-
-			// scroll底部 scrolltopbottom自定义事件
+			// scroll上下滚动scrolltopbottom自定义事件
 			m(this).trigger("scrolltopbottom", topbottomContent[0]);
 
 			var minY = window_h - topbottomContent[0].offsetHeight;
@@ -138,10 +178,6 @@ var scrollTopBottom = (function() {
 
 			var touch = event.changedTouches[0];
 			var speed = disValue / (endTime - beginTime);
-			var window_h = window.innerHeight ||
-				document.documentElement.clientHeight ||
-				document.body.clientHeight;
-
 			isAddMoveEvent = false; // 判断是否top拖动
 			isAddMoveEventFirst = true; // 判断是否第一往上拖动
 
@@ -161,6 +197,7 @@ var scrollTopBottom = (function() {
 				target = 0;
 
 				bezier = 'cubic-bezier(.17,.67,.81,.9)';
+
 			} else if(target < minY) {
 				target = minY;
 				bezier = 'cubic-bezier(.17,.67,.81,.9)';
@@ -168,6 +205,17 @@ var scrollTopBottom = (function() {
 					target = 0;
 
 				}
+
+			}
+			
+			// 滚动条
+			if(isScrollBar) {
+				var scroll_Y = target;
+				var scroll_box_h = m(topbottomContent).height();
+				var scroll_box_sale = scroll_Y / scroll_box_h;
+				mobile_scroll_bar.setTransform("translateY", -m(scrolltb).height() * scroll_box_sale);
+				mobile_scroll_bar.transition("all", 500);
+				//mobile_scroll_bar.css("opacity",0);
 			}
 			// 过度时间0.5s
 			topbottomContent[0].style.transition = '.5s ' + bezier;
