@@ -1,5 +1,5 @@
 // 菜单左右滑动
-var scroll = (function() {
+var scrollLeftRight = (function() {
 
 	m(function() {
 		navSlide();
@@ -160,5 +160,5 @@ var scroll = (function() {
 })()
 
 export {
-	scroll
+	scrollLeftRight
 }

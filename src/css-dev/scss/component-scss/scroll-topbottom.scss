@@ -1,27 +1,36 @@
-
-.mobile-scroll-topbottom{
+.mobile-scroll-topbottom {
     position: relative;
-   
     height: 100%;
     overflow: hidden;
- 
-   
 }
 
-.mobile-scroll-topbottom-content{
+.mobile-scroll-topbottom-content {
     
+    /*加载图标*/
+    .loading {
+        position: relative;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        padding: 10px;
+        color:#777;
+        background: #f8f8f8;
+    }
 }
+
 
 /*滚动条*/
-.mobile-scroll-bar{
+
+.mobile-scroll-bar {
     position: absolute;
     top: 0;
     right: 1px;
     z-index: 9999;
     height: 100%;
     width: 3px;
-    background: rgba(orangered,0.6);
-    border-radius: 8px;;
-   // opacity: 0.8;
-  
+    background: rgba(#999, 0.6);
+    border-radius: 8px;
+    ;
+    // opacity: 0.8;
 }

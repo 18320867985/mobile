@@ -602,6 +602,18 @@ a .spin {
   height: 100%;
   overflow: hidden; }
 
+.mobile-scroll-topbottom-content {
+  /*加载图标*/ }
+  .mobile-scroll-topbottom-content .loading {
+    position: relative;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    color: #777;
+    background: #f8f8f8; }
+
 /*滚动条*/
 .mobile-scroll-bar {
   position: absolute;
@@ -610,7 +622,7 @@ a .spin {
   z-index: 9999;
   height: 100%;
   width: 3px;
-  background: rgba(255, 69, 0, 0.6);
+  background: rgba(153, 153, 153, 0.6);
   border-radius: 8px; }
 
 /* mobile-scroll 导航左右滑动 */

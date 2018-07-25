@@ -2129,6 +2129,7 @@ var scrollTopBottom = function () {
 	m(document).touchcancel(function (event) {
 		event.preventDefault();
 	});
+
 	m(function () {
 		topBottom();
 	});
@@ -2270,12 +2271,11 @@ var scrollTopBottom = function () {
 					translateY = minY;
 				}
 
+				// scroll底部 scrollbottom自定义事件
+				m(this).trigger("scrollbottom", { el: topbottomContent[0], barFun: scrollBarFun });
 				if (m(topbottomContent).height() < window_h) {
 					translateY = 0;
 				}
-
-				// scroll底部 scrollbottom自定义事件
-				m(this).trigger("scrollbottom", { el: topbottomContent[0], barFun: scrollBarFun });
 			}
 
 			m(topbottomContent).setTransform("translateY", translateY);
@@ -2352,7 +2352,7 @@ var scrollTopBottom = function () {
 }();
 
 // 菜单左右滑动
-var scroll = function () {
+var scrollLeftRight = function () {
 
 	m(function () {
 		navSlide();
@@ -2702,7 +2702,7 @@ var slide = function () {
 }();
 
 exports.scrollTopBottom = scrollTopBottom;
-exports.scroll = scroll;
+exports.scrollLeftRight = scrollLeftRight;
 exports.slide = slide;
 
 Object.defineProperty(exports, '__esModule', { value: true });

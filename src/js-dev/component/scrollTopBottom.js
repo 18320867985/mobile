@@ -18,6 +18,8 @@ var scrollTopBottom = (function() {
 		event.preventDefault();
 
 	});
+	
+	
 	m(function() {
 		topBottom();
 	})
@@ -168,13 +170,14 @@ var scrollTopBottom = (function() {
 
 					translateY = minY;
 				}
-
+				
+				// scroll底部 scrollbottom自定义事件
+				m(this).trigger("scrollbottom", { el:topbottomContent[0],barFun:scrollBarFun});
 				if((m(topbottomContent).height()) < (window_h)) {
 					translateY = 0;
 				}
 
-				// scroll底部 scrollbottom自定义事件
-				m(this).trigger("scrollbottom", { el:topbottomContent[0],barFun:scrollBarFun});
+				
 			}
 
 			m(topbottomContent).setTransform("translateY", translateY);
