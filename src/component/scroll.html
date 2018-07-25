@@ -17,7 +17,7 @@
 	</head>
 
 	<body>
-		<div class="mobile-scroll-topbottom"  data-scrollbottom>
+		<div class="mobile-scroll-topbottom"  data-scrollbottom data-scroll-bar>
 
 			<!--header-->
 			<!--<header class="mobile-head">
@@ -174,7 +174,14 @@
 		</div>
 		<script src="../js/mobile.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
-			//mobileui.scroll()
+			
+			// 选中样式的事件
+			m(".mobile-scroll").on("scrollselect",function(event){
+				
+				//console.log(m(event.detail).find("a").text());
+			
+			})
+			
 		</script>
 
 	</body>

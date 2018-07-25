@@ -227,16 +227,17 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 		// find
 		find: function find(selector) {
 			var arr = [];
-			for (var i = 0; i < this.length; i++) {
-				var _arr = this[i].querySelectorAll(selector);
+			var obj = m(this);
+			for (var i = 0; i < obj.length; i++) {
+				var _arr = obj[i].querySelectorAll(selector);
 				Mobile.each(_arr, function (i, v) {
 					arr.push(v);
 				});
-				delete this[i];
+				delete obj[i];
 			}
-			delete this.length;
-			Array.prototype.push.apply(this, arr);
-			return this;
+			delete obj.length;
+			Array.prototype.push.apply(obj, arr);
+			return obj;
 		},
 
 		// text
@@ -2121,7 +2122,13 @@ var scrollTopBottom = function () {
 	m(document).touchmove(function (event) {
 		event.preventDefault();
 	});
+	m(document).touchend(function (event) {
+		event.preventDefault();
+	});
 
+	m(document).touchcancel(function (event) {
+		event.preventDefault();
+	});
 	m(function () {
 		topBottom();
 	});
@@ -2201,7 +2208,6 @@ var scrollTopBottom = function () {
 				scroll_bar_h = window_h * sale_bar;
 				mobile_scroll_bar = m(scrolltb).find(".mobile-scroll-bar");
 				mobile_scroll_bar.height(scroll_bar_h);
-				//mobile_scroll_bar.css("opacity",0.8);
 			}
 		}
 
@@ -2238,7 +2244,7 @@ var scrollTopBottom = function () {
 			}
 
 			// scroll上下滚动scrolltopbottom自定义事件
-			m(this).trigger("scrolltopbottom", topbottomContent[0]);
+			m(this).trigger("scrolltopbottom", { el: topbottomContent[0], barFun: scrollBarFun });
 
 			var minY = window_h - topbottomContent[0].offsetHeight;
 			var translateY = eleY + dis;
@@ -2252,7 +2258,7 @@ var scrollTopBottom = function () {
 				}
 
 				// scroll顶部 scrolltop自定义事件
-				m(this).trigger("scrolltop", topbottomContent[0]);
+				m(this).trigger("scrolltop", { el: topbottomContent[0], barFun: scrollBarFun });
 			} else if (translateY < minY) {
 				var over = Math.abs(translateY - minY);
 				var scale = 1 - over / window_h;
@@ -2269,7 +2275,7 @@ var scrollTopBottom = function () {
 				}
 
 				// scroll底部 scrollbottom自定义事件
-				m(this).trigger("scrollbottom", topbottomContent[0]);
+				m(this).trigger("scrollbottom", { el: topbottomContent[0], barFun: scrollBarFun });
 			}
 
 			m(topbottomContent).setTransform("translateY", translateY);
@@ -2296,7 +2302,7 @@ var scrollTopBottom = function () {
 			}
 
 			var minY = window_h - topbottomContent[0].offsetHeight;
-			var target = m(topbottomContent).getTransform("translateY") + speed * 100;
+			var target = m(topbottomContent).getTransform("translateY") + speed * 200;
 			var bezier = '';
 
 			if (target > 0) {
@@ -2324,6 +2330,24 @@ var scrollTopBottom = function () {
 			topbottomContent[0].style.transition = '.5s ' + bezier;
 			m(topbottomContent).setTransform("translateY", target);
 		}
+
+		function scrollBarFun() {
+			// 滚动条
+			if (isScrollBar) {
+				var scroll_Y = m(topbottomContent).getTransform("translateY");
+				var scroll_box_h = m(topbottomContent).height();
+				var scroll_box_sale = scroll_Y / scroll_box_h;
+				mobile_scroll_bar.setTransform("translateY", -bar_wrap_h * scroll_box_sale);
+
+				mobile_scroll_bar.transition("null", 0);
+				bar_h = m(topbottomContent).height();
+				bar_wrap_h = m(scrolltb).height();
+				sale_bar = bar_wrap_h / bar_h;
+				scroll_bar_h = window_h * sale_bar;
+				mobile_scroll_bar = m(scrolltb).find(".mobile-scroll-bar");
+				mobile_scroll_bar.height(scroll_bar_h);
+			}
+		}
 	}
 }();
 
@@ -2340,7 +2364,6 @@ var scroll = function () {
 
 		for (var i = 0; i < navs.length; i++) {
 			navsListFun(navs[i]);
-			changeColor(navs[i]);
 		}
 	}
 
@@ -2357,6 +2380,7 @@ var scroll = function () {
 		var eleX = 0; // 元素初始位置
 		var startX = 0;
 		var startY = 0;
+		var isMOve = true;
 
 		var isAddMoveEvent = false; // 判断是否top拖动
 		var isAddMoveEventFirst = true; // 判断是否第一往上拖动
@@ -2368,6 +2392,7 @@ var scroll = function () {
 			var touch = event.changedTouches[0];
 			startX = touch.clientX;
 			startY = touch.clientY;
+			isMOve = true;
 			eleX = m(navsList).getTransform("translateX");
 			beginTime = new Date().getTime();
 			beginValue = eleX;
@@ -2385,6 +2410,10 @@ var scroll = function () {
 			var nowX = touch.clientX;
 			var nowY = touch.clientY;
 			var dis = nowX - startX;
+
+			if (Math.abs(nowX - startX) > 1 || Math.abs(nowY - startY) > 1) {
+				isMOve = false;
+			}
 
 			// 检查是否向上移动
 			if (Math.abs(nowY - startY) > Math.abs(nowX - startX) && isAddMoveEventFirst) {
@@ -2423,10 +2452,26 @@ var scroll = function () {
 		m(navs).on("touchend", end);
 
 		function end(event) {
-
+			event.preventDefault();
 			var touch = event.changedTouches[0];
 			var speed = disValue / (endTime - beginTime);
 			var window_w = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+
+			if (isMOve) {
+
+				// 单击选中样式
+				var p = m(event.target).closest("li");
+				if (p.length > 0) {
+					m(this).find("li").removeClass("active");
+					p.addClass("active");
+
+					// scroll单击选中样式自定义事件
+					m(this).trigger("scrollselect", p[0]);
+				}
+				// a链接
+				var href = m(event.target).closest("a").attr("href") || "javascript:;";
+				window.location.assign(href);
+			}
 
 			isAddMoveEvent = false; // 判断是否top拖动
 			isAddMoveEventFirst = true; // 判断是否第一往上拖动
@@ -2449,40 +2494,6 @@ var scroll = function () {
 			// 过度时间0.5s
 			navsList[0].style.transition = '.5s ' + bezier;
 			m(navsList).setTransform("translateX", target);
-		}
-	}
-
-	///导航点击选中样式
-	function changeColor(navs, fn) {
-		var Linodes = m(navs).find(".mobile-scroll-list li ");
-		//var isLink = navs.getAttribute("data-link");
-		// 对li进行遍历
-		var _length = Linodes.length;
-		for (var i = 0; i < _length; i++) {
-
-			//误触解决
-			m(Linodes[i]).on("touchmove", function () {
-				if (!this.isMove) {
-					this.isMove = true;
-				}
-			});
-
-			m(Linodes[i]).on("touchend", function (event) {
-
-				//对每个li绑定touchend，添加classname
-				if (!this.isMove) {
-
-					for (var j = 0; j < _length; j++) {
-
-						Linodes[j].classList.remove("active");
-					}
-					this.classList.add("active");
-
-					var href = m(event.target).closest("a").attr("href") || "javascript:;";
-					window.location.assign(href);
-				}
-				this.isMove = false;
-			});
 		}
 	}
 }();
@@ -2630,10 +2641,8 @@ var slide = function () {
 			// a链接
 			if (isLink) {
 				event.stopPropagation();
-				// a链接
 				var href = m(event.target).closest("a").attr("href") || "javascript:;";
 				window.location.assign(href);
-				//console.log(href);
 			}
 
 			var left = m(list).getTransform("translateX");

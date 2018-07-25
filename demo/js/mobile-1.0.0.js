@@ -236,16 +236,17 @@
 		// find
 		find: function(selector) {
 			var arr = [];
-			for(var i = 0; i < this.length; i++) {
-				var _arr = this[i].querySelectorAll(selector);
+			var obj=m(this);
+			for(var i = 0; i < obj.length; i++) {
+				var _arr = obj[i].querySelectorAll(selector);
 				Mobile.each(_arr, function(i, v) {
 					arr.push(v);
 				})
-				delete this[i];
+				delete obj[i];
 			}
-			delete this.length;
-			Array.prototype.push.apply(this, arr);
-			return this;
+			delete obj.length;
+			Array.prototype.push.apply(obj, arr);
+			return obj;
 		},
 
 		// text
@@ -1365,7 +1366,7 @@
 		},
 
 		// 自定义事件
-		trigger: function trigger(type, obj) {
+		trigger: function(type, obj) {
 
 			Mobile.each(this, function() {
 				obj = obj || {};
@@ -1374,6 +1375,11 @@
 				this.dispatchEvent(btnEvent);
 			});
 
+		},
+		emit: function(type, obj) {
+			Mobile.each(this, function() {
+				m(this).trigger(type,obj);
+			});
 		},
 
 		// click
@@ -1968,10 +1974,38 @@
 		trim: function(txt) {
 			var str = "";
 			txt = typeof txt === "string" ? txt : "";
-
 			str = txt.replace(/^\s*|\s*$/img, "");
 			return str;
-		}
+		},
+		
+		round: function(value,ratio ) {
+			
+			if(arguments.length===1){
+				
+				if(typeof value==="number"){
+					return	Math.round(value);
+				}
+				
+			}else if(arguments.length===2){
+				if(typeof value==="number" && typeof ratio==="number"){
+					
+					var _v=Math.floor(value);
+					_v=_v+ratio;
+					
+					if(value>_v){
+						return Math.ceil(value);
+					}else{
+						return Math.floor(value);
+					}
+						
+				}
+
+			}
+
+			return null;
+		},
+		
+		
 	});
 
 	/**绑定自定义事件函数**/

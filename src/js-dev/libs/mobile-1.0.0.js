@@ -236,16 +236,17 @@
 		// find
 		find: function(selector) {
 			var arr = [];
-			for(var i = 0; i < this.length; i++) {
-				var _arr = this[i].querySelectorAll(selector);
+			var obj=m(this);
+			for(var i = 0; i < obj.length; i++) {
+				var _arr = obj[i].querySelectorAll(selector);
 				Mobile.each(_arr, function(i, v) {
 					arr.push(v);
 				})
-				delete this[i];
+				delete obj[i];
 			}
-			delete this.length;
-			Array.prototype.push.apply(this, arr);
-			return this;
+			delete obj.length;
+			Array.prototype.push.apply(obj, arr);
+			return obj;
 		},
 
 		// text

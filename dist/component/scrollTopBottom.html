@@ -10,6 +10,15 @@
 				margin-bottom: 10px;
 				transform: rotate;
 			}
+			.loading{
+				position: relative;
+				bottom: 0;
+				left: 0;
+				width: 100%;
+				text-align: center;
+				padding: 10px;
+				background: #f8f8f8;
+			}
 		</style>
 
 		<link rel="stylesheet" type="text/css" href="../css/mobile.css" />
@@ -17,26 +26,21 @@
 	</head>
 
 	<body>
-		<!-- data-scrolltop 是否下拉#   data-scrollbottom 是否上拉-->
-		<div class="mobile-scroll-topbottom a" data-scrolltop data-scrollbottom >
+		<!-- data-scrolltop 是否下拉#   data-scrollbottom 是否上拉   data-scroll-bar 是否显示滚动条-->
+		<div class="mobile-scroll-topbottom a" data-scrolltop data-scrollbottom data-scroll-bar>
 
 			<!--header-->
-			<header class="mobile-head">
+			<!--<header class="mobile-head">
 				<div class="mobile-back">
 					<span class="iconfont icon-zuojiantou"></span>
 				</div>
 				<h2>上下滑动</h2>
-			</header>
+			</header>-->
 
 			<!--content-->
 			<section class="mobile-scroll-topbottom-content">
 				<p>==========================</p>
-				<p>p</p>
-				<p>p</p>
-				<p>p</p>
-				<p>p</p>
-				<a href="http://www.baidu.com">baidu</a>
-				<p>p</p>
+				<a href="http://www.baidu.com">88888888888888888888888888888888888888</a>
 				<p>p</p>
 				<p>p</p>
 				<p>p</p>
@@ -65,9 +69,61 @@
 				<p>p</p>
 				<p>p</p>
 				<p>p</p>
-				
-				
-				
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+				<p>p</p>
+
 				<p>####################</p>
 
 			</section>
@@ -76,26 +132,60 @@
 			<footer>
 
 			</footer>
+
 		</div>
 		<script src="../js/mobile.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			
-			m(".mobile-scroll-topbottom.a").on("scrollbottom",function(event){
-				
-				//console.log(event.detail);
+			// 拉到底部
+			var firstbottom = true;
+			var bottomcontent=m(".mobile-scroll-topbottom-content");
+			m(".mobile-scroll-topbottom").on("scrollbottom", function(event) {
+				console.log(event.detail);
 				console.log("bottom");
+				
+				if(firstbottom) {
+					firstbottom = false;
+					
+					var loading=document.createElement("div");
+					//loading.id="loading";
+					loading.innerHTML="正在加载中...";
+					loading.classList.add("loading");
+					bottomcontent.append(loading);
+					setTimeout(function() {
+						
+						m.get("../json/topbottom.json", function(data) {
+							var doc = document.createDocumentFragment();
+							for(var i = 0; i < data.length; i++) {
+								var p = document.createElement("p");
+								p.innerHTML = data[i].text;
+								doc.appendChild(p)
+							}
+					
+							bottomcontent.find(".loading").remove();
+							bottomcontent.append(doc);
+							bottomcontent.append("=======================");
+							firstbottom = true;
+							event.detail.barFun(); // 重设滚动条
+
+						});
+					}, 1000);
+				}
+
+			});
+			
+			// 拉到顶部
+			m(".mobile-scroll-topbottom").on("scrolltop", function(event) {
+
+				//console.log(event.detail);
+				//console.log("scrolltop");
 			})
 			
-			m(".mobile-scroll-topbottom.a").on("scrolltop",function(event){
-				
+			// 滚动
+			m(".mobile-scroll-topbottom").on("scrolltopbottom", function(event) {
+
 				//console.log(event.detail);
-				console.log("top");
-			})
-			
-			m(".mobile-scroll-topbottom.a").on("scrolltopbottom",function(event){
-				
-				//console.log(event.detail);
-				console.log("scrolltopbottom");
+				//console.log("scrolltopbottom");
 			})
 		</script>
 

@@ -606,12 +606,12 @@ a .spin {
 .mobile-scroll-bar {
   position: absolute;
   top: 0;
-  right: 0;
+  right: 1px;
+  z-index: 9999;
   height: 100%;
   width: 3px;
-  background: gray;
-  border-radius: 5px;
-  opacity: 0.8; }
+  background: rgba(255, 69, 0, 0.6);
+  border-radius: 8px; }
 
 /* mobile-scroll 导航左右滑动 */
 .mobile-scroll {

@@ -16,11 +16,12 @@
 .mobile-scroll-bar{
     position: absolute;
     top: 0;
-    right: 0;
+    right: 1px;
+    z-index: 9999;
     height: 100%;
     width: 3px;
-    background:gray;
-    border-radius: 5px;;
-    opacity: 0.8;
-    
+    background: rgba(orangered,0.6);
+    border-radius: 8px;;
+   // opacity: 0.8;
+  
 }

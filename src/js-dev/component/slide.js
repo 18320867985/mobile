@@ -146,10 +146,9 @@ var slide = (function() {
 			// a链接
 			if(isLink) {
 				event.stopPropagation();
-				// a链接
 				var href = m(event.target).closest("a").attr("href") || "javascript:;";
 				window.location.assign(href);
-				//console.log(href);
+			
 			}
 
 			var left = m(list).getTransform("translateX");
