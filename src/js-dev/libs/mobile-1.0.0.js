@@ -1636,13 +1636,11 @@
 			opt.success = opt.success || function() {};
 			opt.error = opt.error || function() {};
 			opt.contentType = opt.contentType || "application/x-www-form-urlencoded;charset=utf-8";
+			opt.timeout =typeof opt.timeout === "number"? opt.timeout:10000;
 			opt.progress = opt.progress || {};
-
+			
 			var xhr = Mobile.createXHR();
-			if(typeof opt.timeout === "number") {
-				xhr.timeout = opt.timeout
-			}
-
+			xhr.timeout=opt.timeout;
 			xhr.xhrFields = opt.xhrFields || {};
 
 			// 连接参数
@@ -1748,20 +1746,6 @@
 			script.setAttribute("type", "text/javascript");
 			document.body.appendChild(script);
 
-		},
-
-		/* CORS 跨域 加进度条*/
-
-		isCORS: function() {
-
-			if(typeof _xhrCORS === "undefined") {
-				_xhrCORS = Mobile.createXHR();
-			}
-			if(typeof _xhrCORS.withCredentials !== "undefined") {
-				return true;
-			}
-
-			return false;
 		},
 
 	});
