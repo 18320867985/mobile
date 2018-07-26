@@ -1653,13 +1653,13 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 			};
 
 			// 参数data对象字符
-			var params = [];
 			var postData = "";
 			if ((typeof data === "undefined" ? "undefined" : _typeof(data)) === "object") {
-				for (var key in data) {
-					params.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
-				}
-				postData = params && params.join('&');
+				//				for(var key in data) {
+				//					params.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
+				//				}
+				//				postData = params && params.join('&');
+				postData = _JoinParams(data);
 			}
 
 			if (postData.length > 0) {

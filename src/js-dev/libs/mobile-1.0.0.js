@@ -1728,10 +1728,11 @@
 			var params = [];
 			var postData = "";
 			if(typeof data === "object") {
-				for(var key in data) {
-					params.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
-				}
-				postData = params && params.join('&');
+//				for(var key in data) {
+//					params.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
+//				}
+//				postData = params && params.join('&');
+				postData=_JoinParams(data)
 			}
 
 			if(postData.length > 0) {
@@ -1749,6 +1750,7 @@
 		},
 
 	});
+	
 
 	/*extend 静态方法*/
 	Mobile.extend({
