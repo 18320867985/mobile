@@ -3,8 +3,7 @@
 .mobile-head {
     position: fixed;
     width: 100%;
-    height: 100rem/$rem;
-    line-height: 100rem/$rem;
+  
     top: 0;
     left: 0;
     right: 0;
@@ -33,8 +32,9 @@
 }
 
 .mobile-head-ttl {
-    display: inline-block;
-    width: 70%;
+    height: 100rem/$rem;
+    line-height: 100rem/$rem;
+    width: 100%;
     margin: 0 auto;
     font-size: 36rem/$rem;
     text-align: center;
