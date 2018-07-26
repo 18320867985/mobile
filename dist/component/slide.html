@@ -6,29 +6,26 @@
 		<title>mobile触摸页面</title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<style>
-			.mobile-slide {
-				margin-bottom: 10px;
-				transform: rotate;
-			}
+			
 		</style>
 
 		<link rel="stylesheet" type="text/css" href="../css/mobile.css" />
 
 	</head>
- 
+
 	<body>
-		<div class="mobile-scroll-topbottom" data-scrollbottom data-scroll-bar >
 
-			<!--header-->
-			<header class="mobile-head">
-				<div class="mobile-back">
-					<span class="iconfont icon-zuojiantou"></span>
-				</div>
-				<h2>轮播图</h2>
-			</header>
+		<!--header-->
+		<header class="mobile-head">
+			<div class="mobile-back">
+				<span class="iconfont icon-zuojiantou"></span>
+			</div>
+			<h2>轮播图</h2>
+		</header>
 
-			<!--content-->
-			<section class="mobile-scroll-topbottom-content">
+		<!--content-->
+		<section class="mobile-content mobile-scroll-topbottom" data-scrollbottom data-scroll-bar>
+			<div class=" mobile-scroll-topbottom-content">
 
 				<!--轮播图 data-time="3000" data-auto="自动播放"  data-no-loop="禁止循环" -->
 				<h4>自动轮播</h4>
@@ -77,7 +74,7 @@
 				<hr />
 				<!--轮播图 data-time="3000" data-auto="自动播放"  data-no-loop="禁止循环" -->
 				<h4>禁止自动轮播</h4>
-				<div class="mobile-slide " >
+				<div class="mobile-slide ">
 
 					<ul class="mobile-slide-list ">
 						<li>
@@ -122,7 +119,7 @@
 				<hr />
 				<h4>禁止自动轮播和禁止循环</h4>
 				<!--轮播图 data-time="3000" data-auto="自动播放"  data-no-loop="禁止循环" -->
-				<div class="mobile-slide "  data-no-loop="禁止循环">
+				<div class="mobile-slide " data-no-loop="禁止循环">
 
 					<ul class="mobile-slide-list ">
 						<li>
@@ -138,7 +135,7 @@
 								<img src="../images/2.jpg" alt="">
 							</a>
 						</li>
-						
+
 					</ul>
 
 					<div class="mobile-slide-radius">
@@ -227,17 +224,16 @@
 				<p>p</p>
 				<p>p</p>
 				<p>###################################</p>
+			</div>
+		</section>
 
-			</section>
+		<!--footer-->
+		<footer class="mobile-footer">
+			<h2>页脚</h2>
+		</footer>
 
-			<!--footer-->
-			<footer>
-
-			</footer>
-		</div>
 		<script src="../js/mobile.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
-		
 		</script>
 
 	</body>

@@ -458,13 +458,13 @@ select option {
 
 /*clr*/
 
-.clr:before,
-.clr:after {
+.clearfix:before,
+.clearfix:after {
     display: table;
     content: " ";
 }
 
-.clr:after {
+.clearfix:after {
     clear: both;
     overflow: hidden;
 }

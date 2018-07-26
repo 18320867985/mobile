@@ -2094,6 +2094,38 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 	}
 })();
 
+/*公共js设置样式*/
+var commonStyle = function (m) {
+
+	// 设置主题内容样式
+	m(function () {
+		mobileContent();
+		m(window).resize(function () {
+			mobileContent();
+		});
+	});
+
+	function mobileContent() {
+		var tab = m(".mobile-tab");
+		var head = m(".mobile-head");
+		var content = m(".mobile-content");
+		var footer = m(".mobile-footer");
+		var window_h = m(window).height();
+		var head_h = head.height() || 0;
+		var footer_h = footer.height() || 0;
+		var tab_h = tab.height() || 0;
+		var content_h = window_h - (head_h + footer_h + tab_h);
+		content.height(content_h);
+		content.css("top", head_h + tab_h);
+
+		//		console.log(head_h);
+		//		console.log(footer_h)
+		//		console.log(tab_h)
+		//		console.log(content_h)
+		//		console.log(window_h)
+	}
+}(mobile);
+
 var scrollTopBottom = function () {
 
 	m(document).touchstart(function (event) {
@@ -2151,7 +2183,15 @@ var scrollTopBottom = function () {
 		var isAddMoveEvent = false; // 判断是否往上拖动
 		var isAddMoveEventFirst = true; // 判断是否第一往上拖动
 
-		var window_h = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+		var tab = m(".mobile-tab");
+		var head = m(".mobile-head");
+		var content = m(".mobile-content");
+		var footer = m(".mobile-footer");
+		var window_h = m(window).height();
+		var head_h = head.height() || 0;
+		var footer_h = footer.height() || 0;
+		var tab_h = tab.height() || 0;
+		var window_h = window_h - (head_h + footer_h + tab_h);
 
 		// 滚动条
 		var bar_h = m(topbottomContent).height();
@@ -2160,7 +2200,10 @@ var scrollTopBottom = function () {
 		var scroll_bar_h = window_h * sale_bar;
 		var mobile_scroll_bar = m(scrolltb).find(".mobile-scroll-bar");
 		if (isScrollBar) {
-			mobile_scroll_bar.height(scroll_bar_h);
+			if (window_h < bar_h) {
+				mobile_scroll_bar.height(scroll_bar_h);
+				console.log();
+			}
 		}
 
 		m(scrolltb).on("touchstart", start);
@@ -2176,7 +2219,15 @@ var scrollTopBottom = function () {
 			beginValue = eleY;
 			disValue = 0;
 
-			window_h = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+			tab = m(".mobile-tab");
+			head = m(".mobile-head");
+			content = m(".mobile-content");
+			footer = m(".mobile-footer");
+			window_h = m(window).height();
+			head_h = head.height() || 0;
+			footer_h = footer.height() || 0;
+			tab_h = tab.height() || 0;
+			window_h = window_h - (head_h + footer_h + tab_h);
 
 			// 过度时间0s
 			topbottomContent[0].style.transition = 'none';
@@ -2189,7 +2240,10 @@ var scrollTopBottom = function () {
 				sale_bar = bar_wrap_h / bar_h;
 				scroll_bar_h = window_h * sale_bar;
 				mobile_scroll_bar = m(scrolltb).find(".mobile-scroll-bar");
-				mobile_scroll_bar.height(scroll_bar_h);
+				//mobile_scroll_bar.height(scroll_bar_h);
+				if (window_h < bar_h) {
+					mobile_scroll_bar.height(scroll_bar_h);
+				}
 			}
 		}
 
@@ -2226,7 +2280,10 @@ var scrollTopBottom = function () {
 			}
 
 			// scroll上下滚动scrolltopbottom自定义事件
-			m(this).trigger("scrolltopbottom", { el: topbottomContent[0], barFun: scrollBarFun });
+			m(this).trigger("scrolltopbottom", {
+				el: topbottomContent[0],
+				barFun: scrollBarFun
+			});
 
 			var minY = window_h - topbottomContent[0].offsetHeight;
 			var translateY = eleY + dis;
@@ -2240,7 +2297,10 @@ var scrollTopBottom = function () {
 				}
 
 				// scroll顶部 scrolltop自定义事件
-				m(this).trigger("scrolltop", { el: topbottomContent[0], barFun: scrollBarFun });
+				m(this).trigger("scrolltop", {
+					el: topbottomContent[0],
+					barFun: scrollBarFun
+				});
 			} else if (translateY < minY) {
 				var over = Math.abs(translateY - minY);
 				var scale = 1 - over / window_h;
@@ -2253,7 +2313,10 @@ var scrollTopBottom = function () {
 				}
 
 				// scroll底部 scrollbottom自定义事件
-				m(this).trigger("scrollbottom", { el: topbottomContent[0], barFun: scrollBarFun });
+				m(this).trigger("scrollbottom", {
+					el: topbottomContent[0],
+					barFun: scrollBarFun
+				});
 				if (m(topbottomContent).height() < window_h) {
 					translateY = 0;
 				}
@@ -2283,7 +2346,7 @@ var scrollTopBottom = function () {
 			}
 
 			var minY = window_h - topbottomContent[0].offsetHeight;
-			var target = m(topbottomContent).getTransform("translateY") + speed * 200;
+			var target = m(topbottomContent).getTransform("translateY") + speed * 300;
 			var bezier = '';
 
 			if (target > 0) {
@@ -2682,6 +2745,7 @@ var slide = function () {
 	}
 }();
 
+exports.commonStyle = commonStyle;
 exports.scrollTopBottom = scrollTopBottom;
 exports.scrollLeftRight = scrollLeftRight;
 exports.slide = slide;

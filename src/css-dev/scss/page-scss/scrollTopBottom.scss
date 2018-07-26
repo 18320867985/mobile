@@ -1,0 +1,28 @@
+
+
+.scrolltopbottom {
+    box-shadow: -2px 0px 3px #ddd;
+    li{
+        float: left;
+        width: 50%;
+        box-sizing: border-box;
+        padding: 10px;
+        text-align: center;
+       
+        img {
+            display: inline-block;
+            width: 250rem/$rem;
+            height: 250rem/$rem;
+        }
+        h5 {
+            padding-bottom: 15px;
+            text-align: center;
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            border-bottom:1px solid #f0f0f0  ;
+        }
+        
+    }
+}
