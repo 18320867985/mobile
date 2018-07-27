@@ -2171,17 +2171,13 @@ var scrollTopBottom = function () {
 			scrolltb.appendChild(scrollBar);
 		}
 
-		var beginTime = 0;
-		var beginValue = 0;
-		var endTime = 0;
-		var endValue = 0;
-		var disValue = 0;
 		var eleY = 0; // 元素初始位置
 		var startY = 0;
 		var startX = 0;
 		var isLink = true;
 		var isAddMoveEvent = false; // 判断是否往上拖动
 		var isAddMoveEventFirst = true; // 判断是否第一往上拖动
+		var dis = 0;
 
 		var tab = m(".mobile-tab");
 		var head = m(".mobile-head");
@@ -2192,6 +2188,7 @@ var scrollTopBottom = function () {
 		var footer_h = footer.height() || 0;
 		var tab_h = tab.height() || 0;
 		var window_h = window_h - (head_h + footer_h + tab_h);
+		var minY = window_h - topbottomContent[0].offsetHeight;
 
 		// 滚动条
 		var bar_h = m(topbottomContent).height();
@@ -2202,10 +2199,12 @@ var scrollTopBottom = function () {
 		if (isScrollBar) {
 			if (window_h < bar_h) {
 				mobile_scroll_bar.height(scroll_bar_h);
-				console.log();
 			}
 		}
-
+		var speedSetIntervalId = 0;
+		var speedSetIntervalFisrt = true;
+		var speedScroll = 0;
+		var speedlateY = 0;
 		m(scrolltb).on("touchstart", start);
 
 		function start(event) {
@@ -2215,9 +2214,15 @@ var scrollTopBottom = function () {
 			startX = touch.clientX;
 			isLink = true;
 			eleY = m(topbottomContent).getTransform("translateY");
-			beginTime = new Date().getTime();
-			beginValue = eleY;
-			disValue = 0;
+
+			isMoveX = true; // 判断是否往上拖动
+			isMoveFirst = true; // 判断是否第一往上拖动
+
+			// 计算移动速度
+			clearInterval(speedSetIntervalId);
+			speedSetIntervalFisrt = true;
+			speedlateY = eleY;
+			speedScroll = 0;
 
 			tab = m(".mobile-tab");
 			head = m(".mobile-head");
@@ -2251,10 +2256,17 @@ var scrollTopBottom = function () {
 
 		function move(event) {
 			event.preventDefault();
+
+			// 检查是否向上移动
+			if (isAddMoveEvent) {
+				return;
+			}
 			var touch = event.changedTouches[0];
 			var nowY = touch.clientY;
-			var dis = nowY - startY;
+			dis = nowY - startY;
 			var nowX = touch.clientX;
+			var disX = nowX - startX;
+			var disY = nowY - startY;
 
 			if (Math.abs(nowX - startX) > 1 || Math.abs(nowY - startY) > 1) {
 				isLink = false;
@@ -2269,14 +2281,27 @@ var scrollTopBottom = function () {
 			}
 
 			// 检查是否向上移动
-			if (Math.abs(nowX - startX) > Math.abs(nowY - startY) && isAddMoveEventFirst) {
-
-				isAddMoveEvent = true;
+			if (isAddMoveEventFirst) {
 				isAddMoveEventFirst = false;
+				if (Math.abs(disX) > Math.abs(disY)) {
+					isAddMoveEvent = true;
+				}
 			}
 
 			if (isAddMoveEvent) {
 				return;
+			}
+
+			// 计算移动速度
+			if (speedSetIntervalFisrt) {
+				speedSetIntervalFisrt = false;
+				speedSetIntervalId = setInterval(function () {
+					var speedlateY2 = m(topbottomContent).getTransform("translateY") || 0;
+					var speedlateY3 = speedlateY2 - speedlateY;
+					speedlateY = speedlateY2;
+					speedScroll = speedlateY3;
+					//console.log("speedlateY:" + speedScroll)
+				}, 20);
 			}
 
 			// scroll上下滚动scrolltopbottom自定义事件
@@ -2285,7 +2310,7 @@ var scrollTopBottom = function () {
 				barFun: scrollBarFun
 			});
 
-			var minY = window_h - topbottomContent[0].offsetHeight;
+			minY = window_h - topbottomContent[0].offsetHeight;
 			var translateY = eleY + dis;
 			if (translateY > 0) {
 				var scale = 1 - translateY / window_h;
@@ -2323,9 +2348,6 @@ var scrollTopBottom = function () {
 			}
 
 			m(topbottomContent).setTransform("translateY", translateY);
-			endTime = new Date().getTime();
-			endValue = translateY;
-			disValue = endValue - beginValue;
 		}
 
 		m(scrolltb).on("touchend", end);
@@ -2333,32 +2355,37 @@ var scrollTopBottom = function () {
 		function end(event) {
 
 			var touch = event.changedTouches[0];
-			var speed = disValue / (endTime - beginTime);
+
+			// 计算移动速度
+			speedSetIntervalFisrt = true;
+			clearInterval(speedSetIntervalId);
+
 			isAddMoveEvent = false; // 判断是否top拖动
 			isAddMoveEventFirst = true; // 判断是否第一往上拖动
+			//console.log(isMOve+"/end");
 
 			// a链接
 			if (isLink) {
-
 				event.stopPropagation();
 				var href = m(event.target).closest("a").attr("href") || "javascript:;";
 				window.location.assign(href);
 			}
 
-			var minY = window_h - topbottomContent[0].offsetHeight;
-			var target = m(topbottomContent).getTransform("translateY") + speed * 300;
-			var bezier = '';
+			minY = window_h - topbottomContent[0].offsetHeight;
+			var target = m(topbottomContent).getTransform("translateY") + speedScroll * 30;
+			var bezier = 'ease-out';
 
 			if (target > 0) {
 				target = 0;
-
-				bezier = 'cubic-bezier(.17,.67,.81,.9)';
+				topbottomContent[0].style.transition = '.5s ' + bezier;
 			} else if (target < minY) {
 				target = minY;
-				bezier = 'cubic-bezier(.17,.67,.81,.9)';
 				if (m(topbottomContent).height() < window_h) {
 					target = 0;
 				}
+				topbottomContent[0].style.transition = '.5s ' + bezier;
+			} else {
+				topbottomContent[0].style.transition = '1s ' + bezier;
 			}
 
 			// 滚动条
@@ -2367,15 +2394,25 @@ var scrollTopBottom = function () {
 				var scroll_box_h = m(topbottomContent).height();
 				var scroll_box_sale = scroll_Y / scroll_box_h;
 				mobile_scroll_bar.setTransform("translateY", -m(scrolltb).height() * scroll_box_sale);
-				mobile_scroll_bar.transition("all", 500);
+				mobile_scroll_bar.transition("all", 1000);
 				//mobile_scroll_bar.css("opacity",0);
 			}
 			// 过度时间0.5s
-			topbottomContent[0].style.transition = '.5s ' + bezier;
+			//topbottomContent[0].style.transition = '1s ' + bezier
 			m(topbottomContent).setTransform("translateY", target);
 		}
 
-		function scrollBarFun() {
+		m(scrolltb).on("touchcancel", touchcancel);
+
+		function touchcancel() {
+
+			// 计算移动速度
+			speedSetIntervalFisrt = true;
+			clearInterval(speedSetIntervalId);
+		}
+
+		function scrollBarFun(event) {
+			clearInterval(speedSetIntervalId);
 			// 滚动条
 			if (isScrollBar) {
 				var scroll_Y = m(topbottomContent).getTransform("translateY");

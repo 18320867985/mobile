@@ -798,7 +798,8 @@ a .spin {
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
     padding: 10px;
-    text-align: center; }
+    text-align: center;
+    border: 1px solid #f8f8f8; }
     .scrolltopbottom li img {
       display: inline-block;
       width: 5rem;
@@ -809,5 +810,4 @@ a .spin {
       width: 100%;
       white-space: nowrap;
       overflow: hidden;
-      text-overflow: ellipsis;
-      border-bottom: 1px solid #f0f0f0; }
+      text-overflow: ellipsis; }

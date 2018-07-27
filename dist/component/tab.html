@@ -24,9 +24,35 @@
 
 			<!--content-->
 			<!-- data-scrolltop 是否下拉#   data-scrollbottom 是否上拉   data-scroll-bar 是否显示滚动条-->
-			<section class="mobile-content mobile-scroll-topbottom" data-scroll-bar data-scrolltop >
+			<section class="mobile-content mobile-scroll-topbottom" data-scroll-bar data-scrolltop  >
 				<div class="mobile-toptext">别拉了，我已到顶了。</div>
 				<div class=" mobile-scroll-topbottom-content" >
+					<div class="mobile-slide " data-no-loop="禁止循环">
+
+					<ul class="mobile-slide-list ">
+						<li>
+							<a href="#" id="a">
+								<div id="">
+									<img src="../images/1.jpg" alt="">
+
+								</div>
+							</a>
+						</li>
+						<li>
+							<a href="http://www.51zxw.com">
+								<img src="../images/2.jpg" alt="">
+							</a>
+						</li>
+
+					</ul>
+
+					<div class="mobile-slide-radius">
+						<span class="active"></span>
+						<span></span>
+					</div>
+
+				</div>
+
 					<ul  class="scrolltopbottom clearfix">
 						<li >
 							<img src="../images/1段奶粉.png" alt="" />
@@ -137,7 +163,7 @@
 							
 							var html=Mustache.to_html($("#must").html(),{must:data});
 							bottomcontent.find(".loading").remove();
-							bottomcontent.find("ul").append(html);
+							bottomcontent.find(".scrolltopbottom").append(html);
 							firstbottom = true;
 							event.detail.barFun(); // 重设滚动条
 
@@ -145,7 +171,7 @@
 							firstbottom = true;
 							loading.innerHTML="数据加载失败...";
 						});
-					}, 1000);
+					}, 500);
 				}
 
 			});
