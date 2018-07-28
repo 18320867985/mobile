@@ -94,16 +94,14 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 				} else if ((typeof selector === "undefined" ? "undefined" : _typeof(selector)) === "object") {
 
 					// 遍历数组型对象
-					if (selector.length && selector.length > 0) {
+					if (selector.hasOwnProperty("length") && selector.length > 0) {
 						Mobile.each(selector, function (i, v) {
 							arrs.push(v);
 						});
+					} else if (selector.nodeType === Node.ELEMENT_NODE || selector.nodeType === Node.DOCUMENT_NODE || selector === window) {
+						// 单例对象 
+						arrs.push(selector);
 					}
-
-					// 单例对象 
-					else if (arrs.length === 0) {
-							arrs.push(selector);
-						}
 					Array.prototype.push.apply(this, arrs);
 				}
 			} else {
@@ -130,7 +128,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 						return this;
 					}
 					// 遍历数组型对象
-					if (content.length && content.length > 0) {
+					if (content.hasOwnProperty("length") && content.length > 0) {
 
 						Mobile.each(content, function () {
 							var childElements = this.querySelectorAll(selector);
@@ -2160,6 +2158,9 @@ var scrollTopBottom = function () {
 	function topBottomFun(scrolltb) {
 
 		var topbottomContent = m(scrolltb).find(".mobile-scroll-topbottom-content");
+		if (topbottomContent.length === 0) {
+			return;
+		}
 		m(topbottomContent).setTransform('translateZ', 0.01);
 		var isScrollTop = m(scrolltb).hasAttr("data-scroll-top"); // 是否下拉
 		var isScrollBottom = m(scrolltb).hasAttr("data-scroll-bottom"); // 是否上拉

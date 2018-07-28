@@ -38,6 +38,9 @@ var scrollTopBottom = (function() {
 	function topBottomFun(scrolltb) {
 
 		var topbottomContent = m(scrolltb).find(".mobile-scroll-topbottom-content");
+		if(topbottomContent.length===0){
+			return ;
+		}
 		m(topbottomContent).setTransform('translateZ', 0.01);
 		var isScrollTop = m(scrolltb).hasAttr("data-scroll-top"); // 是否下拉
 		var isScrollBottom = m(scrolltb).hasAttr("data-scroll-bottom"); // 是否上拉
