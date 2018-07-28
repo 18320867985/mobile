@@ -56,7 +56,10 @@ var slide = (function() {
 			clearInterval(timerId);
 			list.style.transition = 'none';
 			var left = m(list).getTransform("translateX");
-			var now = Math.round(-left / document.documentElement.clientWidth)
+			var now = Math.round(-left / document.documentElement.clientWidth);
+			
+			isAddMoveEvent = false; // 判断是否top拖动
+			isAddMoveEventFirst = true; // 判断是否第一往上拖动
 
 			// 是否循环
 			if(!isLoop) {
@@ -82,23 +85,25 @@ var slide = (function() {
 			var nowX = touch.clientX;
 			var nowY = touch.clientY;
 			var disX = nowX - startX;
-			
-			if(Math.abs(nowX-startX)>1||Math.abs(nowY-startY)>1){
+
+			if(Math.abs(nowX - startX) > 1 || Math.abs(nowY - startY) > 1) {
 				isLink = false;
 			}
-
+			
 			// 检查是否向上移动
-			if(Math.abs(nowY - startY) > Math.abs(nowX - startX) && isAddMoveEventFirst) {
-
-				isAddMoveEvent = true;
+			var _x = Math.abs(nowX - startX);
+			var _y = Math.abs(nowY - startY);
+			if(isAddMoveEventFirst&&(_x!=_y)) {
 				isAddMoveEventFirst = false;
+				if(_y>_x) {
+					isAddMoveEvent = true;
+				}
 			}
-
 			if(isAddMoveEvent) {
 
 				return;
 			}
-
+			
 			// 禁止循环
 			if(isLoop) {
 				var window_w = window.innerWidth ||
@@ -130,14 +135,12 @@ var slide = (function() {
 
 		//touchend
 		function end(event) {
-
+			event.preventDefault();
 			var touch = event.changedTouches[0];
 			var nowX = touch.clientX;
 			var nowY = touch.clientY;
 
-			isAddMoveEvent = false; // 判断是否top拖动
-			isAddMoveEventFirst = true; // 判断是否第一往上拖动
-
+			
 			// 自动播放
 			if(isAuto && !isLoop) {
 				timerId = auto(time);
@@ -145,19 +148,25 @@ var slide = (function() {
 
 			// a链接
 			if(isLink) {
-				event.stopPropagation();
+				
 				var href = m(event.target).closest("a").attr("href") || "javascript:;";
 				window.location.assign(href);
-			
 			}
 
 			var left = m(list).getTransform("translateX");
 			var ratio = -left / document.documentElement.clientWidth;
 			if(nowX > startX) {
+				
 				now = m.round(ratio, 0.8);
+				if(left>0){
+					
+				}
 
 			} else {
 				now = m.round(ratio, 0.2);
+				if(left<0){
+					
+				}
 			}
 
 			if(now < 0) {
