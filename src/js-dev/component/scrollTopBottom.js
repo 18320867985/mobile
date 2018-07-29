@@ -1,24 +1,6 @@
 var scrollTopBottom = (function() {
 
-	m(document).touchstart(function(event) {
-		event.preventDefault();
-
-	});
-
-	m(document).touchmove(function(event) {
-		event.preventDefault();
-
-	});
-	m(document).touchend(function(event) {
-		event.preventDefault();
-
-	});
-
-	m(document).touchcancel(function(event) {
-		event.preventDefault();
-
-	});
-
+	
 	m(function() {
 		topBottom();
 	})
@@ -149,8 +131,7 @@ var scrollTopBottom = (function() {
 
 		function move(event) {
 			event.preventDefault();
-			event.stopPropagation();
-		
+			
 			// 检查是否向上移动
 			if(isAddMoveEvent) {
 				return;

@@ -20,16 +20,16 @@
     width: 100%;
 }
 
-.mobile-slide-list li {
-//  float: left;
-    /*width: 20%;*/
+.mobile-slide-list>li,
+.mobile-slide-item {
+
    width: 100%;
- 
    font-size: 1rem;
    display: inline-block;
+    white-space:normal;
 }
 
-.mobile-slide-list li img {
+.mobile-slide-list> li img {
     display: block;
     width: 100%;
     height: auto;

@@ -1,5 +1,20 @@
 /*公共js设置样式*/
 var commonStyle = (function(m) {
+	m(document).touchstart(function(event) {
+		event.preventDefault();
+
+	});
+
+	m(document).touchmove(function(event) {
+		event.preventDefault();
+
+	});
+	m(document).touchend(function(event) {
+		event.preventDefault();
+
+	});
+
+	
 
 	// 设置主题内容样式
 	m(function() {
@@ -22,10 +37,20 @@ var commonStyle = (function(m) {
 		var window_h=m(window).height();
 		var head_h=head.height()||0;
 		var footer_h=footer.height()||0;
-		var tab_h=tab.height()||0;
+		
+		var tab_h=0;
+		m(tab).each(function(){
+			var _h=m(this).height()||0;
+			tab_h+=_h;
+			
+		});
+		
 		var content_h=window_h-(head_h+footer_h+tab_h);
 		content.height(content_h);
-		content.css("top",head_h+tab_h);
+		var tab_top = m(".mobile-tab-top");
+		var tab_top_h=tab_top.height()||0;
+		content.css("top",head_h+tab_top_h);
+		
 		
 //		console.log(head_h);
 //		console.log(footer_h)
@@ -36,10 +61,15 @@ var commonStyle = (function(m) {
 	
 	// scroll-tab
 	function mobileTab(){
-		var tab = m(".mobile-tab");
+		var tab_top = m(".mobile-tab-top");
 		var head = m(".mobile-head");
 		var head_h=head.height()||0;
-		tab.css("top",head_h);
+		tab_top.css("top",head_h);
+		
+		var tab_bottom = m(".mobile-tab-bottom");
+		var footer = m(".mobile-footer");
+		var footer_h=footer.height()||0;
+		tab_bottom.css("bottom",footer_h);
 	}
 	
 

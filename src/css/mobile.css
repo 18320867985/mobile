@@ -229,7 +229,9 @@ th {
 * {
   padding: 0;
   margin: 0;
-  outline: none; }
+  outline: none;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box; }
 
 body {
   font-size: 14px;
@@ -604,7 +606,6 @@ a .spin {
   width: 100%;
   top: 0;
   left: 0;
-  right: 0;
   z-index: 9999;
   background: #f0f0f0; }
 
@@ -634,6 +635,11 @@ a .spin {
   text-align: center;
   color: #444; }
 
+.mobile-content {
+  position: absolute;
+  z-index: 9;
+  width: 100%; }
+
 /*mobile-footer*/
 .mobile-footer {
   position: fixed;
@@ -654,6 +660,7 @@ a .spin {
 .mobile-scroll-topbottom {
   position: relative;
   width: 100%;
+  height: 100%;
   overflow: hidden; }
 
 /*置顶文字*/
@@ -668,6 +675,7 @@ a .spin {
   position: absolute;
   top: 0;
   left: 0;
+  display: block;
   background: #fff;
   /*加载图标*/ }
   .mobile-scroll-topbottom-content .loading {
@@ -741,13 +749,14 @@ a .spin {
   font-size: 0;
   width: 100%; }
 
-.mobile-slide-list li {
-  /*width: 20%;*/
+.mobile-slide-list > li,
+.mobile-slide-item {
   width: 100%;
   font-size: 1rem;
-  display: inline-block; }
+  display: inline-block;
+  white-space: normal; }
 
-.mobile-slide-list li img {
+.mobile-slide-list > li img {
   display: block;
   width: 100%;
   height: auto; }
@@ -776,9 +785,7 @@ a .spin {
 .mobile-tab {
   position: fixed;
   width: 100%;
-  top: 0;
   left: 0;
-  right: 0;
   z-index: 9999;
   background: #f0f0f0; }
 
@@ -789,6 +796,46 @@ a .spin {
   font-size: 2rem;
   text-align: center;
   color: #444; }
+
+.mobile-tab-bottom {
+  padding: 2px 0;
+  border-top: 1px solid #ddd;
+  -webkit-box-shadow: 0px -1px 2px #ddd;
+          box-shadow: 0px -1px 2px #ddd;
+  background: #fff; }
+
+.mobile-tab-nav {
+  width: 100%;
+  background: #fff; }
+
+.mobile-tab-item {
+  display: block;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  height: 2.2rem;
+  line-height: 2.2rem;
+  font-size: 0.7rem;
+  text-align: center;
+  background: #fff; }
+  .mobile-tab-item + .mobile-tab-item {
+    border-left: 1px solid #ddd; }
+  .mobile-tab-item.active {
+    color: #690; }
+
+/*  tab内容 slide*/
+.mobile-tab-slide {
+  width: 100%;
+  height: 100%;
+  background: #f8f8f8; }
+
+.mobile-tab-slide-list {
+  height: 100%; }
+
+.mobile-tab-slide-item {
+  float: left;
+  padding: 10px;
+  height: 100%;
+  background: #fff; }
 
 .scrolltopbottom {
   -webkit-box-shadow: -2px 0px 3px #ddd;
