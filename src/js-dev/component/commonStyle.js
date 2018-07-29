@@ -4,12 +4,16 @@ var commonStyle = (function(m) {
 	// 设置主题内容样式
 	m(function() {
 		mobileContent();
+		mobileTab();
+		
 		m(window).resize(function() {
-		mobileContent();
+			mobileContent();
+			mobileTab();
 		});
 
 	});
-
+	
+	// scroll-content内容
 	function mobileContent() {
 		var tab = m(".mobile-tab");
 		var head = m(".mobile-head");
@@ -29,6 +33,15 @@ var commonStyle = (function(m) {
 //		console.log(content_h)
 //		console.log(window_h)
 	}
+	
+	// scroll-tab
+	function mobileTab(){
+		var tab = m(".mobile-tab");
+		var head = m(".mobile-head");
+		var head_h=head.height()||0;
+		tab.css("top",head_h);
+	}
+	
 
 })(mobile);
 

@@ -1,9 +1,11 @@
 
 /*设计图width*/
-$screenwidth:750;
+$screenwidth:320;
 
-/*rem 分数*/
-$remSize:15;
+/*rem 份数*/
+$remSize:16;
+
+/* 320/16 =20px=1rem */
 
 /*html rem比例*/
 $rem:($screenwidth/$remSize);

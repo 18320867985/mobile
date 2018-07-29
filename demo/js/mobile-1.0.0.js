@@ -89,14 +89,12 @@
 				} else if(typeof selector === "object") {
 
 					// 遍历数组型对象
-					if(selector.length && selector.length > 0) {
+					if(selector.hasOwnProperty("length")&&selector.length > 0) {
 						Mobile.each(selector, function(i, v) {
 							arrs.push(v);
 						});
-					}
-
-					// 单例对象 
-					else if(arrs.length === 0) {
+					} else if(selector.nodeType === Node.ELEMENT_NODE || selector.nodeType === Node.DOCUMENT_NODE||selector===window) {
+						// 单例对象 
 						arrs.push(selector);
 					}
 					Array.prototype.push.apply(this, arrs);
@@ -128,7 +126,7 @@
 						return this;
 					}
 					// 遍历数组型对象
-					if(content.length && content.length > 0) {
+					if(content.hasOwnProperty("length")&& content.length > 0) {
 
 						Mobile.each(content, function() {
 							var childElements = this.querySelectorAll(selector);
@@ -236,7 +234,7 @@
 		// find
 		find: function(selector) {
 			var arr = [];
-			var obj=m(this);
+			var obj = m(this);
 			for(var i = 0; i < obj.length; i++) {
 				var _arr = obj[i].querySelectorAll(selector);
 				Mobile.each(_arr, function(i, v) {
@@ -333,11 +331,11 @@
 
 		// hasAttr
 		hasAttr: function(attr) {
-			
+
 			// 是否含有元素的属性
-			var _attr=false;
+			var _attr = false;
 			if(arguments.length === 1 && typeof attr === "string") {
-				
+
 				Mobile.each(this, function() {
 					_attr = this.hasAttribute(attr);
 					return false;
@@ -347,7 +345,6 @@
 
 		},
 
-		
 		// removeAttr
 		removeAttr: function(attr) {
 
@@ -1067,24 +1064,24 @@
 
 		// transition
 		transition: function(option, time, ease, delay, fn) {
-			
+
 			ease = typeof ease === "string" ? ease : "ease";
 			delay = typeof delay === "number" ? delay : 0;
 			var _transition = "all " + time / 1000 + "s  " + ease + " " + (delay / 1000) + "s";
-			
-			if(typeof option==="string"){
-				 _transition = option +" "+ time / 1000 + "s  " + ease + " " + (delay / 1000) + "s";
+
+			if(typeof option === "string") {
+				_transition = option + " " + time / 1000 + "s  " + ease + " " + (delay / 1000) + "s";
 				Mobile.each(this, function() {
 					this.style.MozTransition = _transition;
 					this.style.msTransition = _transition;
 					this.style.webkitTransition = _transition;
 					this.style.OTransition = _transition;
-					this.style.transition = _transition;	
+					this.style.transition = _transition;
 				});
-					
+
 				return this;
 			}
-			
+
 			Mobile.each(this, function(i, el) {
 				time = typeof time === "number" ? time : 400;
 				el.setTimeout = el.setTimeout || 0; // 第一次执行
@@ -1378,7 +1375,7 @@
 		},
 		emit: function(type, obj) {
 			Mobile.each(this, function() {
-				m(this).trigger(type,obj);
+				m(this).trigger(type, obj);
 			});
 		},
 
@@ -1636,11 +1633,11 @@
 			opt.success = opt.success || function() {};
 			opt.error = opt.error || function() {};
 			opt.contentType = opt.contentType || "application/x-www-form-urlencoded;charset=utf-8";
-			opt.timeout =typeof opt.timeout === "number"? opt.timeout:10000;
+			opt.timeout = typeof opt.timeout === "number" ? opt.timeout : 10000;
 			opt.progress = opt.progress || {};
-			
+
 			var xhr = Mobile.createXHR();
-			xhr.timeout=opt.timeout;
+			xhr.timeout = opt.timeout;
 			xhr.xhrFields = opt.xhrFields || {};
 
 			// 连接参数
@@ -1728,10 +1725,11 @@
 			var params = [];
 			var postData = "";
 			if(typeof data === "object") {
-				for(var key in data) {
-					params.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
-				}
-				postData = params && params.join('&');
+				//				for(var key in data) {
+				//					params.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
+				//				}
+				//				postData = params && params.join('&');
+				postData = _JoinParams(data)
 			}
 
 			if(postData.length > 0) {
@@ -1961,35 +1959,34 @@
 			str = txt.replace(/^\s*|\s*$/img, "");
 			return str;
 		},
-		
-		round: function(value,ratio ) {
-			
-			if(arguments.length===1){
-				
-				if(typeof value==="number"){
-					return	Math.round(value);
+
+		round: function(value, ratio) {
+
+			if(arguments.length === 1) {
+
+				if(typeof value === "number") {
+					return Math.round(value);
 				}
-				
-			}else if(arguments.length===2){
-				if(typeof value==="number" && typeof ratio==="number"){
-					
-					var _v=Math.floor(value);
-					_v=_v+ratio;
-					
-					if(value>_v){
+
+			} else if(arguments.length === 2) {
+				if(typeof value === "number" && typeof ratio === "number") {
+
+					var _v = Math.floor(value);
+					_v = _v + ratio;
+
+					if(value > _v) {
 						return Math.ceil(value);
-					}else{
+					} else {
 						return Math.floor(value);
 					}
-						
+
 				}
 
 			}
 
 			return null;
 		},
-		
-		
+
 	});
 
 	/**绑定自定义事件函数**/
@@ -2061,7 +2058,7 @@
 							if(arrs.length === 2) {
 								result += item + '(' + parseFloat(arrs[0]) + 'deg,' + parseFloat(arrs[1]) + 'deg)  ';
 							} else {
-								result += item + '(' + parseFloat(arrs) + 'deg,' +0+ 'deg)  ';
+								result += item + '(' + parseFloat(arrs) + 'deg,' + 0 + 'deg)  ';
 							}
 							break;
 
@@ -2124,47 +2121,45 @@
 				if(typeof this.transform[transforName] == 'undefined') {
 					if(transforName == 'scale' || transforName == 'scaleX' || transforName == 'scaleY') {
 						result = 1
-						if(transforName==="scale"){
-							result = [1,1];
+						if(transforName === "scale") {
+							result = [1, 1];
 						}
-						
 
 					} else {
 						result = 0;
-						if(transforName==="skew"||transforName==="translate"){
-							result=[0,0];
+						if(transforName === "skew" || transforName === "translate") {
+							result = [0, 0];
 						}
 					}
 
 				} else {
-					if(transforName==="skew"||transforName==="translate"||transforName==="scale"){
-							var strs = this.transform[transforName].split(",");
-							var arrs=[];
-							for(var y=0;y<strs.length;y++){
-							var v=	parseFloat(	strs[y]);
-								if(transforName==="scale"){
-									v=isNaN(v)?1:v;
-									
-								}else{
-										v=isNaN(v)?0:v;
-								}
-								
-								arrs.push(v);
+					if(transforName === "skew" || transforName === "translate" || transforName === "scale") {
+						var strs = this.transform[transforName].split(",");
+						var arrs = [];
+						for(var y = 0; y < strs.length; y++) {
+							var v = parseFloat(strs[y]);
+							if(transforName === "scale") {
+								v = isNaN(v) ? 1 : v;
+
+							} else {
+								v = isNaN(v) ? 0 : v;
 							}
-							
-							if(arrs.length===1){
-								if(transforName==="scale"){
-									arrs.push(arrs[0]);
-								}else{
-									arrs.push(0);
-								}
+
+							arrs.push(v);
+						}
+
+						if(arrs.length === 1) {
+							if(transforName === "scale") {
+								arrs.push(arrs[0]);
+							} else {
+								arrs.push(0);
 							}
-						result=arrs;
-						
-					}else{
+						}
+						result = arrs;
+
+					} else {
 						result = parseFloat(this.transform[transforName]);
 					}
-					
 
 				}
 

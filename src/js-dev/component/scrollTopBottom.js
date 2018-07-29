@@ -271,7 +271,7 @@ var scrollTopBottom = (function() {
 					var href=_a.attr("href") || "javascript:;";
 					window.location.assign(href);
 				}
-			console.log(isHasParent)
+				//console.log(isHasParent)
 				
 			}
 

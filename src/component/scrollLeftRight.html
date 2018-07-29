@@ -5,13 +5,14 @@
 		<meta charset="UTF-8">
 		<title>mobile触摸页面</title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<style>
-			.mobile-slide {
-				margin-bottom: 10px;
-				transform: rotate;
+		<style type="text/css">
+			 h4 {
+				height: 30px;
+				line-height: 30px;
+				color: #777;
+				text-align: center;
 			}
 		</style>
-
 		<link rel="stylesheet" type="text/css" href="../css/mobile.css" />
 
 	</head>
@@ -20,13 +21,15 @@
 
 		<!--header-->
 		<header class="mobile-head">
-			<nav class="mobile-scroll" data-link="跳转页面">
-				<ul class="mobile-scroll-list">
+			<h4>定位到center</h4>
+			<!--左右滑动组建  data-position-left=定位到left data-position-center=定位到center -->
+			<nav class="mobile-scroll-leftright" data-position-center>
+				<ul class="mobile-scroll-leftright-content">
 					<li class="active">
-						<a href="http://www.baidu.com">首页</a>
+						<a href="javascript:;">首页</a>
 					</li>
 					<li>
-						<a href="slide.html">MV</a>
+						<a href="javascript:;">MV</a>
 					</li>
 					<li>
 						<a href="javascript:;">悦单</a>
@@ -55,10 +58,49 @@
 
 				</ul>
 			</nav>
-			<nav class="mobile-scroll" data-link="跳转页面">
-				<ul class="mobile-scroll-list">
+			<h4>定位到left</h4>
+			<!--左右滑动组建  data-position-left=定位到left data-position-center=定位到center -->
+			<nav class="mobile-scroll-leftright" data-position-left>
+				<ul class="mobile-scroll-leftright-content">
 					<li class="active">
-						<a href="scrollTopBottom.html">首页</a>
+						<a href="javascript:;">首页</a>
+					</li>
+					<li>
+						<a href="javascript:;">MV</a>
+					</li>
+					<li>
+						<a href="javascript:;">悦单</a>
+					</li>
+					<li>
+						<a href="javascript:;">V榜</a>
+					</li>
+					<li>
+						<a href="javascript:;">音悦</a>
+					</li>
+					<li>
+						<a href="javascript:;">商城</a>
+					</li>
+					<li>
+						<a href="javascript:;">节目</a>
+					</li>
+					<li>
+						<a href="javascript:;">饭团</a>
+					</li>
+					<li>
+						<a href="javascript:;">资讯</a>
+					</li>
+					<li>
+						<a href="javascript:;">我的家</a>
+					</li>
+
+				</ul>
+			</nav>
+			<h4>内容小的window窗体</h4>
+			<!--左右滑动组建  data-position-left=定位到left data-position-center=定位到center -->
+			<nav class="mobile-scroll-leftright" data-position-center>
+				<ul class="mobile-scroll-leftright-content">
+					<li class="active">
+						<a href="javascript:;">首页</a>
 					</li>
 					<li>
 						<a href="javascript:;">MV</a>
@@ -80,8 +122,6 @@
 
 		</section>
 
-		<a  id="a" class="a" href="">a</a>
-		<a class="a" href="">a2</a>
 		<!--footer-->
 		<footer>
 
@@ -95,8 +135,6 @@
 				//console.log(m(event.detail).find("a").text());
 
 			})
-			
-			
 		</script>
 
 	</body>

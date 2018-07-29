@@ -7,7 +7,7 @@ var scrollLeftRight = (function() {
 
 	//导航拖拽
 	function navSlide() {
-		var navs = m(".mobile-scroll");
+		var navs = m(".mobile-scroll-leftright");
 
 		for(var i = 0; i < navs.length; i++) {
 			navsListFun(navs[i]);
@@ -18,7 +18,10 @@ var scrollLeftRight = (function() {
 	//导航拖拽fun
 	function navsListFun(navs) {
 
-		var navsList = m(navs).find(".mobile-scroll-list");
+		var navsList = m(navs).find(".mobile-scroll-leftright-content");
+		if(navsList.length === 0) {
+			return;
+		}
 		m(navsList).setTransform('translateZ', 0.01);
 		var beginTime = 0;
 		var beginValue = 0;
@@ -29,8 +32,17 @@ var scrollLeftRight = (function() {
 		var eleX = 0; // 元素初始位置
 		var startX = 0;
 		var startY = 0;
-		var isMOve=true;
-		
+		var isMOve = true;
+
+		// 定位到left
+		var isPositionLeft = m(navs).hasAttr("data-position-left");
+		// 定位到center
+		var isPositionCenter = m(navs).hasAttr("data-position-center");
+
+		var window_w = window.innerWidth ||
+			document.documentElement.clientWidth ||
+			document.body.clientWidth;
+
 		var isAddMoveEvent = false; // 判断是否top拖动
 		var isAddMoveEventFirst = true; // 判断是否第一往上拖动
 
@@ -41,7 +53,7 @@ var scrollLeftRight = (function() {
 			var touch = event.changedTouches[0];
 			startX = touch.clientX;
 			startY = touch.clientY;
-			isMOve=true;
+			isMOve = true;
 			eleX = m(navsList).getTransform("translateX");
 			beginTime = new Date().getTime();
 			beginValue = eleX;
@@ -60,23 +72,26 @@ var scrollLeftRight = (function() {
 			var nowX = touch.clientX;
 			var nowY = touch.clientY;
 			var dis = nowX - startX;
-			
-			if(Math.abs(nowX-startX)>1||Math.abs(nowY-startY)>1){
+
+			if(Math.abs(nowX - startX) > 1 || Math.abs(nowY - startY) > 1) {
 				isMOve = false;
 			}
 
 			// 检查是否向上移动
-			if(Math.abs(nowY - startY) > Math.abs(nowX - startX) && isAddMoveEventFirst) {
-
-				isAddMoveEvent = true;
+			var _x = Math.abs(nowX - startX);
+			var _y = Math.abs(nowY - startY);
+			if(isAddMoveEventFirst && (_x != _y)) {
 				isAddMoveEventFirst = false;
+				if(_y > _x) {
+					isAddMoveEvent = true;
+				}
 			}
-
 			if(isAddMoveEvent) {
+
 				return;
 			}
 
-			var window_w = window.innerWidth ||
+			window_w = window.innerWidth ||
 				document.documentElement.clientWidth ||
 				document.body.clientWidth;
 
@@ -110,49 +125,103 @@ var scrollLeftRight = (function() {
 			event.preventDefault();
 			var touch = event.changedTouches[0];
 			var speed = disValue / (endTime - beginTime);
-			var window_w = window.innerWidth ||
+			window_w = window.innerWidth ||
 				document.documentElement.clientWidth ||
 				document.body.clientWidth;
-				
+
 			if(isMOve) {
-				
+
 				// 单击选中样式
-				var p=m(event.target).closest("li");
-				if(p.length>0){
-					m(this).find("li").removeClass("active");	
-			 		p.addClass("active");
-			 		
-			 		// scroll单击选中样式自定义事件
+				var p = m(event.target).closest("li");
+				if(p.length > 0) {
+					m(this).find("li").removeClass("active");
+					p.addClass("active");
+
+					// scroll单击选中样式自定义事件
 					m(this).trigger("scrollselect", p[0]);
-				}
-				// a链接
-			 	var href = m(event.target).closest("a").attr("href") || "javascript:;";
-				window.location.assign(href);
+
+					// 选中的样式移动
+					if(isPositionLeft) {
+						positionLeft(p); // 移动到left
+					}
+					else if(isPositionCenter){
+						positionCenter(p) // 移动到center
+					}
 				
+					
+					// a链接
+					var href = m(event.target).closest("a").attr("href") || "javascript:;";
+					window.location.assign(href);
+					return;
+
+				}
+
 			}
 
 			isAddMoveEvent = false; // 判断是否top拖动
 			isAddMoveEventFirst = true; // 判断是否第一往上拖动
 
 			var minX = window_w - navsList[0].offsetWidth;
-			var target = m(navsList).getTransform("translateX") + speed * 50;
+			var target = m(navsList).getTransform("translateX") + speed * 100;
 			var bezier = '';
-
+			bezier = 'cubic-bezier(.17,.67,.81,.9)';
 			if(target > 0) {
 				target = 0;
 
-				bezier = 'cubic-bezier(.17,.67,.81,.9)';
 			} else if(target < minX) {
 				target = minX;
-				bezier = 'cubic-bezier(.17,.67,.81,.9)';
 				if(m(navsList).width() < window_w) {
 					target = 0;
 				}
 			}
 			// 过度时间0.5s
-			navsList[0].style.transition = '.5s ' + bezier;
+			navsList[0].style.transition = '0.8s ' + bezier;
 			m(navsList).setTransform("translateX", target);
 
+		}
+
+		// position left
+		function positionLeft(p) {
+			
+				var navsList_w = m(navsList).width();
+				var current_left = m(p).offset().left;
+				var scroll_left = navsList_w - window_w;
+				if(navsList_w > window_w) {
+					if(Math.abs(current_left) < Math.abs(scroll_left)) {
+						m(navsList).setTransform("translateX", -current_left);
+					} else {
+						m(navsList).setTransform("translateX", -scroll_left);
+					}
+					m(navsList).transition("all", 800, "ease");
+				}
+			
+		}
+
+		// position center
+		function positionCenter(p) {
+			
+				var navsList_w = m(navsList).outerWidth();
+				var current_left = m(p).offset().left;
+				var current_w = m(p).outerWidth();
+				var current_center = Math.abs(window_w/2);
+				var offsetCenter=(current_left-current_center)+current_w/2;
+				var scroll_left = navsList_w - window_w;
+				console.log(current_center)
+				if(navsList_w > window_w) {
+					if(Math.abs(current_left) > Math.abs(current_center)) {
+						if(Math.abs(scroll_left)<offsetCenter){
+							m(navsList).setTransform("translateX", -Math.abs(scroll_left));
+						}else{
+							m(navsList).setTransform("translateX", -offsetCenter);
+						}
+						
+
+					} else {
+						m(navsList).setTransform("translateX", 0);
+					}
+					m(navsList).transition("all", 800, "ease");
+				}
+			
 		}
 
 	}
