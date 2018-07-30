@@ -2408,7 +2408,6 @@ var scrollTopBottom = function () {
 					var href = _a.attr("href") || "javascript:;";
 					window.location.assign(href);
 				}
-				//console.log(isHasParent)
 			}
 
 			minY = window_h - topbottomContent[0].offsetHeight;
@@ -2417,15 +2416,15 @@ var scrollTopBottom = function () {
 
 			if (target > 0) {
 				target = 0;
-				topbottomContent[0].style.transition = '.5s ' + bezier;
+				m(topbottomContent).transition("all", 500, bezier);
 			} else if (target < minY) {
 				target = minY;
 				if (m(topbottomContent).height() < window_h) {
 					target = 0;
 				}
-				topbottomContent[0].style.transition = '.5s ' + bezier;
+				m(topbottomContent).transition("all", 500, bezier);
 			} else {
-				topbottomContent[0].style.transition = '1s ' + bezier;
+				m(topbottomContent).transition("all", 1000, bezier);
 			}
 
 			// 滚动条
@@ -2435,10 +2434,8 @@ var scrollTopBottom = function () {
 				var scroll_box_sale = scroll_Y / scroll_box_h;
 				mobile_scroll_bar.setTransform("translateY", -m(scrolltb).height() * scroll_box_sale);
 				mobile_scroll_bar.transition("all", 1000);
-				//mobile_scroll_bar.css("opacity",0);
 			}
-			// 过度时间0.5s
-			//topbottomContent[0].style.transition = '1s ' + bezier
+
 			m(topbottomContent).setTransform("translateY", target);
 		}
 
@@ -2833,7 +2830,7 @@ var slide = function () {
 			// a链接
 			if (isLink) {
 				var _a = m(event.target).closest("a");
-				var isHasParent = m(event.target).closest(".mobile-link");
+				var isHasParent = m(event.target).closest(".mobile-slide-item");
 				if (isHasParent.length > 0) {
 					var href = _a.attr("href") || "javascript:;";
 					window.location.assign(href);

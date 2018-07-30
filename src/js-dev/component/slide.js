@@ -103,7 +103,7 @@ var slide = (function() {
 			if(Math.abs(nowX - startX) > 1 || Math.abs(nowY - startY) > 1) {
 				isLink = false;
 			}
-
+		
 			// 检查是否向上移动
 			var _x = Math.abs(nowX - startX);
 			var _y = Math.abs(nowY - startY);
@@ -144,7 +144,6 @@ var slide = (function() {
 			}
 			
 			
-
 		}
 
 		wrap.on("touchend", end);
@@ -164,7 +163,7 @@ var slide = (function() {
 			// a链接
 			if(isLink) {
 				var _a = m(event.target).closest("a");
-				var isHasParent = m(event.target).closest(".mobile-link");
+				var isHasParent = m(event.target).closest(".mobile-slide-item");
 				if(isHasParent.length > 0) {
 					var href = _a.attr("href") || "javascript:;";
 					window.location.assign(href);
