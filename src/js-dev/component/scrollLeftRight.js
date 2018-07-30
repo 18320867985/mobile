@@ -206,7 +206,7 @@ var scrollLeftRight = (function() {
 				var current_center = Math.abs(window_w/2);
 				var offsetCenter=(current_left-current_center)+current_w/2;
 				var scroll_left = navsList_w - window_w;
-				console.log(current_center)
+				//console.log(current_center);
 				if(navsList_w > window_w) {
 					if(Math.abs(current_left) > Math.abs(current_center)) {
 						if(Math.abs(scroll_left)<offsetCenter){
