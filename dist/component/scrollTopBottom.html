@@ -21,13 +21,15 @@
 
 		<!--content-->
 		<!-- data-scroll-top 是否下拉#   data-scroll-bottom 是否上拉   data-scroll-bar 是否显示滚动条-->
-		<section class="mobile-content mobile-scroll-topbottom" data-scroll-bar >
+		<section class="mobile-content "  >
+			<div  class="mobile-scroll-topbottom" data-scroll-bar  data-scroll-bottom  data-scroll-top>
+
 			<div class="mobile-toptext">别拉了，我已到顶了。</div>
-			<div class=" mobile-scroll-topbottom-content">
+			<div class=" mobile-scroll-content">
 				<div class="mobile-slide clearfix " data-time="3000" data-auto="自动播放">
 
-					<ul class="mobile-slide-list ">
-						<li>
+					<ul class="mobile-slide-list  mobile-link">
+						<li class="mobile-slide-item">
 							<a href="slide.html" id="a">
 								<div id="">
 									<img src="../images/1.jpg" alt="">
@@ -35,22 +37,22 @@
 								</div>
 							</a>
 						</li>
-						<li>
+						<li class="mobile-slide-item">
 							<a href="scroll.html">
 								<img src="../images/2.jpg" alt="">
 							</a>
 						</li>
-						<li>
+						<li class="mobile-slide-item">
 							<a href="javascript:;">
 								<img src="../images/3.jpg" alt="">
 							</a>
 						</li>
-						<li>
+					<li class="mobile-slide-item">
 							<a href="javascript:;">
 								<img src="../images/4.jpg" alt="">
 							</a>
 						</li>
-						<li>
+						<li class="mobile-slide-item">
 							<a href="javascript:;">
 								<img src="../images/5.jpg" alt="">
 							</a>
@@ -66,8 +68,8 @@
 					</div>
 
 				</div>
-
-				<ul class="scrolltopbottom clearfix">
+					<!-- 包含a连接 加mobile-link -->
+				<ul class="scrolltopbottom  mobile-link clearfix">
 					<li>
 						<img src="../images/1段奶粉.png" alt="" />
 						<h5>1段奶粉</h5>
@@ -136,6 +138,7 @@
 				</ul>
 
 			</div>
+		</div>
 		</section>
 
 		<!--footer-->
@@ -146,8 +149,10 @@
 			{{#must}}
 
 			<li>
+				<a href="tab.html">
 				<img src="{{src}}" alt="" />
 				<h5>{{text}}</h5>
+				</a>
 			</li>
 			{{/must}}
 		</script>
@@ -156,7 +161,7 @@
 		<script type="text/javascript">
 			// 拉到底部 加载数据
 			var firstbottom = true;
-			var bottomcontent = m(".mobile-scroll-topbottom-content");
+			var bottomcontent = m(".mobile-scroll-content");
 			m(".mobile-scroll-topbottom").on("scrollbottom", function(event) {
 				//				console.log(event.detail);
 				//				console.log("bottom");

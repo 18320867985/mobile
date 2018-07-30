@@ -3,19 +3,8 @@
     width: 100%;
     height: 100%;
     overflow: hidden;
-}
-
-
-/*置顶文字*/
-.mobile-toptext {
-    width: 100%;
-    padding: 20px;
-    margin-top: 10%;
-    text-align: center;
-    color: #bbb;
-}
-
-.mobile-scroll-topbottom-content {
+    
+    .mobile-scroll-content {
     position: absolute;
     top: 0;
     left: 0;
@@ -34,9 +23,20 @@
     }
 }
 
+    /*置顶文字*/
+    .mobile-toptext {
+        width: 100%;
+        padding: 20px;
+        margin-top: 10%;
+        text-align: center;
+        color: #bbb;
+    }
+
+}
+
+
 
 /*滚动条*/
-
 .mobile-scroll-bar {
     position: absolute;
     top: 0;

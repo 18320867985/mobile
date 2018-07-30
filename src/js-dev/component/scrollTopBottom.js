@@ -19,7 +19,7 @@ var scrollTopBottom = (function() {
 	//导航拖拽fun
 	function topBottomFun(scrolltb) {
 
-		var topbottomContent = m(scrolltb).find(".mobile-scroll-topbottom-content");
+		var topbottomContent = m(scrolltb).find(".mobile-scroll-content");
 		if(topbottomContent.length===0){
 			return ;
 		}
@@ -247,7 +247,7 @@ var scrollTopBottom = (function() {
 			if(isLink) {
 				
 				var _a= m(event.target).closest("a");
-				var isHasParent=m(event.target).closest(".mobile-scroll-topbottom-link");
+				var isHasParent=m(event.target).closest(".mobile-link");
 				if(isHasParent.length>0){
 					var href=_a.attr("href") || "javascript:;";
 					window.location.assign(href);

@@ -6,7 +6,10 @@
 		<title>mobile触摸页面</title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<style>
-			.mobile-scroll-topbottom {}
+			
+			.mobile-slide {
+				height: 10rem;
+			}
 		</style>
 
 		<link rel="stylesheet" type="text/css" href="../css/mobile.css" />
@@ -21,27 +24,27 @@
 
 		<!--content-->
 		<!-- data-scroll-top 是否下拉#   data-scroll-bottom 是否上拉   data-scroll-bar 是否显示滚动条-->
-		<section class="mobile-content mobile-scroll-topbottom" data-scroll-bar  data-scroll-top>
+		<section class="mobile-content mobile-scroll-topbottom" data-scroll-bar >
 
 			<!--滚动的底部文本-->
 			<div class="mobile-toptext">别拉了，我已到顶了。</div>
 
 			<!--滚动的整体内容-->
-			<div class=" mobile-scroll-topbottom-content">
+			<div class=" mobile-scroll-content">
 
 				<!--slide滑动组件-->
 				<div class="mobile-slide" data-no-loop="禁止循环">
 
-					<ul class="mobile-slide-list ">
-						<li>
+					<ul class="mobile-slide-list  mobile-link">
+						<li class="mobile-slide-item">
 							<a href="#" id="a">
-								<div id="">
+							
 									<img src="../images/1.jpg" alt="">
 
-								</div>
+							
 
 						</li>
-						<li>
+					<li class="mobile-slide-item">
 							<a href="http://www.51zxw.com">
 								<img src="../images/2.jpg" alt="">
 							</a>
@@ -56,8 +59,8 @@
 
 				</div>
 
-				<!-- 包含a连接 加mobile-scroll-topbottom-link -->
-				<ul class="mobile-scroll-topbottom-link scrolltopbottom clearfix">
+				<!-- 包含a连接 加mobile-link -->
+				<ul class="mobile-link scrolltopbottom clearfix">
 					<li>
 						<img src="../images/1段奶粉.png" alt="" />
 						<h5>1段奶粉</h5>
@@ -126,6 +129,7 @@
 				</ul>
 
 			</div>
+		
 		</section>
 		
 		<div class="mobile-tab mobile-tab-bottom">
@@ -169,7 +173,7 @@
 		<script type="text/javascript">
 			// 拉到底部 加载数据
 			var firstbottom = true;
-			var bottomcontent = m(".mobile-scroll-topbottom-content");
+			var bottomcontent = m(".mobile-scroll-content");
 			m(".mobile-scroll-topbottom").on("scrollbottom", function(event) {
 				//				console.log(event.detail);
 				//				console.log("bottom");

@@ -7,32 +7,29 @@
     overflow: hidden;
     background: #fff;
     box-shadow: 0 2px 5px #ccc inset, 0 -2px 5px #ccc inset;
-}
-
-.mobile-scroll-leftright-content {
-    float: left;
-    white-space: nowrap;
-    text-align: center;
-    font-size: 0;
-    li {
-        float: none;
-        display: inline-block;
-        padding: 0 15rem/$rem ;
-        height: 30rem/$rem;
-        line-height: 30rem/$rem;
-        font-size: .7rem;
-       
-        a {
-            display: block;
-           line-height: 30rem/$rem;
-            color: #020202;
-        }
-        
-         &.active {
-            background: #690;
-            color: #fff;
+    .mobile-scroll-content {
+        float: left;
+        white-space: nowrap;
+        text-align: center;
+        font-size: 0;
+        li {
+            float: none;
+            display: inline-block;
+            padding: 0 15rem/$rem;
+            height: 30rem/$rem;
+            line-height: 30rem/$rem;
+            font-size: .7rem;
             a {
+                display: block;
+                line-height: 30rem/$rem;
+                color: #020202;
+            }
+            &.active {
+                background: $active-bg;
                 color: #fff;
+                a {
+                    color: #fff;
+                }
             }
         }
     }

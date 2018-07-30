@@ -1,4 +1,3 @@
-
 /* mobile-slide 图片轮播 */
 
 .mobile-slide {
@@ -6,33 +5,26 @@
     z-index: 9;
     box-sizing: border-box;
     width: 100%;
-    height: auto;
+   min-height: 150px;
     overflow: hidden;
 }
 
 .mobile-slide-list {
     position: relative;
-    float: left;
     z-index: 2;
-    list-style: none;
-    white-space: nowrap;
-    font-size:0 ;
-    width: 100%;
+    height: 100%;
 }
 
-.mobile-slide-list>li,
 .mobile-slide-item {
-
-   width: 100%;
-   font-size: 1rem;
-   display: inline-block;
-    white-space:normal;
+    float: left;
+    display: block;
+    height: 100%;
 }
 
-.mobile-slide-list> li img {
+.mobile-slide-item img {
     display: block;
     width: 100%;
-    height: auto;
+    height: 100%;
 }
 
 .mobile-slide-radius {
@@ -51,11 +43,11 @@
     display: inline-block;
     height: 10px;
     width: 10px;
-    background: #ccc;
+    background: $slide-rd-df;
+    ;
     border-radius: 50%;
 }
 
 .mobile-slide-radius .active {
-    background: red;
+    background: $slide-rd-active;
 }
-

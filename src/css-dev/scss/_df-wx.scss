@@ -11,7 +11,8 @@
 body {
     font-size: 14px;
     font-family: "微软雅黑", "宋体";
-    //background: $body-bg;
+    background: $body-bg;
+    color:$body-color;
 }
 
 html,body{
@@ -27,10 +28,12 @@ ul {
     list-style: none;
 }
 
+
 a,
 a:link,
 a:active {
     text-decoration: none;
+    color:$a-color;
 }
 
 ul {

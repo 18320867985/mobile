@@ -102,6 +102,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 						// 单例对象 
 						arrs.push(selector);
 					}
+
 					Array.prototype.push.apply(this, arrs);
 				}
 			} else {
@@ -374,63 +375,66 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 		// parent 
 		parent: function parent() {
 			var arr = [];
-			for (var i = 0; i < this.length; i++) {
-				var _arr = this[i].parentElement;
+			var obj = m(this);
+			for (var i = 0; i < obj.length; i++) {
+				var _arr = obj[i].parentElement;
 				if (_arr) {
 					arr.push(_arr);
 				}
-				delete this[i];
+				delete obj[i];
 			}
-			delete this.length;
-			Array.prototype.push.apply(this, arr);
-			return this;
+			delete obj.length;
+			Array.prototype.push.apply(obj, arr);
+			return obj;
 		},
 
 		// parents 
 		parents: function parents(selector) {
 			selector = typeof selector === "string" ? selector : "";
 			var arr = [];
-			for (var i = 0; i < this.length; i++) {
+			var obj = m(this);
+			for (var i = 0; i < obj.length; i++) {
 
-				var p = _searchParents(this[i], function (elm) {
+				var p = _searchParents(obj[i], function (elm) {
 					var bl = false;
 					bl = Mobile.checkSelector(elm, selector);
 					return bl;
 				});
 
-				delete this[i];
+				delete obj[i];
 				if (p) {
 					arr.push(p);
 				}
 			}
-			delete this.length;
-			Array.prototype.push.apply(this, arr);
-			return this;
+			delete obj.length;
+			Array.prototype.push.apply(obj, arr);
+			return obj;
 		},
 
 		// closest 
 		closest: function closest(selector) {
 			selector = typeof selector === "string" ? selector : "";
 			var arr = [];
-			for (var i = 0; i < this.length; i++) {
+			var obj = m(this);
+			for (var i = 0; i < obj.length; i++) {
 				var p;
-				if (Mobile.checkSelector(this[i], selector)) {
-					arr.push(this[i]);
+				if (Mobile.checkSelector(obj[i], selector)) {
+					arr.push(obj[i]);
 				} else {
-					p = _searchParents(this[i], function (elm) {
+					p = _searchParents(obj[i], function (elm) {
 						var bl = false;
 						bl = Mobile.checkSelector(elm, selector);
 						return bl;
 					});
 				}
-				delete this[i];
+				delete obj[i];
 				if (p) {
 					arr.push(p);
 				}
 			}
-			delete this.length;
-			Array.prototype.push.apply(this, arr);
-			return this;
+			delete obj.length;
+			Array.prototype.push.apply(obj, arr);
+			return obj;
 		},
 
 		// eq 
@@ -439,94 +443,102 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 				throw Error("index property must is number type");
 			}
 			var arr = [];
-			for (var i = 0; i < this.length; i++) {
+			var obj = m(this);
+			for (var i = 0; i < obj.length; i++) {
 				if (i === index) {
-					arr.push(this[i]);
+					arr.push(obj[i]);
 				}
-				delete this[i];
+				delete obj[i];
 			}
-			delete this.length;
-			Array.prototype.push.apply(this, arr);
-			return this;
+			delete obj.length;
+
+			Array.prototype.push.apply(obj, arr);
+			return obj;
 		},
 
 		//  first
 		first: function first() {
 
 			var arr = [];
-			for (var i = 0; i < this.length; i++) {
+			var obj = m(this);
+			for (var i = 0; i < obj.length; i++) {
 				if (i === 0) {
-					arr.push(this[i]);
+					arr.push(obj[i]);
 				}
-				delete this[i];
+				delete obj[i];
 			}
-			delete this.length;
-			Array.prototype.push.apply(this, arr);
-			return this;
+			delete obj.length;
+			Array.prototype.push.apply(obj, arr);
+			return obj;
 		},
 
 		//  prev
 		prev: function prev() {
 			var arr = [];
-			Mobile.each(this, function (i, v) {
-				var _prev = this.previousElementSibling;
+			var obj = m(this);
+			Mobile.each(obj, function (i, v) {
+				var _prev = v.previousElementSibling;
 				if (_prev) {
 					arr.push(_prev);
 				}
-				delete this[i];
+				delete v[i];
 			});
-			delete this.length;
-			Array.prototype.push.apply(this, arr);
-			return this;
+			delete obj.length;
+			Array.prototype.push.apply(obj, arr);
+			return obj;
 		},
 
 		//  next
 		next: function next() {
 			var arr = [];
-			Mobile.each(this, function (i, v) {
-				var _next = this.nextElementSibling;
+			var obj = m(this);
+			Mobile.each(obj, function (i, v) {
+				var _next = v.nextElementSibling;
 				if (_next) {
 					arr.push(_next);
 				}
-				delete this[i];
+				delete v[i];
 			});
-			delete this.length;
-			Array.prototype.push.apply(this, arr);
-			return this;
+			delete obj.length;
+			Array.prototype.push.apply(obj, arr);
+			return obj;
 		},
 
 		//  siblings
 		siblings: function siblings() {
 			var arr = [];
-			Mobile.each(this, function (i, v) {
-				var _children = this.parentElement.children;
-				var _index = m(_children).index(m(this));
+			var obj = m(this);
+			Mobile.each(obj, function (i, v) {
+				var _children = v.parentElement.children;
+				var _index = m(v).index();
+
 				for (var y = 0; y < _children.length; y++) {
 					if (y !== _index) {
 						arr.push(_children[y]);
 					}
 				}
-				delete this[i];
+				delete v[i];
 			});
-			delete this.length;
-			Array.prototype.push.apply(this, arr);
-			return this;
+			delete obj.length;
+			Array.prototype.push.apply(obj, arr);
+			return obj;
 		},
 
 		//  last
 		last: function last() {
 
 			var arr = [];
-			for (var i = 0; i < this.length; i++) {
-				var _length = this.length > 0 ? this.length - 1 : 0;
+			var obj = m(this);
+			for (var i = 0; i < obj.length; i++) {
+				var _length = obj.length > 0 ? obj.length - 1 : 0;
 				if (i === _length) {
-					arr.push(this[i]);
+					arr.push(obj[i]);
 				}
-				delete this[i];
+				delete obj[i];
 			}
-			delete this.length;
-			Array.prototype.push.apply(this, arr);
-			return this;
+			delete obj.length;
+			Array.prototype.push.apply(obj, arr);
+			return obj;
 		},
 
 		//  heigth
@@ -726,13 +738,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 					}
 
 					return false;
-				});
-			} else if (arguments.length === 1) {
-				Mobile.each(this, function (i, v) {
-					obj = obj.length && obj.length > 0 ? obj[0] : obj;
-					if (v.isEqualNode(obj)) {
-						_index = i;
-					}
 				});
 			}
 
@@ -1027,7 +1032,13 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 			var _transition = "all " + time / 1000 + "s  " + ease + " " + delay / 1000 + "s";
 
 			if (typeof option === "string") {
-				_transition = option + " " + time / 1000 + "s  " + ease + " " + delay / 1000 + "s";
+
+				if (arguments.length === 1) {
+					_transition = option;
+				} else if (arguments.length > 1) {
+					_transition = option + " " + time / 1000 + "s  " + ease + " " + delay / 1000 + "s";
+				}
+
 				Mobile.each(this, function () {
 					this.style.MozTransition = _transition;
 					this.style.msTransition = _transition;
@@ -1039,6 +1050,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 				return this;
 			}
 
+			// option is object	
+			if ((typeof option === "undefined" ? "undefined" : _typeof(option)) != "object") {
+				return;
+			}
 			Mobile.each(this, function (i, el) {
 				time = typeof time === "number" ? time : 400;
 				el.setTimeout = el.setTimeout || 0; // 第一次执行
@@ -2177,7 +2192,7 @@ var scrollTopBottom = function () {
 	//导航拖拽fun
 	function topBottomFun(scrolltb) {
 
-		var topbottomContent = m(scrolltb).find(".mobile-scroll-topbottom-content");
+		var topbottomContent = m(scrolltb).find(".mobile-scroll-content");
 		if (topbottomContent.length === 0) {
 			return;
 		}
@@ -2388,7 +2403,7 @@ var scrollTopBottom = function () {
 			if (isLink) {
 
 				var _a = m(event.target).closest("a");
-				var isHasParent = m(event.target).closest(".mobile-scroll-topbottom-link");
+				var isHasParent = m(event.target).closest(".mobile-link");
 				if (isHasParent.length > 0) {
 					var href = _a.attr("href") || "javascript:;";
 					window.location.assign(href);
@@ -2476,7 +2491,7 @@ var scrollLeftRight = function () {
 	//导航拖拽fun
 	function navsListFun(navs) {
 
-		var navsList = m(navs).find(".mobile-scroll-leftright-content");
+		var navsList = m(navs).find(".mobile-scroll-content");
 		if (navsList.length === 0) {
 			return;
 		}
@@ -2666,22 +2681,47 @@ var scrollLeftRight = function () {
 // 图片轮播
 var slide = function () {
 
-	window.addEventListener("load", function () {
-		var wrap = document.querySelectorAll(".mobile-slide");
-		for (var i = 0; i < wrap.length; i++) {
-			banner(wrap[i]);
-		}
+	m(function () {
+		var slide = m(".mobile-slide");
+		slide.each(function () {
+			banner(this);
+		});
+	});
+
+	m(window).resize(function () {
+		var slide = m(".mobile-slide");
+		var window_w = m(window).width();
+		slide.width(window_w);
+
+		slide.each(function () {
+			var wrap = m(this);
+			var list = wrap.find(".mobile-slide-list");
+			var liNodes = wrap.find(".mobile-slide-item");
+
+			var wrap_w = wrap.width();
+			list.width(wrap_w * liNodes.length);
+			liNodes.width(wrap_w);
+		});
 	});
 
 	function banner(mobile_slide) {
+		var window_w = m(window).width();
+		var wrap = m(mobile_slide);
+		var list = wrap.find(".mobile-slide-list");
+		var liNodes = wrap.find(".mobile-slide-item");
+		var spanNodes = wrap.find(".mobile-slide-radius span"); // 小圆点
 
-		var wrap = mobile_slide;
-		var list = wrap.querySelector(".mobile-slide-list");
-
-		// 轮播时间 
-		var time = wrap.getAttribute("data-time") || "3000";
-		var isAuto = m(wrap).hasAttr("data-auto"); //自动播放
-		var isLoop = m(wrap).hasAttr("data-no-loop"); //禁止循环
+		var time = wrap.attr("data-time") || "3000"; // 轮播时间 
+		var isAuto = wrap.hasAttr("data-auto"); //自动播放
+		var isLoop = wrap.hasAttr("data-no-loop"); //禁止循环
+		if (!isLoop) {
+			list[0].innerHTML += list[0].innerHTML;
+		}
+		wrap.width(window_w);
+		var wrap_w = wrap.width();
+		liNodes = wrap.find(".mobile-slide-item");
+		list.width(wrap_w * liNodes.length);
+		liNodes.width(wrap_w);
 
 		time = parseInt(time);
 		var timerId = 0;
@@ -2693,24 +2733,9 @@ var slide = function () {
 		var isAddMoveEvent = false; // 判断是否往上拖动
 		var isAddMoveEventFirst = true; // 判断是否第一往上拖动
 
-		// 小圆点
-		var spanNodes = wrap.querySelectorAll(".mobile-slide-radius span");
 		m(list).setTransform('translateZ', 0.01);
-		if (!isLoop) {
-			list.innerHTML += list.innerHTML;
-		}
 
-		var liNodes = wrap.querySelectorAll(".mobile-slide-list li");
-
-		// 添加样式
-		//			mobile_slide.style.overflow = "hidden"
-		//			list.style.width = liNodes.length + '00%';
-
-		//			for(var l = 0; l < liNodes.length; l++) {
-		//				liNodes[l].style.width = (1 / liNodes.length * 100) + '%';
-		//			};
-
-		wrap.addEventListener("touchstart", start);
+		wrap.on("touchstart", start);
 
 		// start
 		function start(event) {
@@ -2718,7 +2743,7 @@ var slide = function () {
 			var touch = event.changedTouches[0];
 			isLink = true;
 			clearInterval(timerId);
-			list.style.transition = 'none';
+			list.transition("none");
 			var left = m(list).getTransform("translateX");
 			var now = Math.round(-left / document.documentElement.clientWidth);
 
@@ -2741,7 +2766,7 @@ var slide = function () {
 			elementX = m(list).getTransform('translateX');
 		}
 
-		wrap.addEventListener("touchmove", move);
+		wrap.on("touchmove", move);
 
 		function move(event) {
 			event.preventDefault();
@@ -2771,7 +2796,7 @@ var slide = function () {
 			// 禁止循环
 			if (isLoop) {
 				var window_w = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-				var minX = Math.abs(list.offsetWidth * spanNodes.length - window_w);
+				var minX = Math.abs(list.width() - window_w);
 				var translateX = elementX + disX;
 				if (translateX > 0) {
 					var scale = 1 - translateX / window_w;
@@ -2791,7 +2816,7 @@ var slide = function () {
 			}
 		}
 
-		wrap.addEventListener("touchend", end);
+		wrap.on("touchend", end);
 
 		//touchend
 		function end(event) {
@@ -2807,9 +2832,12 @@ var slide = function () {
 
 			// a链接
 			if (isLink) {
-
-				var href = m(event.target).closest("a").attr("href") || "javascript:;";
-				window.location.assign(href);
+				var _a = m(event.target).closest("a");
+				var isHasParent = m(event.target).closest(".mobile-link");
+				if (isHasParent.length > 0) {
+					var href = _a.attr("href") || "javascript:;";
+					window.location.assign(href);
+				}
 			}
 
 			var left = m(list).getTransform("translateX");
@@ -2829,15 +2857,14 @@ var slide = function () {
 				now = liNodes.length - 1;
 			}
 
-			list.style.transition = '0.5s';
+			list.transition("all", 500);
 			m(list).setTransform('translateX', -now * document.documentElement.clientWidth);
 
 			//同步小圆点
-			for (var i = 0; i < spanNodes.length; i++) {
-				spanNodes[i].classList.remove("active");
-			}
-
-			spanNodes[now % spanNodes.length].classList.add("active");
+			spanNodes.each(function () {
+				this.classList.remove("active");
+			});
+			spanNodes.eq(now % spanNodes.length).addClass("active");
 		}
 
 		// 自动播放
@@ -2848,7 +2875,7 @@ var slide = function () {
 		function auto(t) {
 
 			return setInterval(function () {
-				list.style.transition = 'none';
+				list.transition("none");
 
 				// 是否循环
 				if (!isLoop) {
@@ -2859,7 +2886,8 @@ var slide = function () {
 				m(list).setTransform('translateX', -now * document.documentElement.clientWidth);
 				setTimeout(function () {
 					now++;
-					list.style.transition = '0.5s ease-in-out';
+
+					list.transition("all", 500, "ease-in-out");
 					m(list).setTransform('translateX', -now * document.documentElement.clientWidth);
 					for (var i = 0; i < spanNodes.length; i++) {
 						spanNodes[i].className = '';
@@ -2881,21 +2909,31 @@ var tab = function () {
 		});
 	});
 
-	function tabSlide(mobile_slide) {
+	m(window).resize(function () {
+		var tab = m(".mobile-tab-slide");
+		var window_w = m(window).width();
+		tab.width(window_w);
 
+		tab.each(function () {
+			var wrap = m(this);
+			var list = wrap.find(".mobile-tab-slide-list");
+			var liNodes = wrap.find(".mobile-tab-slide-item");
+			var wrap_w = wrap.width();
+			list.width(wrap_w * liNodes.length);
+			liNodes.width(wrap_w);
+		});
+	});
+
+	function tabSlide(mobile_slide) {
+		var window_w = m(window).width();
 		var wrap = m(mobile_slide);
 		var list = wrap.find(".mobile-tab-slide-list");
 		var liNodes = wrap.find(".mobile-tab-slide-item");
 		var spanNodes = wrap.find(".mobile-slide-radius span"); // 小圆点
+		wrap.width(window_w);
 		var wrap_w = wrap.width();
 		list.width(wrap_w * liNodes.length);
 		liNodes.width(wrap_w);
-
-		m(window).resize(function () {
-			wrap_w = wrap.width();
-			list.width(wrap_w * liNodes.length);
-			liNodes.width(wrap_w);
-		});
 
 		var isLoop = wrap.hasAttr("data-no-loop"); //禁止循环
 		//time = parseInt(time);
@@ -2906,7 +2944,6 @@ var tab = function () {
 		var now = 0;
 		var isAddMoveEvent = false; // 判断是否往上拖动
 		var isAddMoveEventFirst = true; // 判断是否第一往上拖动
-
 
 		m(list).setTransform('translateZ', 0.01);
 

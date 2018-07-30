@@ -235,7 +235,9 @@ th {
 
 body {
   font-size: 14px;
-  font-family: "微软雅黑", "宋体"; }
+  font-family: "微软雅黑", "宋体";
+  background: #fafafa;
+  color: #444; }
 
 html, body {
   height: 100%;
@@ -250,7 +252,8 @@ ul {
 a,
 a:link,
 a:active {
-  text-decoration: none; }
+  text-decoration: none;
+  color: blue; }
 
 ul {
   list-style: none; }
@@ -631,7 +634,7 @@ a .spin {
   line-height: 2.2rem;
   width: 100%;
   margin: 0 auto;
-  font-size: .9rem;
+  font-size: .8rem;
   text-align: center;
   color: #444; }
 
@@ -661,32 +664,30 @@ a .spin {
   position: relative;
   width: 100%;
   height: 100%;
-  overflow: hidden; }
-
-/*置顶文字*/
-.mobile-toptext {
-  width: 100%;
-  padding: 20px;
-  margin-top: 10%;
-  text-align: center;
-  color: #bbb; }
-
-.mobile-scroll-topbottom-content {
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: block;
-  background: #fff;
-  /*加载图标*/ }
-  .mobile-scroll-topbottom-content .loading {
-    position: relative;
-    bottom: 0;
+  overflow: hidden;
+  /*置顶文字*/ }
+  .mobile-scroll-topbottom .mobile-scroll-content {
+    position: absolute;
+    top: 0;
     left: 0;
+    display: block;
+    background: #fff;
+    /*加载图标*/ }
+    .mobile-scroll-topbottom .mobile-scroll-content .loading {
+      position: relative;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      padding: 10px;
+      color: #777;
+      background: #f8f8f8; }
+  .mobile-scroll-topbottom .mobile-toptext {
     width: 100%;
+    padding: 20px;
+    margin-top: 10%;
     text-align: center;
-    padding: 10px;
-    color: #777;
-    background: #f8f8f8; }
+    color: #bbb; }
 
 /*滚动条*/
 .mobile-scroll-bar {
@@ -707,28 +708,27 @@ a .spin {
   background: #fff;
   -webkit-box-shadow: 0 2px 5px #ccc inset, 0 -2px 5px #ccc inset;
           box-shadow: 0 2px 5px #ccc inset, 0 -2px 5px #ccc inset; }
-
-.mobile-scroll-leftright-content {
-  float: left;
-  white-space: nowrap;
-  text-align: center;
-  font-size: 0; }
-  .mobile-scroll-leftright-content li {
-    float: none;
-    display: inline-block;
-    padding: 0 0.75rem;
-    height: 1.5rem;
-    line-height: 1.5rem;
-    font-size: .7rem; }
-    .mobile-scroll-leftright-content li a {
-      display: block;
+  .mobile-scroll-leftright .mobile-scroll-content {
+    float: left;
+    white-space: nowrap;
+    text-align: center;
+    font-size: 0; }
+    .mobile-scroll-leftright .mobile-scroll-content li {
+      float: none;
+      display: inline-block;
+      padding: 0 0.75rem;
+      height: 1.5rem;
       line-height: 1.5rem;
-      color: #020202; }
-    .mobile-scroll-leftright-content li.active {
-      background: #690;
-      color: #fff; }
-      .mobile-scroll-leftright-content li.active a {
+      font-size: .7rem; }
+      .mobile-scroll-leftright .mobile-scroll-content li a {
+        display: block;
+        line-height: 1.5rem;
+        color: #020202; }
+      .mobile-scroll-leftright .mobile-scroll-content li.active {
+        background: #690;
         color: #fff; }
+        .mobile-scroll-leftright .mobile-scroll-content li.active a {
+          color: #fff; }
 
 /* mobile-slide 图片轮播 */
 .mobile-slide {
@@ -737,29 +737,23 @@ a .spin {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   width: 100%;
-  height: auto;
+  min-height: 150px;
   overflow: hidden; }
 
 .mobile-slide-list {
   position: relative;
-  float: left;
   z-index: 2;
-  list-style: none;
-  white-space: nowrap;
-  font-size: 0;
-  width: 100%; }
+  height: 100%; }
 
-.mobile-slide-list > li,
 .mobile-slide-item {
-  width: 100%;
-  font-size: 1rem;
-  display: inline-block;
-  white-space: normal; }
+  float: left;
+  display: block;
+  height: 100%; }
 
-.mobile-slide-list > li img {
+.mobile-slide-item img {
   display: block;
   width: 100%;
-  height: auto; }
+  height: 100%; }
 
 .mobile-slide-radius {
   position: absolute;
@@ -825,8 +819,7 @@ a .spin {
 /*  tab内容 slide*/
 .mobile-tab-slide {
   width: 100%;
-  height: 100%;
-  background: #f8f8f8; }
+  height: 100%; }
 
 .mobile-tab-slide-list {
   height: 100%; }

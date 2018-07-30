@@ -1,23 +1,51 @@
 // 图片轮播
 var slide = (function() {
 
-	window.addEventListener("load", function() {
-		var wrap = document.querySelectorAll(".mobile-slide");
-		for(var i = 0; i < wrap.length; i++) {
-			banner(wrap[i]);
-		}
+	m(function() {
+		var slide = m(".mobile-slide");
+		slide.each(function() {
+			banner(this);
+			
+		});
+
+	});
+
+	m(window).resize(function() {
+		var slide = m(".mobile-slide");
+		 var window_w=m(window).width();
+	 	slide.width(window_w);
+	 
+		slide.each(function() {
+			var wrap = m(this);
+			var list = wrap.find(".mobile-slide-list");
+			var liNodes = wrap.find(".mobile-slide-item");
+			
+			var wrap_w = wrap.width();
+			list.width(wrap_w * liNodes.length);
+			liNodes.width(wrap_w);
+
+		});
 
 	});
 
 	function banner(mobile_slide) {
+ 		var window_w=m(window).width();
+		var wrap = m(mobile_slide);
+		var list = wrap.find(".mobile-slide-list");
+		var liNodes = wrap.find(".mobile-slide-item");
+		var spanNodes = wrap.find(".mobile-slide-radius span"); // 小圆点
 
-		var wrap = mobile_slide;
-		var list = wrap.querySelector(".mobile-slide-list");
-
-		// 轮播时间 
-		var time = wrap.getAttribute("data-time") || "3000";
-		var isAuto = m(wrap).hasAttr("data-auto"); //自动播放
-		var isLoop = m(wrap).hasAttr("data-no-loop"); //禁止循环
+		var time = wrap.attr("data-time") || "3000"; // 轮播时间 
+		var isAuto = wrap.hasAttr("data-auto"); //自动播放
+		var isLoop = wrap.hasAttr("data-no-loop"); //禁止循环
+		if(!isLoop) {
+			list[0].innerHTML += list[0].innerHTML;
+		}
+		wrap.width(window_w)
+		var wrap_w = wrap.width();
+		liNodes = wrap.find(".mobile-slide-item");
+		list.width(wrap_w * liNodes.length);
+		liNodes.width(wrap_w);
 
 		time = parseInt(time);
 		var timerId = 0;
@@ -29,24 +57,9 @@ var slide = (function() {
 		var isAddMoveEvent = false; // 判断是否往上拖动
 		var isAddMoveEventFirst = true; // 判断是否第一往上拖动
 
-		// 小圆点
-		var spanNodes = wrap.querySelectorAll(".mobile-slide-radius span");
 		m(list).setTransform('translateZ', 0.01)
-		if(!isLoop) {
-			list.innerHTML += list.innerHTML
-		}
 
-		var liNodes = wrap.querySelectorAll(".mobile-slide-list li")
-
-		// 添加样式
-		//			mobile_slide.style.overflow = "hidden"
-		//			list.style.width = liNodes.length + '00%';
-
-		//			for(var l = 0; l < liNodes.length; l++) {
-		//				liNodes[l].style.width = (1 / liNodes.length * 100) + '%';
-		//			};
-
-		wrap.addEventListener("touchstart", start);
+		wrap.on("touchstart", start);
 
 		// start
 		function start(event) {
@@ -54,10 +67,10 @@ var slide = (function() {
 			var touch = event.changedTouches[0];
 			isLink = true;
 			clearInterval(timerId);
-			list.style.transition = 'none';
+			list.transition("none");
 			var left = m(list).getTransform("translateX");
 			var now = Math.round(-left / document.documentElement.clientWidth);
-			
+
 			isAddMoveEvent = false; // 判断是否top拖动
 			isAddMoveEventFirst = true; // 判断是否第一往上拖动
 
@@ -75,9 +88,10 @@ var slide = (function() {
 			startX = touch.clientX;
 			startY = touch.clientY;
 			elementX = m(list).getTransform('translateX');
+		
 		}
 
-		wrap.addEventListener("touchmove", move);
+		wrap.on("touchmove", move);
 
 		function move(event) {
 			event.preventDefault();
@@ -89,13 +103,13 @@ var slide = (function() {
 			if(Math.abs(nowX - startX) > 1 || Math.abs(nowY - startY) > 1) {
 				isLink = false;
 			}
-			
+
 			// 检查是否向上移动
 			var _x = Math.abs(nowX - startX);
 			var _y = Math.abs(nowY - startY);
-			if(isAddMoveEventFirst&&(_x!=_y)) {
+			if(isAddMoveEventFirst && (_x != _y)) {
 				isAddMoveEventFirst = false;
-				if(_y>_x) {
+				if(_y > _x) {
 					isAddMoveEvent = true;
 				}
 			}
@@ -103,13 +117,13 @@ var slide = (function() {
 
 				return;
 			}
-			
+
 			// 禁止循环
 			if(isLoop) {
 				var window_w = window.innerWidth ||
 					document.documentElement.clientWidth ||
 					document.body.clientWidth;
-				var minX = Math.abs(list.offsetWidth * spanNodes.length - window_w);
+				var minX = Math.abs(list.width() - window_w);
 				var translateX = elementX + disX;
 				if(translateX > 0) {
 					var scale = 1 - translateX / window_w;
@@ -128,10 +142,12 @@ var slide = (function() {
 				clearInterval(timerId);
 				m(list).setTransform('translateX', elementX + disX);
 			}
+			
+			
 
 		}
 
-		wrap.addEventListener("touchend", end);
+		wrap.on("touchend", end);
 
 		//touchend
 		function end(event) {
@@ -140,7 +156,6 @@ var slide = (function() {
 			var nowX = touch.clientX;
 			var nowY = touch.clientY;
 
-			
 			// 自动播放
 			if(isAuto && !isLoop) {
 				timerId = auto(time);
@@ -148,24 +163,27 @@ var slide = (function() {
 
 			// a链接
 			if(isLink) {
-				
-				var href = m(event.target).closest("a").attr("href") || "javascript:;";
-				window.location.assign(href);
+				var _a = m(event.target).closest("a");
+				var isHasParent = m(event.target).closest(".mobile-link");
+				if(isHasParent.length > 0) {
+					var href = _a.attr("href") || "javascript:;";
+					window.location.assign(href);
+				}
 			}
 
 			var left = m(list).getTransform("translateX");
 			var ratio = -left / document.documentElement.clientWidth;
 			if(nowX > startX) {
-				
+
 				now = m.round(ratio, 0.8);
-				if(left>0){
-					
+				if(left > 0) {
+
 				}
 
 			} else {
 				now = m.round(ratio, 0.2);
-				if(left<0){
-					
+				if(left < 0) {
+
 				}
 			}
 
@@ -175,15 +193,17 @@ var slide = (function() {
 				now = liNodes.length - 1
 			}
 
-			list.style.transition = '0.5s';
+			list.transition("all", 500);
 			m(list).setTransform('translateX', -now * document.documentElement.clientWidth);
 
 			//同步小圆点
-			for(var i = 0; i < spanNodes.length; i++) {
-				spanNodes[i].classList.remove("active");
-			}
-
-			spanNodes[now % spanNodes.length].classList.add("active");
+			spanNodes.each(function(){
+				this.classList.remove("active");
+				
+				
+			});
+			spanNodes.eq(now % spanNodes.length).addClass("active");
+	
 		}
 
 		// 自动播放
@@ -194,7 +214,7 @@ var slide = (function() {
 		function auto(t) {
 
 			return setInterval(function() {
-				list.style.transition = 'none';
+				list.transition("none");
 
 				// 是否循环
 				if(!isLoop) {
@@ -205,7 +225,8 @@ var slide = (function() {
 				m(list).setTransform('translateX', -now * document.documentElement.clientWidth);
 				setTimeout(function() {
 					now++;
-					list.style.transition = '0.5s ease-in-out';
+
+					list.transition("all", 500, "ease-in-out");
 					m(list).setTransform('translateX', -now * document.documentElement.clientWidth)
 					for(var i = 0; i < spanNodes.length; i++) {
 						spanNodes[i].className = '';

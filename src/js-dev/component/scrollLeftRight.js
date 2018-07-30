@@ -18,7 +18,7 @@ var scrollLeftRight = (function() {
 	//导航拖拽fun
 	function navsListFun(navs) {
 
-		var navsList = m(navs).find(".mobile-scroll-leftright-content");
+		var navsList = m(navs).find(".mobile-scroll-content");
 		if(navsList.length === 0) {
 			return;
 		}

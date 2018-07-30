@@ -39,17 +39,16 @@
         border-left: 1px solid #ddd;
     }
     &.active {
-        color: #690;
+        color: $active-color;
     }
 }
 
 
 /*  tab内容 slide*/
-
 .mobile-tab-slide {
     width: 100%;
     height: 100%;
-    background: #f8f8f8;
+ 
 }
 
 .mobile-tab-slide-list {
