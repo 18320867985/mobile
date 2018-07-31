@@ -48,7 +48,6 @@
 .mobile-tab-slide {
     width: 100%;
     height: 100%;
- 
 }
 
 .mobile-tab-slide-list {
@@ -60,4 +59,26 @@
     padding: 10px;
     height: 100%;
     background: #fff;
+}
+
+
+/*tmobile-tab-nav*/
+
+.mobile-tab-nav {
+    padding: 3rem/$rem 0;
+    border-bottom: 1px solid #ddd;
+    box-shadow: 0 2px 2px #ddd ,;
+     overflow:hidden; 
+}
+
+.mobile-tab-fixed {
+     padding:  5px;
+    text-align: center;
+    li {
+       padding: 5px;
+        &.active {
+            background: $active-bg;
+            color: #fff;
+        }
+    }
 }

@@ -10,3 +10,5 @@ export {slide} from "./component/slide.js";
 
 export {tab} from "./component/tab.js";
 
+export {aside} from "./component/aside.js";
+

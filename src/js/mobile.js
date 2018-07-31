@@ -2344,7 +2344,7 @@ var scrollTopBottom = function () {
 
 			// scroll上下滚动scrolltopbottom自定义事件
 			m(this).trigger("scrolltopbottom", {
-				el: topbottomContent[0],
+				el: m(this).find(".mobile-scroll-content").eq(0),
 				barFun: scrollBarFun
 			});
 
@@ -2361,10 +2361,10 @@ var scrollTopBottom = function () {
 
 				// scroll顶部 scrolltop自定义事件
 				m(this).trigger("scrolltop", {
-					el: topbottomContent[0],
+					el: m(this).find(".mobile-scroll-content").eq(0),
 					barFun: scrollBarFun
 				});
-			} else if (translateY < minY) {
+			} else if (translateY <= minY) {
 				var over = Math.abs(translateY - minY);
 				var scale = 1 - over / window_h;
 				translateY = minY - over * scale;
@@ -2377,7 +2377,7 @@ var scrollTopBottom = function () {
 
 				// scroll底部 scrollbottom自定义事件
 				m(this).trigger("scrollbottom", {
-					el: topbottomContent[0],
+					el: m(this).find(".mobile-scroll-content").eq(0),
 					barFun: scrollBarFun
 				});
 				if (m(topbottomContent).height() < window_h) {
@@ -3041,7 +3041,7 @@ var tab = function () {
 			list.transition("all", 500);
 			m(list).setTransform('translateX', -now * document.documentElement.clientWidth);
 
-			//tab tabend自定义事件
+			//tab tabend左右滑动结束发生的事件
 			m(this).trigger("tabend", {
 				el: liNodes[now]
 
@@ -3058,13 +3058,13 @@ var tab = function () {
 		var target = m(".mobile-tab").find(dataId);
 		m(target).siblings().removeClass("active");
 		m(target).addClass("active");
-		var p = m(target).parents(".mobile-scroll-leftright");
+		var p = m(target).parents(".mobile-tab-nav");
 		var isleft = p.hasAttr("data-position-left");
-		//var isCenter= p.hasAttr("data-position-center");
+		var isCenter = p.hasAttr("data-position-center");
 
 		if (isleft) {
 			positionLeft(target);
-		} else {
+		} else if (isCenter) {
 			positionCenter(target);
 		}
 	});
@@ -3115,14 +3115,14 @@ var tab = function () {
 	var isMOve_tab = true;
 	var startX_tab = 0;
 	var startY_tab = 0;
-	m(".mobile-scroll-content li").on("touchstart", function (event) {
+	m(".mobile-tab-nav li").on("touchstart", function (event) {
 
 		var touch = event.changedTouches[0];
 		startX_tab = touch.clientX;
 		startY_tab = touch.clientY;
 		isMOve_tab = true;
 	});
-	m(".mobile-scroll-content li").on("touchmove", function (event) {
+	m(".mobile-tab-nav li").on("touchmove", function (event) {
 		var touch = event.changedTouches[0];
 		var nowX = touch.clientX;
 		var nowY = touch.clientY;
@@ -3130,9 +3130,14 @@ var tab = function () {
 			isMOve_tab = false;
 		}
 	});
-	m(".mobile-scroll-content li").on("touchend", function (event) {
+	m(".mobile-tab-nav li").on("touchend", function (event) {
 
 		if (isMOve_tab) {
+
+			// 添加样式
+			$(this).siblings().removeClass("active");
+			$(this).addClass("active");
+
 			var id = m(this).attr("data-target");
 			var obj = m(id);
 			var p = m(obj).parents(".mobile-tab-slide-list");
@@ -3146,11 +3151,50 @@ var tab = function () {
 	});
 }();
 
+var aside = function (m) {
+
+	// tab 左右滑动点击
+	var isMOve_ttl = true;
+	var startX_ttl = 0;
+	var startY_ttl = 0;
+	m(".mobile-aside-menu   .mobile-aside-ttl").on("touchstart", function (event) {
+
+		var touch = event.changedTouches[0];
+		startX_ttl = touch.clientX;
+		startY_ttl = touch.clientY;
+		isMOve_ttl = true;
+	});
+	m(".mobile-aside-menu   .mobile-aside-ttl").on("touchmove", function (event) {
+		var touch = event.changedTouches[0];
+		var nowX = touch.clientX;
+		var nowY = touch.clientY;
+		if (Math.abs(nowX - startX_ttl) > 1 || Math.abs(nowY - startY_ttl) > 1) {
+			isMOve_ttl = false;
+		}
+	});
+	m(".mobile-aside-menu  .mobile-aside-ttl").on("touchend", function (event) {
+
+		if (isMOve_ttl) {
+
+			// 添加样式
+			$(this).siblings().removeClass("active");
+			$(this).addClass("active");
+
+			var id = m(this).attr("data-target");
+			var obj = m(id);
+			var p = obj.parents(".mobile-aside-content").find(".mobile-aside-item ").hide();
+			//m(obj).siblings().hide();
+			m(obj).fadeIn();
+		}
+	});
+}(mobile);
+
 exports.commonStyle = commonStyle;
 exports.scrollTopBottom = scrollTopBottom;
 exports.scrollLeftRight = scrollLeftRight;
 exports.slide = slide;
 exports.tab = tab;
+exports.aside = aside;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 

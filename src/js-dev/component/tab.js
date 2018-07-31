@@ -161,7 +161,7 @@ var tab = (function() {
 			list.transition("all", 500);
 			m(list).setTransform('translateX', -now * document.documentElement.clientWidth);
 
-			//tab tabend自定义事件
+			//tab tabend左右滑动结束发生的事件
 			m(this).trigger("tabend", {
 				el: liNodes[now]
 
@@ -180,13 +180,13 @@ var tab = (function() {
 		var target = m(".mobile-tab").find(dataId);
 		m(target).siblings().removeClass("active");
 		m(target).addClass("active");
-		var p = m(target).parents(".mobile-scroll-leftright");
+		var p = m(target).parents(".mobile-tab-nav");
 		var isleft = p.hasAttr("data-position-left");
-		//var isCenter= p.hasAttr("data-position-center");
+		var isCenter= p.hasAttr("data-position-center");
 
 		if(isleft) {
 			positionLeft(target)
-		} else {
+		} else if(isCenter){
 			positionCenter(target);
 		}
 
@@ -241,7 +241,7 @@ var tab = (function() {
 	var isMOve_tab = true;
 	var startX_tab = 0;
 	var startY_tab = 0;
-	m(".mobile-scroll-content li").on("touchstart", function(event) {
+	m(".mobile-tab-nav li").on("touchstart", function(event) {
 
 		var touch = event.changedTouches[0];
 		startX_tab = touch.clientX;
@@ -249,7 +249,7 @@ var tab = (function() {
 		isMOve_tab=true;
 
 	});
-	m(".mobile-scroll-content li").on("touchmove", function(event) {
+	m(".mobile-tab-nav li").on("touchmove", function(event) {
 		var touch = event.changedTouches[0];
 		var nowX = touch.clientX;
 		var nowY = touch.clientY;
@@ -259,9 +259,14 @@ var tab = (function() {
 		}
 
 	});
-	m(".mobile-scroll-content li").on("touchend", function(event) {
+	m(".mobile-tab-nav li").on("touchend", function(event) {
 		
 		if(isMOve_tab) {
+			
+			// 添加样式
+			$(this).siblings().removeClass("active");
+			$(this).addClass("active");
+			
 			var id = m(this).attr("data-target");
 			var obj = m(id);
 			var p = m(obj).parents(".mobile-tab-slide-list");

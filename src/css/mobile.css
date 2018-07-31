@@ -667,7 +667,7 @@ a .spin {
   overflow: hidden;
   /*置顶文字*/ }
   .mobile-scroll-topbottom .mobile-scroll-content {
-    position: absolute;
+    position: relative;
     top: 0;
     left: 0;
     display: block;
@@ -705,9 +705,7 @@ a .spin {
   z-index: 99;
   padding: 5px 0;
   overflow: hidden;
-  background: #fff;
-  -webkit-box-shadow: 0 2px 5px #ccc inset, 0 -2px 5px #ccc inset;
-          box-shadow: 0 2px 5px #ccc inset, 0 -2px 5px #ccc inset; }
+  background: #fff; }
   .mobile-scroll-leftright .mobile-scroll-content {
     float: left;
     white-space: nowrap;
@@ -829,6 +827,53 @@ a .spin {
   padding: 10px;
   height: 100%;
   background: #fff; }
+
+/*tmobile-tab-nav*/
+.mobile-tab-nav {
+  padding: 0.15rem 0;
+  border-bottom: 1px solid #ddd;
+  -webkit-box-shadow: 0 2px 2px #ddd;
+          box-shadow: 0 2px 2px #ddd;
+  overflow: hidden; }
+
+.mobile-tab-fixed {
+  padding: 5px;
+  text-align: center; }
+  .mobile-tab-fixed li {
+    padding: 5px; }
+    .mobile-tab-fixed li.active {
+      background: #690;
+      color: #fff; }
+
+.mobile-aside {
+  width: 100%;
+  height: 100%; }
+
+.mobile-aside-menu {
+  position: relative;
+  height: 100%;
+  background: #f8f8f8; }
+
+.mobile-aside-ttl {
+  width: 100%;
+  height: 1.75rem;
+  line-height: 1.75rem;
+  text-align: center;
+  background: #f8f8f8;
+  border-bottom: 1px solid #ddd; }
+  .mobile-aside-ttl.active {
+    background: #690;
+    color: #fff; }
+
+.mobile-aside-content {
+  height: 100%; }
+
+.mobile-aside-item {
+  display: none; }
+  .mobile-aside-item.active {
+    display: block; }
+  .mobile-aside-item .mobile-scroll-content {
+    padding: 0.25rem; }
 
 .scrolltopbottom {
   -webkit-box-shadow: -2px 0px 3px #ddd;

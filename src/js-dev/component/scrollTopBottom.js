@@ -185,7 +185,7 @@ var scrollTopBottom = (function() {
 
 			// scroll上下滚动scrolltopbottom自定义事件
 			m(this).trigger("scrolltopbottom", {
-				el: topbottomContent[0],
+				el:m(this).find(".mobile-scroll-content").eq(0) ,
 				barFun: scrollBarFun
 			});
 
@@ -202,11 +202,11 @@ var scrollTopBottom = (function() {
 
 				// scroll顶部 scrolltop自定义事件
 				m(this).trigger("scrolltop", {
-					el: topbottomContent[0],
+					el:m(this).find(".mobile-scroll-content").eq(0) ,
 					barFun: scrollBarFun
 				});
 
-			} else if(translateY < minY) {
+			} else if(translateY <= minY) {
 				var over = Math.abs(translateY - minY);
 				var scale = 1 - over / window_h;
 				translateY = minY - over * scale;
@@ -219,7 +219,7 @@ var scrollTopBottom = (function() {
 
 				// scroll底部 scrollbottom自定义事件
 				m(this).trigger("scrollbottom", {
-					el: topbottomContent[0],
+					el:m(this).find(".mobile-scroll-content").eq(0) ,
 					barFun: scrollBarFun
 				});
 				if((m(topbottomContent).height()) < (window_h)) {
