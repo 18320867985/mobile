@@ -665,29 +665,31 @@ a .spin {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  /*置顶文字*/ }
+  /*置顶文字*/
+  /*加载图标*/ }
   .mobile-scroll-topbottom .mobile-scroll-content {
-    position: relative;
+    position: absolute;
     top: 0;
     left: 0;
     display: block;
-    background: #fff;
-    /*加载图标*/ }
-    .mobile-scroll-topbottom .mobile-scroll-content .loading {
-      position: relative;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      text-align: center;
-      padding: 10px;
-      color: #777;
-      background: #f8f8f8; }
+    width: 100%;
+    min-height: 100%;
+    background: #fff; }
   .mobile-scroll-topbottom .mobile-toptext {
     width: 100%;
     padding: 20px;
     margin-top: 10%;
     text-align: center;
     color: #bbb; }
+  .mobile-scroll-topbottom .loading {
+    position: relative;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    color: #777;
+    background: #f8f8f8; }
 
 /*滚动条*/
 .mobile-scroll-bar {
@@ -698,6 +700,17 @@ a .spin {
   width: 3px;
   background: rgba(153, 153, 153, 0.6);
   border-radius: 8px; }
+
+.mobile-scroll-content-many {
+  position: relative;
+  top: 0;
+  left: 0;
+  display: none;
+  min-height: 100%;
+  padding: 10px;
+  background: #fff; }
+  .mobile-scroll-content-many.active {
+    display: block; }
 
 /* mobile-scroll 导航左右滑动 */
 .mobile-scroll-leftright {
@@ -864,6 +877,8 @@ a .spin {
   .mobile-aside-ttl.active {
     background: #690;
     color: #fff; }
+  .mobile-aside-ttl:first-child {
+    border-top: 1px solid #ddd; }
 
 .mobile-aside-content {
   height: 100%; }

@@ -1,6 +1,5 @@
 var scrollTopBottom = (function() {
 
-	
 	m(function() {
 		topBottom();
 	})
@@ -20,8 +19,15 @@ var scrollTopBottom = (function() {
 	function topBottomFun(scrolltb) {
 
 		var topbottomContent = m(scrolltb).find(".mobile-scroll-content");
-		if(topbottomContent.length===0){
-			return ;
+		var many = m(scrolltb).find(".mobile-scroll-content-many.active");
+		var isManyContent = false; //是否显示多内容
+		if(topbottomContent.length === 0) {
+			topbottomContent = many;
+			isManyContent = true;
+		}
+
+		if(topbottomContent.length === 0) {
+			return;
 		}
 		m(topbottomContent).setTransform('translateZ', 0.01);
 		var isScrollTop = m(scrolltb).hasAttr("data-scroll-top"); // 是否下拉
@@ -87,9 +93,14 @@ var scrollTopBottom = (function() {
 			startY = touch.clientY;
 			startX = touch.clientX;
 			isLink = true;
+
+			if(isManyContent) {
+				topbottomContent = m(this).find(".mobile-scroll-content-many.active");
+			}
+
 			eleY = m(topbottomContent).getTransform("translateY");
 
-			 isAddMoveEvent = false; // 判断是否往上拖动
+			isAddMoveEvent = false; // 判断是否往上拖动
 			isAddMoveEventFirst = true; // 判断是否第一往上拖动
 
 			// 计算移动速度
@@ -131,7 +142,6 @@ var scrollTopBottom = (function() {
 
 		function move(event) {
 			event.preventDefault();
-			
 			// 检查是否向上移动
 			if(isAddMoveEvent) {
 				return;
@@ -157,11 +167,11 @@ var scrollTopBottom = (function() {
 			}
 
 			// 检查是否向上移动
-			var _x=Math.abs(disX);
-		  	var _y=Math.abs(disY);
-			if(isAddMoveEventFirst&&(_x!=_y)) {
+			var _x = Math.abs(disX);
+			var _y = Math.abs(disY);
+			if(isAddMoveEventFirst && (_x != _y)) {
 				isAddMoveEventFirst = false;
-				if(_x>_y) {
+				if(_x > _y) {
 					isAddMoveEvent = true;
 				}
 			}
@@ -178,14 +188,13 @@ var scrollTopBottom = (function() {
 					var speedlateY3 = speedlateY2 - speedlateY;
 					speedlateY = speedlateY2;
 					speedScroll = speedlateY3;
-					//console.log("speedlateY:" + speedScroll)
 
 				}, 20);
 			}
 
 			// scroll上下滚动scrolltopbottom自定义事件
 			m(this).trigger("scrolltopbottom", {
-				el:m(this).find(".mobile-scroll-content").eq(0) ,
+				el: topbottomContent.eq(0),
 				barFun: scrollBarFun
 			});
 
@@ -202,7 +211,7 @@ var scrollTopBottom = (function() {
 
 				// scroll顶部 scrolltop自定义事件
 				m(this).trigger("scrolltop", {
-					el:m(this).find(".mobile-scroll-content").eq(0) ,
+					el: topbottomContent.eq(0),
 					barFun: scrollBarFun
 				});
 
@@ -218,10 +227,12 @@ var scrollTopBottom = (function() {
 				}
 
 				// scroll底部 scrollbottom自定义事件
+
 				m(this).trigger("scrollbottom", {
-					el:m(this).find(".mobile-scroll-content").eq(0) ,
+					el: topbottomContent.eq(0),
 					barFun: scrollBarFun
 				});
+
 				if((m(topbottomContent).height()) < (window_h)) {
 					translateY = 0;
 				}
@@ -245,33 +256,33 @@ var scrollTopBottom = (function() {
 
 			// a链接
 			if(isLink) {
-				
-				var _a= m(event.target).closest("a");
-				var isHasParent=m(event.target).closest(".mobile-link");
-				if(isHasParent.length>0){
-					var href=_a.attr("href") || "javascript:;";
+
+				var _a = m(event.target).closest("a");
+				var isHasParent = m(event.target).closest(".mobile-link");
+				if(isHasParent.length > 0) {
+					var href = _a.attr("href") || "javascript:;";
 					window.location.assign(href);
 				}
-				
+
 			}
 
 			minY = window_h - topbottomContent[0].offsetHeight;
 			var target = m(topbottomContent).getTransform("translateY") + speedScroll * 20;
 			var bezier = 'ease-out';
-			
+
 			if(target > 0) {
 				target = 0;
-				m(topbottomContent).transition("all",500,bezier);
+				m(topbottomContent).transition("all", 500, bezier);
 
 			} else if(target < minY) {
 				target = minY;
 				if(m(topbottomContent).height() < window_h) {
 					target = 0;
 				}
-				m(topbottomContent).transition("all",500,bezier);
+				m(topbottomContent).transition("all", 500, bezier);
 
 			} else {
-				m(topbottomContent).transition("all",1000,bezier);
+				m(topbottomContent).transition("all", 1000, bezier);
 			}
 
 			// 滚动条
@@ -281,9 +292,9 @@ var scrollTopBottom = (function() {
 				var scroll_box_sale = scroll_Y / scroll_box_h;
 				mobile_scroll_bar.setTransform("translateY", -m(scrolltb).height() * scroll_box_sale);
 				mobile_scroll_bar.transition("all", 1000);
-				
+
 			}
-			
+
 			m(topbottomContent).setTransform("translateY", target);
 
 		}

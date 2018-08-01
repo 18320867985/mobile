@@ -2193,6 +2193,13 @@ var scrollTopBottom = function () {
 	function topBottomFun(scrolltb) {
 
 		var topbottomContent = m(scrolltb).find(".mobile-scroll-content");
+		var many = m(scrolltb).find(".mobile-scroll-content-many.active");
+		var isManyContent = false; //是否显示多内容
+		if (topbottomContent.length === 0) {
+			topbottomContent = many;
+			isManyContent = true;
+		}
+
 		if (topbottomContent.length === 0) {
 			return;
 		}
@@ -2249,6 +2256,11 @@ var scrollTopBottom = function () {
 			startY = touch.clientY;
 			startX = touch.clientX;
 			isLink = true;
+
+			if (isManyContent) {
+				topbottomContent = m(this).find(".mobile-scroll-content-many.active");
+			}
+
 			eleY = m(topbottomContent).getTransform("translateY");
 
 			isAddMoveEvent = false; // 判断是否往上拖动
@@ -2292,7 +2304,6 @@ var scrollTopBottom = function () {
 
 		function move(event) {
 			event.preventDefault();
-
 			// 检查是否向上移动
 			if (isAddMoveEvent) {
 				return;
@@ -2338,13 +2349,12 @@ var scrollTopBottom = function () {
 					var speedlateY3 = speedlateY2 - speedlateY;
 					speedlateY = speedlateY2;
 					speedScroll = speedlateY3;
-					//console.log("speedlateY:" + speedScroll)
 				}, 20);
 			}
 
 			// scroll上下滚动scrolltopbottom自定义事件
 			m(this).trigger("scrolltopbottom", {
-				el: m(this).find(".mobile-scroll-content").eq(0),
+				el: topbottomContent.eq(0),
 				barFun: scrollBarFun
 			});
 
@@ -2361,7 +2371,7 @@ var scrollTopBottom = function () {
 
 				// scroll顶部 scrolltop自定义事件
 				m(this).trigger("scrolltop", {
-					el: m(this).find(".mobile-scroll-content").eq(0),
+					el: topbottomContent.eq(0),
 					barFun: scrollBarFun
 				});
 			} else if (translateY <= minY) {
@@ -2376,10 +2386,12 @@ var scrollTopBottom = function () {
 				}
 
 				// scroll底部 scrollbottom自定义事件
+
 				m(this).trigger("scrollbottom", {
-					el: m(this).find(".mobile-scroll-content").eq(0),
+					el: topbottomContent.eq(0),
 					barFun: scrollBarFun
 				});
+
 				if (m(topbottomContent).height() < window_h) {
 					translateY = 0;
 				}
@@ -3115,14 +3127,14 @@ var tab = function () {
 	var isMOve_tab = true;
 	var startX_tab = 0;
 	var startY_tab = 0;
-	m(".mobile-tab-nav li").on("touchstart", function (event) {
+	m(".mobile-tab-nav").on("touchstart", "li", function (event) {
 
 		var touch = event.changedTouches[0];
 		startX_tab = touch.clientX;
 		startY_tab = touch.clientY;
 		isMOve_tab = true;
 	});
-	m(".mobile-tab-nav li").on("touchmove", function (event) {
+	m(".mobile-tab-nav").on("touchmove", "li", function (event) {
 		var touch = event.changedTouches[0];
 		var nowX = touch.clientX;
 		var nowY = touch.clientY;
@@ -3130,7 +3142,7 @@ var tab = function () {
 			isMOve_tab = false;
 		}
 	});
-	m(".mobile-tab-nav li").on("touchend", function (event) {
+	m(".mobile-tab-nav").on("touchend", "li", function (event) {
 
 		if (isMOve_tab) {
 
@@ -3157,14 +3169,14 @@ var aside = function (m) {
 	var isMOve_ttl = true;
 	var startX_ttl = 0;
 	var startY_ttl = 0;
-	m(".mobile-aside-menu   .mobile-aside-ttl").on("touchstart", function (event) {
+	m(".mobile-aside-menu").on("touchstart", ".mobile-aside-ttl", function (event) {
 
 		var touch = event.changedTouches[0];
 		startX_ttl = touch.clientX;
 		startY_ttl = touch.clientY;
 		isMOve_ttl = true;
 	});
-	m(".mobile-aside-menu   .mobile-aside-ttl").on("touchmove", function (event) {
+	m(".mobile-aside-menu").on("touchmove", ".mobile-aside-ttl", function (event) {
 		var touch = event.changedTouches[0];
 		var nowX = touch.clientX;
 		var nowY = touch.clientY;
@@ -3172,7 +3184,7 @@ var aside = function (m) {
 			isMOve_ttl = false;
 		}
 	});
-	m(".mobile-aside-menu  .mobile-aside-ttl").on("touchend", function (event) {
+	m(".mobile-aside-menu").on("touchend", ".mobile-aside-ttl", function (event) {
 
 		if (isMOve_ttl) {
 
@@ -3182,11 +3194,61 @@ var aside = function (m) {
 
 			var id = m(this).attr("data-target");
 			var obj = m(id);
-			var p = obj.parents(".mobile-aside-content").find(".mobile-aside-item ").hide();
-			//m(obj).siblings().hide();
-			m(obj).fadeIn();
+			obj.siblings().removeClass("active").hide();
+
+			m(obj).addClass("active").fadeIn();
+
+			var navsList = m(this).parents(".mobile-scroll-content");
+			var parent = m(this).parents(".mobile-aside-menu");
+			var isCenter = parent.hasAttr("data-position-center");
+			var isTop = parent.hasAttr("data-position-top");
+			if (isCenter) {
+				positionCenter(this, navsList);
+			}
+			if (isTop) {
+				positionTop(this, navsList);
+			}
 		}
 	});
+
+	// position center
+	function positionCenter(p, navsList) {
+		var window_h = m(p).parents(".mobile-scroll-topbottom").height();
+		var navsList_h = m(navsList).outerHeight();
+		var current_top = m(p).offset().top;
+		var current_h = m(p).outerHeight();
+		var current_center = Math.abs(window_h / 2);
+		var offsetCenter = current_top - current_center + current_h / 2;
+		var scroll_top = navsList_h - window_h;
+		if (navsList_h > window_h) {
+			if (Math.abs(current_top) > Math.abs(current_center)) {
+				if (Math.abs(scroll_top) < offsetCenter) {
+					m(navsList).setTransform("translateY", -Math.abs(scroll_top));
+				} else {
+					m(navsList).setTransform("translateY", -offsetCenter);
+				}
+			} else {
+				m(navsList).setTransform("translateY", 0);
+			}
+			m(navsList).transition("all", 800, "ease");
+		}
+	}
+
+	// position top
+	function positionTop(p, navsList) {
+		var window_h = m(p).parents(".mobile-scroll-topbottom").height();
+		var navsList_h = m(navsList).height();
+		var current_top = m(p).offset().top;
+		var scroll_top = navsList_h - window_h;
+		if (navsList_h > window_h) {
+			if (Math.abs(current_top) < Math.abs(scroll_top)) {
+				m(navsList).setTransform("translateY", -current_top);
+			} else {
+				m(navsList).setTransform("translateY", -scroll_top);
+			}
+			m(navsList).transition("all", 800, "ease");
+		}
+	}
 }(mobile);
 
 exports.commonStyle = commonStyle;

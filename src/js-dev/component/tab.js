@@ -241,7 +241,7 @@ var tab = (function() {
 	var isMOve_tab = true;
 	var startX_tab = 0;
 	var startY_tab = 0;
-	m(".mobile-tab-nav li").on("touchstart", function(event) {
+	m(".mobile-tab-nav").on("touchstart","li", function(event) {
 
 		var touch = event.changedTouches[0];
 		startX_tab = touch.clientX;
@@ -249,7 +249,7 @@ var tab = (function() {
 		isMOve_tab=true;
 
 	});
-	m(".mobile-tab-nav li").on("touchmove", function(event) {
+	m(".mobile-tab-nav").on("touchmove","li", function(event) {
 		var touch = event.changedTouches[0];
 		var nowX = touch.clientX;
 		var nowY = touch.clientY;
@@ -259,7 +259,7 @@ var tab = (function() {
 		}
 
 	});
-	m(".mobile-tab-nav li").on("touchend", function(event) {
+	m(".mobile-tab-nav").on("touchend","li", function(event) {
 		
 		if(isMOve_tab) {
 			

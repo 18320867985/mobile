@@ -21,6 +21,9 @@
          background: $active-bg;
          color: #fff;
      }
+     &:first-child{
+         border-top: 1px solid #ddd;
+     }
    
 }
 
