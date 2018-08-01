@@ -373,6 +373,20 @@
 
 			return this;
 		},
+		//  hasclass
+		hasClass: function(className) {
+			var ishasClass=false;
+			if(arguments.length === 1) {
+
+				Mobile.each(this, function() {
+					ishasClass=this.classList.contains(className);
+					return  false;
+				});
+
+			}
+
+			return ishasClass;
+		},
 
 		// removeClass
 		removeClass: function(className) {

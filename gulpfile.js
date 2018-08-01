@@ -72,6 +72,8 @@ gulp.task('release', ['concat'], function() {
 	//.pipe(img())                     // 压缩图片
 	.pipe(gulp.dest('./dist/images/')); //复制img
 	
+	gulp.src(['./src/**/*.json']).pipe(gulp.dest('./dist/')); //json
+	
 });
 
 // 发布的合并js和css文件

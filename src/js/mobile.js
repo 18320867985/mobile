@@ -359,6 +359,19 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 			return this;
 		},
+		//  hasclass
+		hasClass: function hasClass(className) {
+			var ishasClass = false;
+			if (arguments.length === 1) {
+
+				Mobile.each(this, function () {
+					ishasClass = this.classList.contains(className);
+					return false;
+				});
+			}
+
+			return ishasClass;
+		},
 
 		// removeClass
 		removeClass: function removeClass(className) {
@@ -2287,7 +2300,7 @@ var scrollTopBottom = function () {
 
 			// 滚动条
 			if (isScrollBar) {
-				mobile_scroll_bar.transition("null", 0);
+				mobile_scroll_bar.transition("null");
 				bar_h = m(topbottomContent).height();
 				bar_wrap_h = m(scrolltb).height();
 				sale_bar = bar_wrap_h / bar_h;
@@ -2297,6 +2310,8 @@ var scrollTopBottom = function () {
 				if (window_h < bar_h) {
 					mobile_scroll_bar.height(scroll_bar_h);
 				}
+				mobile_scroll_bar.css("opacity", 1);
+				mobile_scroll_bar.transition("null");
 			}
 		}
 
@@ -2338,6 +2353,8 @@ var scrollTopBottom = function () {
 			}
 			//m(".mobile-tab-ttl").html(isAddMoveEvent+"="+disX+"/y="+disY);
 			if (isAddMoveEvent) {
+				mobile_scroll_bar.css("opacity", 0);
+				mobile_scroll_bar.transition("null");
 				return;
 			}
 
@@ -2354,8 +2371,8 @@ var scrollTopBottom = function () {
 
 			// scroll上下滚动scrolltopbottom自定义事件
 			m(this).trigger("scrolltopbottom", {
-				el: topbottomContent.eq(0),
-				barFun: scrollBarFun
+				el: topbottomContent.eq(0)
+
 			});
 
 			minY = window_h - topbottomContent[0].offsetHeight;
@@ -2371,8 +2388,8 @@ var scrollTopBottom = function () {
 
 				// scroll顶部 scrolltop自定义事件
 				m(this).trigger("scrolltop", {
-					el: topbottomContent.eq(0),
-					barFun: scrollBarFun
+					el: topbottomContent.eq(0)
+
 				});
 			} else if (translateY <= minY) {
 				var over = Math.abs(translateY - minY);
@@ -2388,8 +2405,7 @@ var scrollTopBottom = function () {
 				// scroll底部 scrollbottom自定义事件
 
 				m(this).trigger("scrollbottom", {
-					el: topbottomContent.eq(0),
-					barFun: scrollBarFun
+					el: topbottomContent.eq(0)
 				});
 
 				if (m(topbottomContent).height() < window_h) {
@@ -2445,7 +2461,9 @@ var scrollTopBottom = function () {
 				var scroll_box_h = m(topbottomContent).height();
 				var scroll_box_sale = scroll_Y / scroll_box_h;
 				mobile_scroll_bar.setTransform("translateY", -m(scrolltb).height() * scroll_box_sale);
-				mobile_scroll_bar.transition("all", 1000);
+
+				mobile_scroll_bar.transition("transform 1s,opacity 1s ease 2s");
+				mobile_scroll_bar.css("opacity", 0);
 			}
 
 			m(topbottomContent).setTransform("translateY", target);
@@ -2460,24 +2478,7 @@ var scrollTopBottom = function () {
 			clearInterval(speedSetIntervalId);
 		}
 
-		function scrollBarFun(event) {
-			clearInterval(speedSetIntervalId);
-			// 滚动条
-			if (isScrollBar) {
-				var scroll_Y = m(topbottomContent).getTransform("translateY");
-				var scroll_box_h = m(topbottomContent).height();
-				var scroll_box_sale = scroll_Y / scroll_box_h;
-				mobile_scroll_bar.setTransform("translateY", -bar_wrap_h * scroll_box_sale);
-
-				mobile_scroll_bar.transition("null", 0);
-				bar_h = m(topbottomContent).height();
-				bar_wrap_h = m(scrolltb).height();
-				sale_bar = bar_wrap_h / bar_h;
-				scroll_bar_h = window_h * sale_bar;
-				mobile_scroll_bar = m(scrolltb).find(".mobile-scroll-bar");
-				mobile_scroll_bar.height(scroll_bar_h);
-			}
-		}
+		
 	}
 }();
 
@@ -3193,10 +3194,10 @@ var aside = function (m) {
 			$(this).addClass("active");
 
 			var id = m(this).attr("data-target");
-			var obj = m(id);
-			obj.siblings().removeClass("active").hide();
-
-			m(obj).addClass("active").fadeIn();
+			var obj = m(id); //mobile-scroll-content-many 
+			obj.parents(".mobile-aside-content").find(".mobile-scroll-content-many").removeClass("active").hide();
+			obj.parents(".mobile-aside-content").find(".mobile-scroll-bar").css("opacity", 0).transition("null");
+			m(obj).addClass("active").show();
 
 			var navsList = m(this).parents(".mobile-scroll-content");
 			var parent = m(this).parents(".mobile-aside-menu");
@@ -3207,6 +3208,14 @@ var aside = function (m) {
 			}
 			if (isTop) {
 				positionTop(this, navsList);
+			}
+
+			// 事件
+			var isTrigger = parent.hasAttr("data-trigger");
+			if (isTrigger) {
+				if (!$(obj).hasAttr("data-trigger")) {
+					$(obj).trigger("scrollbottom", { el: obj.eq(0) });
+				}
 			}
 		}
 	});

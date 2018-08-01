@@ -698,8 +698,9 @@ a .spin {
   right: 1px;
   z-index: 9999;
   width: 3px;
-  background: rgba(153, 153, 153, 0.6);
-  border-radius: 8px; }
+  background: rgba(153, 153, 153, 0.8);
+  border-radius: 8px;
+  opacity: 0; }
 
 .mobile-scroll-content-many {
   position: relative;

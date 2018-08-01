@@ -32,8 +32,8 @@
 
 			<div class="mobile-aside  clearfix">
 
-				<!--侧边菜单 data-position-center=定位中间r data-position-top=顶部-->
-				<aside class="mobile-aside-menu width-2" data-position-center>
+				<!--侧边菜单 data-trigger=触发scrollbottom事件  data-position-center=定位中间r data-position-top=顶部-->
+				<aside class="mobile-aside-menu width-2" data-position-center data-trigger>
 					<div class="mobile-scroll-topbottom" data-scroll-top data-scroll-bottom >
 						<ul class="mobile-scroll-content">
 							<li class="mobile-aside-ttl active" data-target="#page1">
@@ -46,35 +46,11 @@
 
 				<!--菜单内容  -->
 				<div class="mobile-aside-content  width-8 active ">
-					<div  class=" active mobile-scroll-topbottom " data-scroll-top data-scroll-bottom>
+					<div  class=" active mobile-scroll-topbottom " data-scroll-top data-scroll-bottom  data-scroll-bar>
 						<!--异步加载 mobile-scroll-content-many内容hide 只一个显示active-->
 						<div class="mobile-scroll-content-many  mobile-aside-item active " id="page1">
 							<p>第1屏</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-						
+							
 						</div>
 						
 					</div>
@@ -105,43 +81,42 @@
 				// 添加左边菜单
 				var menu_content = m(".mobile-aside-menu ul");
 				var docfrag = document.createDocumentFragment();
+				// 添加内容 
+				var tab_content = m(".mobile-aside-content  .mobile-scroll-topbottom");
+				var tab_docfrag = document.createDocumentFragment();
+				
 				for(var i = 2; i < 31; i++) {
+					
+					// 添加左边菜单
 					//<li class="mobile-aside-ttl active" data-target="#page1"></li>
 					var li = document.createElement("li");
 					li.classList.add("mobile-aside-ttl");
 					li.setAttribute("data-target", "#page" + i);
 					li.innerHTML = "第" + i + "屏";
 					docfrag.appendChild(li);
-
-				}
-				menu_content.append(docfrag);
-				
-				// 添加内容 
-				var tab_content = m(".mobile-aside-content  .mobile-scroll-topbottom");
-				var tab_docfrag = document.createDocumentFragment();
-				
-				for(var i = 2; i < 31; i++) {
+					
+					// 添加内容 
 					//<div class="mobile-scroll-content-many  ">
 					var div = document.createElement("div");
 					div.classList.add("mobile-scroll-content-many");
 					div.classList.add("mobile-aside-item");
-					
 					div.setAttribute("id","page"+i);
-					
 					var p = document.createElement("p");
-					
 					p.innerHTML="第" + i + "屏";
 					div.appendChild(p)
 					tab_docfrag.appendChild(div);
+					
 
 				}
+				menu_content.append(docfrag);
 				tab_content.append(tab_docfrag);
+			
 
 				// 拉到底部 加载数据
 				var firstbottom = true;
 				//var bottomcontent = m(".mobile-scroll-content");
 				m(".mobile-aside-content .mobile-scroll-topbottom").on("scrollbottom", function(event) {
-					
+				
 					var bottomcontent = m(event.detail.el);
 						//console.log(event.detail);
 					if(firstbottom) {
@@ -155,6 +130,7 @@
 						setTimeout(function() {
 
 							m.get("../json/tab.json", function(data) {
+							data=JSON.parse(data);
 								data = data.map(function(item) {
 									return {
 										content: "=====" + bottomcontent.attr("id") + "=====" + item.content
@@ -166,8 +142,9 @@
 								});
 								bottomcontent.find(".loading").remove();
 								bottomcontent.append(html);
+								
 								firstbottom = true;
-								//event.detail.barFun(); // 重设滚动条
+								bottomcontent.attr("data-trigger",true); // 标记元素第一次已触发过
 
 							}, function() {
 								firstbottom = true;
@@ -178,7 +155,14 @@
 
 				});
 
+				// 第一屏 第一次出发触发scrollbottom
+				m("#page1").emit("scrollbottom",{el:m("#page1")});
+				
 			});
+			
+			
+
+
 		</script>
 
 	</body>

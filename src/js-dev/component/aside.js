@@ -31,10 +31,10 @@ var aside = (function(m) {
 			$(this).addClass("active");
 
 			var id = m(this).attr("data-target");
-			var obj = m(id);
-			obj.siblings().removeClass("active").hide();
-
-			m(obj).addClass("active").fadeIn();
+			var obj = m(id); //mobile-scroll-content-many 
+			obj.parents(".mobile-aside-content").find(".mobile-scroll-content-many").removeClass("active").hide();
+			obj.parents(".mobile-aside-content").find(".mobile-scroll-bar").css("opacity",0).transition("null");
+			m(obj).addClass("active").show();
 
 			var navsList = m(this).parents(".mobile-scroll-content");
 			var parent = m(this).parents(".mobile-aside-menu");
@@ -46,6 +46,17 @@ var aside = (function(m) {
 			if(isTop) {
 				positionTop(this, navsList);
 			}
+			
+			// 事件
+			var isTrigger=parent.hasAttr("data-trigger");
+			if(isTrigger){
+				if(!$(obj).hasAttr("data-trigger")){
+					$(obj).trigger("scrollbottom",{el:obj.eq(0)});
+				}
+				
+			}
+			
+			
 
 		}
 
