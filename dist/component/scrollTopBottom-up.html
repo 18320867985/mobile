@@ -21,13 +21,13 @@
 		<div class="mobile-head">
 			<h2 class="mobile-head-ttl">下拉更新-上拉加载</h2>
 		</div>
-
+		
 		<!--content-->
 		<!-- data-scroll-top 是否下拉#   data-scroll-bottom 是否上拉   data-scroll-bar 是否显示滚动条-->
-		<section class="mobile-content mobile-scroll-topbottom" data-scroll-bar >
+		<section class="mobile-content mobile-scroll-topbottom"   data-scroll-bottomt  >
 
 			<!--滚动的底部文本-->
-			<div class="mobile-toptext">别拉了，我已到顶了。</div>
+	<!--		<div class="mobile-toptext">别拉了，我已到顶了。</div>-->
 
 			<!--滚动的整体内容-->
 			<div class=" mobile-scroll-content">
@@ -193,6 +193,10 @@
 							bottomcontent.find(".loading").remove();
 							bottomcontent.find(".scrolltopbottom").append(html);
 							firstbottom = true;
+							if(event.detail.resetBar)
+							{
+								event.detail.resetBar(); // 重置滚动条
+							}
 							
 						}, function() {
 							firstbottom = true;

@@ -34,7 +34,7 @@
 
 				<!--侧边菜单 data-trigger=触发scrollbottom事件  data-position-center=定位中间r data-position-top=顶部-->
 				<aside class="mobile-aside-menu width-2" data-position-center data-trigger>
-					<div class="mobile-scroll-topbottom" data-scroll-top data-scroll-bottom >
+					<div class="mobile-scroll-topbottom" data-scroll-top data-scroll-bottom>
 						<ul class="mobile-scroll-content">
 							<li class="mobile-aside-ttl active" data-target="#page1">
 								第1屏
@@ -46,13 +46,13 @@
 
 				<!--菜单内容  -->
 				<div class="mobile-aside-content  width-8 active ">
-					<div  class=" active mobile-scroll-topbottom " data-scroll-top data-scroll-bottom  data-scroll-bar>
+					<div class=" active mobile-scroll-topbottom " data-scroll-top data-scroll-bottom data-scroll-bar>
 						<!--异步加载 mobile-scroll-content-many内容hide 只一个显示active-->
 						<div class="mobile-scroll-content-many  mobile-aside-item active " id="page1">
 							<p>第1屏</p>
-							
+
 						</div>
-						
+
 					</div>
 
 				</div>
@@ -62,9 +62,9 @@
 		</section>
 
 		<!--footer-->
-		<footer class="mobile-footer">
+		<!--<footer class="mobile-footer">
 			<h2>页脚</h2>
-		</footer>
+		</footer>-->
 		<script type="text/html" id="must">
 			{{#must}}
 
@@ -84,9 +84,9 @@
 				// 添加内容 
 				var tab_content = m(".mobile-aside-content  .mobile-scroll-topbottom");
 				var tab_docfrag = document.createDocumentFragment();
-				
-				for(var i = 2; i < 31; i++) {
-					
+
+				for(var i = 2; i < 41; i++) {
+
 					// 添加左边菜单
 					//<li class="mobile-aside-ttl active" data-target="#page1"></li>
 					var li = document.createElement("li");
@@ -94,75 +94,74 @@
 					li.setAttribute("data-target", "#page" + i);
 					li.innerHTML = "第" + i + "屏";
 					docfrag.appendChild(li);
-					
+
 					// 添加内容 
 					//<div class="mobile-scroll-content-many  ">
 					var div = document.createElement("div");
 					div.classList.add("mobile-scroll-content-many");
 					div.classList.add("mobile-aside-item");
-					div.setAttribute("id","page"+i);
+					div.setAttribute("id", "page" + i);
 					var p = document.createElement("p");
-					p.innerHTML="第" + i + "屏";
+					p.innerHTML = "第" + i + "屏";
 					div.appendChild(p)
 					tab_docfrag.appendChild(div);
-					
 
 				}
 				menu_content.append(docfrag);
 				tab_content.append(tab_docfrag);
-			
 
 				// 拉到底部 加载数据
-				var firstbottom = true;
+				//var firstbottom = true;
 				//var bottomcontent = m(".mobile-scroll-content");
 				m(".mobile-aside-content .mobile-scroll-topbottom").on("scrollbottom", function(event) {
-				
+
 					var bottomcontent = m(event.detail.el);
-						//console.log(event.detail);
-					if(firstbottom) {
-						firstbottom = false;
+					if(!bottomcontent.hasAttr("firstbottom")) {
+						bottomcontent.attr("firstbottom",true); //异步加载标识
+						
 						bottomcontent.find(".loading").remove();
 						var loading = document.createElement("div");
 						loading.innerHTML = "正在加载中...";
 						loading.classList.add("loading");
 						bottomcontent.append(loading);
-
 						setTimeout(function() {
-
+							
 							m.get("../json/tab.json", function(data) {
-							data=JSON.parse(data);
+								data = JSON.parse(data);
 								data = data.map(function(item) {
 									return {
 										content: "=====" + bottomcontent.attr("id") + "=====" + item.content
 									};
 								});
-
+		
 								var html = Mustache.to_html($("#must").html(), {
 									must: data
 								});
 								bottomcontent.find(".loading").remove();
 								bottomcontent.append(html);
+							
+								if(event.detail.resetBar) {
+									event.detail.resetBar(); // 重置滚动条
+								}
 								
-								firstbottom = true;
-								bottomcontent.attr("data-trigger",true); // 标记元素第一次已触发过
-
+								bottomcontent.attr("data-trigger", true); // 标记元素第一次已触发过
+								bottomcontent.removeAttr("firstbottom") ;//异步加载标识
 							}, function() {
-								firstbottom = true;
+								bottomcontent.removeAttr("firstbottom");//异步加载标识
 								loading.innerHTML = "数据加载失败...";
 							});
+							
 						}, 500);
 					}
 
 				});
 
 				// 第一屏 第一次出发触发scrollbottom
-				m("#page1").emit("scrollbottom",{el:m("#page1")});
-				
+				m("#page1").emit("scrollbottom", {
+					el: m("#page1")
+				});
+
 			});
-			
-			
-
-
 		</script>
 
 	</body>

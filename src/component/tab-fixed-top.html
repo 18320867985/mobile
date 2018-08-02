@@ -3,7 +3,7 @@
 
 	<head>
 		<meta charset="UTF-8">
-		<title>mobile触摸页面-固定的tab</title>
+		<title>mobile触摸页面-固定顶部的tab</title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<style>
 			.mobile-tab-slide .mobile-scroll-content {
@@ -27,7 +27,7 @@
 	<body>
 		<!--head-->
 		<div class="mobile-head">
-			<h2 class="mobile-head-ttl">固定的tab标签</h2>
+			<h2 class="mobile-head-ttl">固定顶部的tab标签</h2>
 		</div>
 		<!--定位到顶部-->
 		<div class="mobile-tab mobile-tab-top">
@@ -57,8 +57,8 @@
 		<!--content-->
 		<section class="mobile-content">
 
-			<!--tab 左右滑动内容 data-no-drag=左右两边回弹  data-transition="是否左右滑动动画"-->
-			<div class="mobile-tab-slide" data-transition="是否左右滑动动画" data-no-drag>
+			<!--tab 左右滑动内容 data-drag=左右两边回弹  data-transition="是否左右滑动动画"-->
+			<div class="mobile-tab-slide" data-transition="是否左右滑动动画" data-drag>
 				<div class="mobile-tab-slide-list">
 					<div id="page1" class="mobile-tab-slide-item  mobile-scroll-topbottom" data-scroll-bar>
 						<div class="mobile-scroll-content">
@@ -265,6 +265,10 @@
 							bottomcontent.find(".loading").remove();
 							bottomcontent.append(html);
 							firstbottom = true;
+							if(event.detail.resetBar)
+							{
+								event.detail.resetBar(); // 重置滚动条
+							}
 					
 						}, function() {
 							firstbottom = true;

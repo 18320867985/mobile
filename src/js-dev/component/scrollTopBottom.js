@@ -54,16 +54,8 @@ var scrollTopBottom = (function() {
 		var isAddMoveEventFirst = true; // 判断是否第一往上拖动
 		var dis = 0;
 
-		var tab = m(".mobile-tab");
-		var head = m(".mobile-head");
-		var content = m(".mobile-content");
-		var footer = m(".mobile-footer");
-		var window_h = m(window).height();
-		var head_h = head.height() || 0;
-		var footer_h = footer.height() || 0;
-		var tab_h = tab.height() || 0;
-		var window_h = window_h - (head_h + footer_h + tab_h);
-		var minY = window_h - topbottomContent[0].offsetHeight
+		var window_h = m(scrolltb).height();
+		var minY = window_h - topbottomContent.height();
 
 		// 滚动条
 		var bar_h = m(topbottomContent).height();
@@ -113,11 +105,11 @@ var scrollTopBottom = (function() {
 			head = m(".mobile-head");
 			content = m(".mobile-content");
 			footer = m(".mobile-footer");
-			window_h = m(window).height();
+			window_h = m(scrolltb).height();
 			head_h = head.height() || 0;
 			footer_h = footer.height() || 0;
 			tab_h = tab.height() || 0;
-			window_h = window_h - (head_h + footer_h + tab_h);
+			//window_h = window_h - (head_h + footer_h + tab_h);
 
 			// 过度时间0s
 			topbottomContent[0].style.transition = 'none';
@@ -130,7 +122,7 @@ var scrollTopBottom = (function() {
 				sale_bar = bar_wrap_h / bar_h;
 				scroll_bar_h = window_h * sale_bar;
 				mobile_scroll_bar = m(scrolltb).find(".mobile-scroll-bar");
-				//mobile_scroll_bar.height(scroll_bar_h);
+			
 				if(window_h < bar_h) {
 					mobile_scroll_bar.height(scroll_bar_h);
 				}
@@ -178,10 +170,8 @@ var scrollTopBottom = (function() {
 					isAddMoveEvent = true;
 				}
 			}
-			//m(".mobile-tab-ttl").html(isAddMoveEvent+"="+disX+"/y="+disY);
+			
 			if(isAddMoveEvent) {
-				mobile_scroll_bar.css("opacity", 0);
-				mobile_scroll_bar.transition("null");
 				return;
 			}
 
@@ -199,7 +189,8 @@ var scrollTopBottom = (function() {
 
 			// scroll上下滚动scrolltopbottom自定义事件
 			m(this).trigger("scrolltopbottom", {
-				el: topbottomContent.eq(0)
+				el: topbottomContent.eq(0),
+				resetBar:scrollBarFun
 			
 			});
 
@@ -216,11 +207,12 @@ var scrollTopBottom = (function() {
 
 				// scroll顶部 scrolltop自定义事件
 				m(this).trigger("scrolltop", {
-					el: topbottomContent.eq(0)
+					el: topbottomContent.eq(0),
+					resetBar:scrollBarFun
 				
 				});
 
-			} else if(translateY <= minY) {
+			} else if(translateY < minY) {
 				var over = Math.abs(translateY - minY);
 				var scale = 1 - over / window_h;
 				translateY = minY - over * scale;
@@ -232,9 +224,10 @@ var scrollTopBottom = (function() {
 				}
 
 				// scroll底部 scrollbottom自定义事件
-
 				m(this).trigger("scrollbottom", {
-					el: topbottomContent.eq(0)
+					el: topbottomContent.eq(0),
+					resetBar:scrollBarFun
+					
 				});
 
 				if((m(topbottomContent).height()) < (window_h)) {
@@ -295,9 +288,7 @@ var scrollTopBottom = (function() {
 				var scroll_box_h = m(topbottomContent).height();
 				var scroll_box_sale = scroll_Y / scroll_box_h;
 				mobile_scroll_bar.setTransform("translateY", -m(scrolltb).height() * scroll_box_sale);
-
-				mobile_scroll_bar.transition("transform 1s,opacity 1s ease 2s");
-				mobile_scroll_bar.css("opacity", 0);
+				mobile_scroll_bar.transition("all",1000);
 
 			}
 
@@ -331,6 +322,8 @@ var scrollTopBottom = (function() {
 				scroll_bar_h = window_h * sale_bar;
 				mobile_scroll_bar = m(scrolltb).find(".mobile-scroll-bar");
 				mobile_scroll_bar.height(scroll_bar_h);
+//				mobile_scroll_bar.css("opacity",0);
+//				mobile_scroll_bar.transition("transform 1s,opacity 1s ease 1s");
 
 			}
 

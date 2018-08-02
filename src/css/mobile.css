@@ -664,6 +664,7 @@ a .spin {
   position: relative;
   width: 100%;
   height: 100%;
+  z-index: 9;
   overflow: hidden;
   /*置顶文字*/
   /*加载图标*/ }
@@ -671,6 +672,7 @@ a .spin {
     position: absolute;
     top: 0;
     left: 0;
+    z-index: 9;
     display: block;
     width: 100%;
     min-height: 100%;
@@ -689,7 +691,7 @@ a .spin {
     text-align: center;
     padding: 10px;
     color: #777;
-    background: #f8f8f8; }
+    background: #fff; }
 
 /*滚动条*/
 .mobile-scroll-bar {
@@ -700,7 +702,7 @@ a .spin {
   width: 3px;
   background: rgba(153, 153, 153, 0.8);
   border-radius: 8px;
-  opacity: 0; }
+  opacity: 1; }
 
 .mobile-scroll-content-many {
   position: relative;
@@ -708,7 +710,7 @@ a .spin {
   left: 0;
   display: none;
   min-height: 100%;
-  padding: 10px;
+  padding: 5px;
   background: #fff; }
   .mobile-scroll-content-many.active {
     display: block; }
@@ -716,7 +718,7 @@ a .spin {
 /* mobile-scroll 导航左右滑动 */
 .mobile-scroll-leftright {
   position: relative;
-  z-index: 99;
+  z-index: 9999;
   padding: 5px 0;
   overflow: hidden;
   background: #fff; }
@@ -790,9 +792,15 @@ a .spin {
 
 .mobile-tab {
   position: fixed;
-  width: 100%;
   left: 0;
-  z-index: 9999;
+  width: 100%;
+  background: #fff; }
+
+.mobile-tab-top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99;
   background: #f0f0f0; }
 
 .mobile-tab-ttl {
@@ -804,22 +812,26 @@ a .spin {
   color: #444; }
 
 .mobile-tab-bottom {
-  padding: 2px 0;
-  border-top: 1px solid #ddd;
-  -webkit-box-shadow: 0px -1px 2px #ddd;
-          box-shadow: 0px -1px 2px #ddd;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  z-index: 99;
+  width: 100%;
+  border-top: 1px solid  #ddd;
   background: #fff; }
 
 .mobile-tab-nav {
   width: 100%;
-  background: #fff; }
+  background: #fff;
+  overflow: hidden;
+  z-index: 9; }
 
 .mobile-tab-item {
   display: block;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
-  height: 2.2rem;
-  line-height: 2.2rem;
+  height: 2rem;
+  line-height: 2rem;
   font-size: 0.7rem;
   text-align: center;
   background: #fff; }
@@ -830,8 +842,12 @@ a .spin {
 
 /*  tab内容 slide*/
 .mobile-tab-slide {
+  top: 0;
+  left: 0;
   width: 100%;
-  height: 100%; }
+  height: 100%;
+  z-index: 99;
+  overflow: hidden; }
 
 .mobile-tab-slide-list {
   height: 100%; }
@@ -839,8 +855,7 @@ a .spin {
 .mobile-tab-slide-item {
   float: left;
   padding: 10px;
-  height: 100%;
-  background: #fff; }
+  height: 100%; }
 
 /*tmobile-tab-nav*/
 .mobile-tab-nav {

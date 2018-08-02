@@ -1928,6 +1928,22 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 			}
 
 			return null;
+		},
+
+		// 检查是否为移动端
+		isMobile: function isMobile() {
+
+			var userAgentInfo = navigator.userAgent.toString().toLowerCase();
+			var Agents = ["Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod"];
+			//console.log(userAgentInfo)
+			var flag = false;
+			for (var v = 0; v < Agents.length; v++) {
+				if (userAgentInfo.indexOf(Agents[v].toLowerCase()) > 0) {
+					flag = true;
+					break;
+				}
+			}
+			return flag;
 		}
 
 	});
@@ -2122,16 +2138,18 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 /*公共js设置样式*/
 var commonStyle = function (m) {
-	m(document).touchstart(function (event) {
-		event.preventDefault();
-	});
+	if (m.isMobile()) {
+		m(document).touchstart(function (event) {
+			event.preventDefault();
+		});
 
-	m(document).touchmove(function (event) {
-		event.preventDefault();
-	});
-	m(document).touchend(function (event) {
-		event.preventDefault();
-	});
+		m(document).touchmove(function (event) {
+			event.preventDefault();
+		});
+		m(document).touchend(function (event) {
+			event.preventDefault();
+		});
+	}
 
 	// 设置主题内容样式
 	m(function () {
@@ -2235,16 +2253,8 @@ var scrollTopBottom = function () {
 		var isAddMoveEventFirst = true; // 判断是否第一往上拖动
 		var dis = 0;
 
-		var tab = m(".mobile-tab");
-		var head = m(".mobile-head");
-		var content = m(".mobile-content");
-		var footer = m(".mobile-footer");
-		var window_h = m(window).height();
-		var head_h = head.height() || 0;
-		var footer_h = footer.height() || 0;
-		var tab_h = tab.height() || 0;
-		var window_h = window_h - (head_h + footer_h + tab_h);
-		var minY = window_h - topbottomContent[0].offsetHeight;
+		var window_h = m(scrolltb).height();
+		var minY = window_h - topbottomContent.height();
 
 		// 滚动条
 		var bar_h = m(topbottomContent).height();
@@ -2289,11 +2299,11 @@ var scrollTopBottom = function () {
 			head = m(".mobile-head");
 			content = m(".mobile-content");
 			footer = m(".mobile-footer");
-			window_h = m(window).height();
+			window_h = m(scrolltb).height();
 			head_h = head.height() || 0;
 			footer_h = footer.height() || 0;
 			tab_h = tab.height() || 0;
-			window_h = window_h - (head_h + footer_h + tab_h);
+			//window_h = window_h - (head_h + footer_h + tab_h);
 
 			// 过度时间0s
 			topbottomContent[0].style.transition = 'none';
@@ -2306,7 +2316,7 @@ var scrollTopBottom = function () {
 				sale_bar = bar_wrap_h / bar_h;
 				scroll_bar_h = window_h * sale_bar;
 				mobile_scroll_bar = m(scrolltb).find(".mobile-scroll-bar");
-				//mobile_scroll_bar.height(scroll_bar_h);
+
 				if (window_h < bar_h) {
 					mobile_scroll_bar.height(scroll_bar_h);
 				}
@@ -2351,10 +2361,8 @@ var scrollTopBottom = function () {
 					isAddMoveEvent = true;
 				}
 			}
-			//m(".mobile-tab-ttl").html(isAddMoveEvent+"="+disX+"/y="+disY);
+
 			if (isAddMoveEvent) {
-				mobile_scroll_bar.css("opacity", 0);
-				mobile_scroll_bar.transition("null");
 				return;
 			}
 
@@ -2371,7 +2379,8 @@ var scrollTopBottom = function () {
 
 			// scroll上下滚动scrolltopbottom自定义事件
 			m(this).trigger("scrolltopbottom", {
-				el: topbottomContent.eq(0)
+				el: topbottomContent.eq(0),
+				resetBar: scrollBarFun
 
 			});
 
@@ -2388,10 +2397,11 @@ var scrollTopBottom = function () {
 
 				// scroll顶部 scrolltop自定义事件
 				m(this).trigger("scrolltop", {
-					el: topbottomContent.eq(0)
+					el: topbottomContent.eq(0),
+					resetBar: scrollBarFun
 
 				});
-			} else if (translateY <= minY) {
+			} else if (translateY < minY) {
 				var over = Math.abs(translateY - minY);
 				var scale = 1 - over / window_h;
 				translateY = minY - over * scale;
@@ -2403,9 +2413,10 @@ var scrollTopBottom = function () {
 				}
 
 				// scroll底部 scrollbottom自定义事件
-
 				m(this).trigger("scrollbottom", {
-					el: topbottomContent.eq(0)
+					el: topbottomContent.eq(0),
+					resetBar: scrollBarFun
+
 				});
 
 				if (m(topbottomContent).height() < window_h) {
@@ -2461,9 +2472,7 @@ var scrollTopBottom = function () {
 				var scroll_box_h = m(topbottomContent).height();
 				var scroll_box_sale = scroll_Y / scroll_box_h;
 				mobile_scroll_bar.setTransform("translateY", -m(scrolltb).height() * scroll_box_sale);
-
-				mobile_scroll_bar.transition("transform 1s,opacity 1s ease 2s");
-				mobile_scroll_bar.css("opacity", 0);
+				mobile_scroll_bar.transition("all", 1000);
 			}
 
 			m(topbottomContent).setTransform("translateY", target);
@@ -2478,7 +2487,26 @@ var scrollTopBottom = function () {
 			clearInterval(speedSetIntervalId);
 		}
 
-		
+		function scrollBarFun(event) {
+			clearInterval(speedSetIntervalId);
+			// 滚动条
+			if (isScrollBar) {
+				var scroll_Y = m(topbottomContent).getTransform("translateY");
+				var scroll_box_h = m(topbottomContent).height();
+				var scroll_box_sale = scroll_Y / scroll_box_h;
+				mobile_scroll_bar.setTransform("translateY", -bar_wrap_h * scroll_box_sale);
+
+				mobile_scroll_bar.transition("null");
+				bar_h = m(topbottomContent).height();
+				bar_wrap_h = m(scrolltb).height();
+				sale_bar = bar_wrap_h / bar_h;
+				scroll_bar_h = window_h * sale_bar;
+				mobile_scroll_bar = m(scrolltb).find(".mobile-scroll-bar");
+				mobile_scroll_bar.height(scroll_bar_h);
+				//				mobile_scroll_bar.css("opacity",0);
+				//				mobile_scroll_bar.transition("transform 1s,opacity 1s ease 1s");
+			}
+		}
 	}
 }();
 
@@ -2909,13 +2937,13 @@ var slide = function () {
 	}
 }();
 
-// 图片轮播
-var tab = function () {
+// tab
+var tab$1 = function () {
 
 	m(function () {
 		var wrap = m(".mobile-tab-slide");
-		wrap.each(function () {
-			tabSlide(this);
+		wrap.each(function (i, v) {
+			tabSlide(v);
 		});
 	});
 
@@ -2944,8 +2972,7 @@ var tab = function () {
 		var wrap_w = wrap.width();
 		list.width(wrap_w * liNodes.length);
 		liNodes.width(wrap_w);
-
-		var isDrag = wrap.hasAttr("data-no-drag"); //左右两边回弹
+		var isDrag = wrap.hasAttr("data-drag"); //左右两边回弹
 
 		var elementX = 0;
 		var startX = 0;
@@ -3062,11 +3089,13 @@ var tab = function () {
 		}
 	}
 
-	// 事件使用
+	// mobile-tab-slide滑动touchend触发的事件
 	m(".mobile-tab-slide").on("tabend", function (event) {
 
-		var el = event.detail.el;
-		var id = m(el).attr("id") || m(el).attr("data-id");
+		var el = m(event.detail.el);
+		el.parents(".mobile-tab-slide-list").find(".mobile-tab-slide-item ").removeClass("active");
+		el.addClass("active");
+		var id = el.attr("id") || el.attr("data-id");
 		var dataId = '[data-target=\\#' + id + ']';
 		var target = m(".mobile-tab").find(dataId);
 		m(target).siblings().removeClass("active");
@@ -3079,6 +3108,17 @@ var tab = function () {
 			positionLeft(target);
 		} else if (isCenter) {
 			positionCenter(target);
+		}
+
+		// 是否允许触发事件
+		var isTrigger = el.parents(".mobile-tab-slide").hasAttr("data-trigger");
+		var el_content = el.find(".mobile-scroll-content").eq(0);
+		if (isTrigger) {
+			if (!el_content.hasAttr("data-trigger")) {
+				el.emit("scrollbottom", {
+					el: el_content
+				});
+			}
 		}
 	});
 
@@ -3159,6 +3199,17 @@ var tab = function () {
 			var istransition = m(obj).parents(".mobile-tab-slide").hasAttr("data-transition");
 			if (istransition) {
 				m(p).transition("all", 500);
+			}
+
+			// 是否允许触发事件
+			var isTrigger = m(this).parents(".mobile-tab-nav").hasAttr("data-trigger");
+			var el_content = obj.find(".mobile-scroll-content").eq(0);
+			if (isTrigger) {
+				if (!el_content.hasAttr("data-trigger")) {
+					el_content.emit("scrollbottom", {
+						el: el_content
+					});
+				}
 			}
 		}
 	});
@@ -3264,7 +3315,7 @@ exports.commonStyle = commonStyle;
 exports.scrollTopBottom = scrollTopBottom;
 exports.scrollLeftRight = scrollLeftRight;
 exports.slide = slide;
-exports.tab = tab;
+exports.tab = tab$1;
 exports.aside = aside;
 
 Object.defineProperty(exports, '__esModule', { value: true });

@@ -2015,6 +2015,25 @@
 
 			return null;
 		},
+		
+		// 检查是否为移动端
+		isMobile:function(){
+			
+			var userAgentInfo = navigator.userAgent.toString().toLowerCase();
+				var Agents = ["Android", "iPhone",
+					"SymbianOS", "Windows Phone",
+					"iPad", "iPod"
+				];
+				//console.log(userAgentInfo)
+				var flag = false;
+				for(var v = 0; v < Agents.length; v++) {
+					if(userAgentInfo.indexOf(Agents[v].toLowerCase()) > 0) {
+						flag = true;
+						break;
+					}
+				}
+				return flag;
+		},
 
 	});
 

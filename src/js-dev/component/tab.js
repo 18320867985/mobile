@@ -1,10 +1,10 @@
-// 图片轮播
+// tab
 var tab = (function() {
 
 	m(function() {
 		var wrap = m(".mobile-tab-slide");
-		wrap.each(function() {
-			tabSlide(this);
+		wrap.each(function(i, v) {
+			tabSlide(v);
 		});
 
 	});
@@ -36,8 +36,7 @@ var tab = (function() {
 		var wrap_w = wrap.width();
 		list.width(wrap_w * liNodes.length);
 		liNodes.width(wrap_w);
-
-		var isDrag = wrap.hasAttr("data-no-drag"); //左右两边回弹
+		var isDrag = wrap.hasAttr("data-drag"); //左右两边回弹
 
 		var elementX = 0;
 		var startX = 0;
@@ -171,23 +170,36 @@ var tab = (function() {
 
 	}
 
-	// 事件使用
+	// mobile-tab-slide滑动touchend触发的事件
 	m(".mobile-tab-slide").on("tabend", function(event) {
 
-		var el = event.detail.el;
-		var id = m(el).attr("id") || m(el).attr("data-id");
+		var el = m(event.detail.el);
+		el.parents(".mobile-tab-slide-list").find(".mobile-tab-slide-item ").removeClass("active");
+		el.addClass("active");
+		var id = el.attr("id") || el.attr("data-id");
 		var dataId = '[data-target=\\#' + id + ']';
 		var target = m(".mobile-tab").find(dataId);
 		m(target).siblings().removeClass("active");
 		m(target).addClass("active");
 		var p = m(target).parents(".mobile-tab-nav");
 		var isleft = p.hasAttr("data-position-left");
-		var isCenter= p.hasAttr("data-position-center");
+		var isCenter = p.hasAttr("data-position-center");
 
 		if(isleft) {
 			positionLeft(target)
-		} else if(isCenter){
+		} else if(isCenter) {
 			positionCenter(target);
+		}
+
+		// 是否允许触发事件
+		var isTrigger = el.parents(".mobile-tab-slide").hasAttr("data-trigger");
+		var el_content = el.find(".mobile-scroll-content").eq(0);
+		if(isTrigger) {
+			if(!el_content.hasAttr("data-trigger")) {
+				el.emit("scrollbottom", {
+					el: el_content
+				});
+			}
 		}
 
 	});
@@ -204,7 +216,7 @@ var tab = (function() {
 		var scroll_left = navsList_w - window_w;
 
 		if(navsList_w > window_w) {
-			
+
 			if(Math.abs(current_left) > Math.abs(current_center)) {
 				if(Math.abs(scroll_left) < offsetCenter) {
 					m(navsList).setTransform("translateX", -Math.abs(scroll_left));
@@ -241,15 +253,15 @@ var tab = (function() {
 	var isMOve_tab = true;
 	var startX_tab = 0;
 	var startY_tab = 0;
-	m(".mobile-tab-nav").on("touchstart","li", function(event) {
+	m(".mobile-tab-nav").on("touchstart", "li", function(event) {
 
 		var touch = event.changedTouches[0];
 		startX_tab = touch.clientX;
 		startY_tab = touch.clientY;
-		isMOve_tab=true;
+		isMOve_tab = true;
 
 	});
-	m(".mobile-tab-nav").on("touchmove","li", function(event) {
+	m(".mobile-tab-nav").on("touchmove", "li", function(event) {
 		var touch = event.changedTouches[0];
 		var nowX = touch.clientX;
 		var nowY = touch.clientY;
@@ -259,24 +271,35 @@ var tab = (function() {
 		}
 
 	});
-	m(".mobile-tab-nav").on("touchend","li", function(event) {
-		
+	m(".mobile-tab-nav").on("touchend", "li", function(event) {
+
 		if(isMOve_tab) {
-			
+
 			// 添加样式
 			$(this).siblings().removeClass("active");
 			$(this).addClass("active");
-			
+
 			var id = m(this).attr("data-target");
 			var obj = m(id);
 			var p = m(obj).parents(".mobile-tab-slide-list");
 			var left = m(obj).offset().left;
 			m(p).setTransform("translateX", -left);
-			 var istransition=m(obj).parents(".mobile-tab-slide").hasAttr("data-transition");
-			 if(istransition){
-			 	m(p).transition("all", 500);
-			 }
+			var istransition = m(obj).parents(".mobile-tab-slide").hasAttr("data-transition");
+			if(istransition) {
+				m(p).transition("all", 500);
+			}
 			
+			// 是否允许触发事件
+			var isTrigger = m(this).parents(".mobile-tab-nav").hasAttr("data-trigger");
+			var el_content = obj.find(".mobile-scroll-content").eq(0);
+			if(isTrigger) {
+				if(!el_content.hasAttr("data-trigger")) {
+					el_content.emit("scrollbottom", {
+						el: el_content
+					});
+				}
+			}
+
 		}
 
 	});
