@@ -89,14 +89,15 @@
 				} else if(typeof selector === "object") {
 
 					// 遍历数组型对象
-					if(selector.hasOwnProperty("length")&&selector.length > 0) {
+					if(selector.hasOwnProperty("length") && selector.length > 0) {
 						Mobile.each(selector, function(i, v) {
 							arrs.push(v);
 						});
-					} else if(selector.nodeType === Node.ELEMENT_NODE || selector.nodeType === Node.DOCUMENT_NODE||selector===window) {
+					} else if(selector.nodeType === Node.ELEMENT_NODE || selector.nodeType === Node.DOCUMENT_NODE || selector === window) {
 						// 单例对象 
 						arrs.push(selector);
 					}
+
 					Array.prototype.push.apply(this, arrs);
 
 				}
@@ -126,7 +127,7 @@
 						return this;
 					}
 					// 遍历数组型对象
-					if(content.hasOwnProperty("length")&& content.length > 0) {
+					if(content.hasOwnProperty("length") && content.length > 0) {
 
 						Mobile.each(content, function() {
 							var childElements = this.querySelectorAll(selector);
@@ -362,10 +363,23 @@
 		// addClass
 		addClass: function(className) {
 
+			if(typeof className === "string") {
+				className = className.split(/\s+/);
+
+			} else {
+
+				return this;
+			}
+
 			if(arguments.length === 1) {
 
 				Mobile.each(this, function() {
-					this.classList.add(className);
+					for(var y = 0; y < className.length; y++) {
+						if(className[y]) {
+							this.classList.add(className[y]);
+						}
+
+					}
 				});
 
 			}
@@ -373,13 +387,41 @@
 			return this;
 		},
 
+		//  hasclass
+		hasClass: function(className) {
+			var ishasClass = false;
+			if(arguments.length === 1) {
+
+				Mobile.each(this, function() {
+					ishasClass = this.classList.contains(className);
+					return false;
+				});
+
+			}
+
+			return ishasClass;
+		},
+
 		// removeClass
 		removeClass: function(className) {
+
+			if(typeof className === "string") {
+				className = className.split(/\s+/);
+
+			} else {
+
+				return this;
+			}
 
 			if(arguments.length === 1) {
 
 				Mobile.each(this, function() {
-					this.classList.remove(className);
+					for(var y = 0; y < className.length; y++) {
+						if(className[y]) {
+							this.classList.remove(className[y]);
+						}
+
+					}
 
 				});
 
@@ -390,63 +432,66 @@
 		// parent 
 		parent: function() {
 			var arr = [];
-			for(var i = 0; i < this.length; i++) {
-				var _arr = this[i].parentElement;
+			var obj = m(this);
+			for(var i = 0; i < obj.length; i++) {
+				var _arr = obj[i].parentElement;
 				if(_arr) {
 					arr.push(_arr)
 				}
-				delete this[i];
+				delete obj[i];
 			}
-			delete this.length;
-			Array.prototype.push.apply(this, arr);
-			return this;
+			delete obj.length;
+			Array.prototype.push.apply(obj, arr);
+			return obj;
 		},
 
 		// parents 
 		parents: function(selector) {
 			selector = typeof selector === "string" ? selector : "";
 			var arr = [];
-			for(var i = 0; i < this.length; i++) {
+			var obj = m(this);
+			for(var i = 0; i < obj.length; i++) {
 
-				var p = _searchParents(this[i], function(elm) {
+				var p = _searchParents(obj[i], function(elm) {
 					var bl = false;
 					bl = Mobile.checkSelector(elm, selector);
 					return bl;
 				});
 
-				delete this[i];
+				delete obj[i];
 				if(p) {
 					arr.push(p);
 				}
 			};
-			delete this.length;
-			Array.prototype.push.apply(this, arr);
-			return this;
+			delete obj.length;
+			Array.prototype.push.apply(obj, arr);
+			return obj;
 		},
 
 		// closest 
 		closest: function(selector) {
 			selector = typeof selector === "string" ? selector : "";
 			var arr = [];
-			for(var i = 0; i < this.length; i++) {
+			var obj = m(this);
+			for(var i = 0; i < obj.length; i++) {
 				var p;
-				if(Mobile.checkSelector(this[i], selector)) {
-					arr.push(this[i]);
+				if(Mobile.checkSelector(obj[i], selector)) {
+					arr.push(obj[i]);
 				} else {
-					p = _searchParents(this[i], function(elm) {
+					p = _searchParents(obj[i], function(elm) {
 						var bl = false;
 						bl = Mobile.checkSelector(elm, selector);
 						return bl;
 					});
 				}
-				delete this[i];
+				delete obj[i];
 				if(p) {
 					arr.push(p);
 				}
 			};
-			delete this.length;
-			Array.prototype.push.apply(this, arr);
-			return this;
+			delete obj.length;
+			Array.prototype.push.apply(obj, arr);
+			return obj;
 		},
 
 		// eq 
@@ -455,94 +500,102 @@
 				throw Error("index property must is number type")
 			}
 			var arr = [];
-			for(var i = 0; i < this.length; i++) {
+			var obj = m(this);
+			for(var i = 0; i < obj.length; i++) {
 				if(i === index) {
-					arr.push(this[i])
+					arr.push(obj[i])
 				}
-				delete this[i];
+				delete obj[i];
 			}
-			delete this.length;
-			Array.prototype.push.apply(this, arr);
-			return this;
+			delete obj.length;
+
+			Array.prototype.push.apply(obj, arr);
+			return obj;
 		},
 
 		//  first
 		first: function() {
 
 			var arr = [];
-			for(var i = 0; i < this.length; i++) {
+			var obj = m(this);
+			for(var i = 0; i < obj.length; i++) {
 				if(i === 0) {
-					arr.push(this[i])
+					arr.push(obj[i])
 				}
-				delete this[i];
+				delete obj[i];
 			}
-			delete this.length;
-			Array.prototype.push.apply(this, arr);
-			return this;
+			delete obj.length;
+			Array.prototype.push.apply(obj, arr);
+			return obj;
 		},
 
 		//  prev
 		prev: function() {
 			var arr = [];
-			Mobile.each(this, function(i, v) {
-				var _prev = this.previousElementSibling;
+			var obj = m(this);
+			Mobile.each(obj, function(i, v) {
+				var _prev = v.previousElementSibling;
 				if(_prev) {
 					arr.push(_prev)
 				}
-				delete this[i];
+				delete v[i];
 			});
-			delete this.length;
-			Array.prototype.push.apply(this, arr);
-			return this;
+			delete obj.length;
+			Array.prototype.push.apply(obj, arr);
+			return obj;
 		},
 
 		//  next
 		next: function() {
 			var arr = [];
-			Mobile.each(this, function(i, v) {
-				var _next = this.nextElementSibling;
+			var obj = m(this);
+			Mobile.each(obj, function(i, v) {
+				var _next = v.nextElementSibling;
 				if(_next) {
 					arr.push(_next)
 				}
-				delete this[i];
+				delete v[i];
 			});
-			delete this.length;
-			Array.prototype.push.apply(this, arr);
-			return this;
+			delete obj.length;
+			Array.prototype.push.apply(obj, arr);
+			return obj;
 		},
 
 		//  siblings
 		siblings: function() {
 			var arr = [];
-			Mobile.each(this, function(i, v) {
-				var _children = this.parentElement.children;
-				var _index = m(_children).index(m(this));
+			var obj = m(this);
+			Mobile.each(obj, function(i, v) {
+				var _children = v.parentElement.children;
+				var _index = m(v).index();
+
 				for(var y = 0; y < _children.length; y++) {
 					if(y !== _index) {
 						arr.push(_children[y]);
 					}
 				}
-				delete this[i];
+				delete v[i];
 			});
-			delete this.length;
-			Array.prototype.push.apply(this, arr);
-			return this;
+			delete obj.length;
+			Array.prototype.push.apply(obj, arr);
+			return obj;
 		},
 
 		//  last
 		last: function() {
 
 			var arr = [];
-			for(var i = 0; i < this.length; i++) {
-				var _length = (this.length > 0) ? this.length - 1 : 0;
+			var obj = m(this);
+			for(var i = 0; i < obj.length; i++) {
+				var _length = (obj.length > 0) ? obj.length - 1 : 0;
 				if(i === _length) {
-					arr.push(this[i])
+					arr.push(obj[i])
 				}
-				delete this[i];
+				delete obj[i];
 			}
-			delete this.length;
-			Array.prototype.push.apply(this, arr);
-			return this;
+			delete obj.length;
+			Array.prototype.push.apply(obj, arr);
+			return obj;
 		},
 
 		//  heigth
@@ -757,13 +810,6 @@
 					}
 
 					return false;
-				});
-			} else if(arguments.length === 1) {
-				Mobile.each(this, function(i, v) {
-					obj = obj.length && obj.length > 0 ? obj[0] : obj;
-					if(v.isEqualNode(obj)) {
-						_index = i;
-					}
 				});
 			}
 
@@ -1070,7 +1116,13 @@
 			var _transition = "all " + time / 1000 + "s  " + ease + " " + (delay / 1000) + "s";
 
 			if(typeof option === "string") {
-				_transition = option + " " + time / 1000 + "s  " + ease + " " + (delay / 1000) + "s";
+
+				if(arguments.length === 1) {
+					_transition = option;
+				} else if(arguments.length > 1) {
+					_transition = option + " " + time / 1000 + "s  " + ease + " " + (delay / 1000) + "s";
+				}
+
 				Mobile.each(this, function() {
 					this.style.MozTransition = _transition;
 					this.style.msTransition = _transition;
@@ -1082,6 +1134,10 @@
 				return this;
 			}
 
+			// option is object	
+			if(typeof option != "object") {
+				return;
+			}
 			Mobile.each(this, function(i, el) {
 				time = typeof time === "number" ? time : 400;
 				el.setTimeout = el.setTimeout || 0; // 第一次执行
@@ -1290,39 +1346,85 @@
 			if(arguments.length >= 2 && typeof arguments[1] === "function") {
 				var handler = arguments[1];
 				var bl = typeof arguments[2] === "boolean" ? arguments[2] : false;
+				function f(event){
+					handler.call(event.target, event);
+					}
 				Mobile.each(this, function() {
 					if(this.addEventListener) {
-						this.addEventListener(type, handler, bl);
+						this.addEventListener(type, f, bl);
 					}
+					
 					//ie8
-					else if(this.attachEvent) {
-						this.attachEvent("on" + type, handler, bl)
-					} else {
-						this["on" + type] = handler /*直接赋给事件*/
-					}
+//					else if(this.attachEvent) {
+//						this.attachEvent("on" + type, f, bl)
+//					} else {
+//						this["on" + type] =f /*直接赋给事件*/
+//					}
 				});
 
-				m.events.on(type, handler);
+				m.events.on(type, f);
+			}
+			
+			// 正常绑定事件传object值
+			if(arguments.length>=3 && typeof arguments[1] === "object" && typeof arguments[2] === "function") {
+				var obj = arguments[1]
+				var handler = arguments[2];
+				var bl = typeof arguments[3] === "boolean" ? arguments[3] : false;
+				function f(event){
+					event.data = obj;
+					handler.call(event.target, event);
+					}
+				Mobile.each(this, function() {
+					if(this.addEventListener) {
+						this.addEventListener(type, f, bl);
+					}
+
+				});
+
+				m.events.on(type, f);
 			}
 
 			// 委托绑定事件
 			if(arguments.length >= 3 && typeof arguments[1] === "string" && typeof arguments[2] === "function") {
 				var el = arguments[1].trim();
 				var handler = arguments[2];
-				var bl = typeof arguments[3] === "boolean" ? arguments[3] : false
+				var bl = typeof arguments[3] === "boolean" ? arguments[3] : false;
+				function f(event){
+					if(Mobile.checkSelector(event.target, el)) {
+						handler.call(event.target, event);
+					}
+					}
 				Mobile.each(this, function() {
 					if(this.addEventListener) {
-						this.addEventListener(type, function(event) {
-							if(Mobile.checkSelector(event.target, el)) {
-								handler.call(event.target, event);
-							}
-
-						}, bl);
+						this.addEventListener(type, f, bl);
 					}
 				});
 
-				m.events.on(type, handler);
+				m.events.on(type, f);
 			}
+			
+			// 委托绑定事件传object值
+			if(arguments.length >= 4 && typeof arguments[1] === "string" &&typeof arguments[2] === "object" && typeof arguments[3] === "function") {
+				var el = arguments[1].trim();
+				var obj = arguments[2];
+				var handler = arguments[3];
+				var bl = typeof arguments[4] === "boolean" ? arguments[4] : false;
+				function f(event){
+					if(Mobile.checkSelector(event.target, el)) {
+								event.data=obj;
+								handler.call(event.target, event);
+							}
+
+					}
+				Mobile.each(this, function() {
+					if(this.addEventListener) {
+						this.addEventListener(type, f, bl);
+					}
+				});
+
+				m.events.on(type, f);
+			}
+
 
 			return this;
 
@@ -1985,6 +2087,25 @@
 			}
 
 			return null;
+		},
+
+		// 检查是否为移动端
+		isMobile: function() {
+
+			var userAgentInfo = navigator.userAgent.toString().toLowerCase();
+			var Agents = ["Android", "iPhone",
+				"SymbianOS", "Windows Phone",
+				"iPad", "iPod"
+			];
+			//console.log(userAgentInfo)
+			var flag = false;
+			for(var v = 0; v < Agents.length; v++) {
+				if(userAgentInfo.indexOf(Agents[v].toLowerCase()) > 0) {
+					flag = true;
+					break;
+				}
+			}
+			return flag;
 		},
 
 	});

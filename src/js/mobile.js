@@ -1286,94 +1286,91 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 			// 第二个参数为函数 正常绑定事件
 			if (arguments.length >= 2 && typeof arguments[1] === "function") {
+				var f = function f(event) {
+					handler.call(event.target, event);
+				};
+
 				var handler = arguments[1];
 				var bl = typeof arguments[2] === "boolean" ? arguments[2] : false;
+
 				Mobile.each(this, function () {
 					if (this.addEventListener) {
-						this.addEventListener(type, function () {
-							handler.call(event.target, event);
-						}, bl);
+						this.addEventListener(type, f, bl);
 					}
+
 					//ie8
 					//					else if(this.attachEvent) {
-					//						this.attachEvent("on" + type, unction() {
-					//							handler(event);
-					//						}, bl)
+					//						this.attachEvent("on" + type, f, bl)
 					//					} else {
-					//						this["on" + type] = unction() {
-					//							handler(event);
-					//						} /*直接赋给事件*/
+					//						this["on" + type] =f /*直接赋给事件*/
 					//					}
 				});
 
-				m.events.on(type, handler);
+				m.events.on(type, f);
 			}
 
 			// 正常绑定事件传object值
 			if (arguments.length >= 3 && _typeof(arguments[1]) === "object" && typeof arguments[2] === "function") {
+				var _f = function _f(event) {
+					event.data = obj;
+					handler.call(event.target, event);
+				};
+
 				var obj = arguments[1];
 				var handler = arguments[2];
 				var bl = typeof arguments[3] === "boolean" ? arguments[3] : false;
+
 				Mobile.each(this, function () {
 					if (this.addEventListener) {
-						this.addEventListener(type, function (event) {
-							event.data = obj;
-							handler.call(event.target, event);
-						}, bl);
+						this.addEventListener(type, _f, bl);
 					}
-					//ie8
-					//					else if(this.attachEvent) {
-					//						this.attachEvent("on" + type, function() {
-					//							event.data = obj;
-					//							handler(event);
-					//						}, bl)
-					//					} else {
-					//						this["on" + type] = function() {
-					//							event.data = obj;
-					//							handler(event);
-					//						} /*直接赋给事件*/
-					//					}
 				});
 
-				m.events.on(type, handler);
+				m.events.on(type, _f);
 			}
 
 			// 委托绑定事件
 			if (arguments.length >= 3 && typeof arguments[1] === "string" && typeof arguments[2] === "function") {
+				var _f2 = function _f2(event) {
+					if (Mobile.checkSelector(event.target, el)) {
+						handler.call(event.target, event);
+					}
+				};
+
 				var el = arguments[1].trim();
 				var handler = arguments[2];
 				var bl = typeof arguments[3] === "boolean" ? arguments[3] : false;
+
 				Mobile.each(this, function () {
 					if (this.addEventListener) {
-						this.addEventListener(type, function (event) {
-							if (Mobile.checkSelector(event.target, el)) {
-								handler.call(event.target, event);
-							}
-						}, bl);
+						this.addEventListener(type, _f2, bl);
 					}
 				});
 
-				m.events.on(type, handler);
+				m.events.on(type, _f2);
 			}
 
 			// 委托绑定事件传object值
 			if (arguments.length >= 4 && typeof arguments[1] === "string" && _typeof(arguments[2]) === "object" && typeof arguments[3] === "function") {
+				var _f3 = function _f3(event) {
+					if (Mobile.checkSelector(event.target, el)) {
+						event.data = obj;
+						handler.call(event.target, event);
+					}
+				};
+
 				var el = arguments[1].trim();
 				var obj = arguments[2];
 				var handler = arguments[3];
 				var bl = typeof arguments[4] === "boolean" ? arguments[4] : false;
+
 				Mobile.each(this, function () {
 					if (this.addEventListener) {
-						this.addEventListener(type, function (event) {
-							if (Mobile.checkSelector(event.target, el)) {
-								event.data = obj;
-								handler.call(event.target, event);
-							}
-						}, bl);
+						this.addEventListener(type, _f3, bl);
 					}
 				});
 
-				m.events.on(type, handler);
+				m.events.on(type, _f3);
 			}
 
 			return this;
@@ -2312,6 +2309,7 @@ var scrollTopBottom = function (m) {
 		if (topbottomContent.length === 0) {
 			return;
 		}
+
 		m(topbottomContent).setTransform('translateZ', 0.01);
 		var isScrollTop = m(scrolltb).hasAttr("data-scroll-top"); // 是否下拉
 		var isScrollBottom = m(scrolltb).hasAttr("data-scroll-bottom"); // 是否上拉
@@ -2359,7 +2357,7 @@ var scrollTopBottom = function (m) {
 			isLink = true;
 
 			if (isManyContent) {
-				topbottomContent = m(this).find(".mobile-scroll-content-many.active");
+				topbottomContent = m(scrolltb).find(".mobile-scroll-content-many.active");
 			}
 
 			eleY = m(topbottomContent).getTransform("translateY");
@@ -2373,18 +2371,9 @@ var scrollTopBottom = function (m) {
 			speedlateY = eleY;
 			speedScroll = 0;
 
-			tab = m(".mobile-tab");
-			head = m(".mobile-head");
-			content = m(".mobile-content");
-			footer = m(".mobile-footer");
 			window_h = m(scrolltb).height();
-			head_h = head.height() || 0;
-			footer_h = footer.height() || 0;
-			tab_h = tab.height() || 0;
-			//window_h = window_h - (head_h + footer_h + tab_h);
-
 			// 过度时间0s
-			topbottomContent[0].style.transition = 'none';
+			topbottomContent.transition("null");
 
 			// 滚动条
 			if (isScrollBar) {
@@ -2407,6 +2396,8 @@ var scrollTopBottom = function (m) {
 
 		function move(event) {
 			event.preventDefault();
+			window_h = m(scrolltb).height();
+
 			// 检查是否向上移动
 			if (isAddMoveEvent) {
 				return;
@@ -2462,7 +2453,7 @@ var scrollTopBottom = function (m) {
 
 			});
 
-			minY = window_h - topbottomContent[0].offsetHeight;
+			minY = window_h - topbottomContent.height();
 			var translateY = eleY + dis;
 			if (translateY > 0) {
 				var scale = 1 - translateY / window_h;
@@ -2527,7 +2518,7 @@ var scrollTopBottom = function (m) {
 				}
 			}
 
-			minY = window_h - topbottomContent[0].offsetHeight;
+			minY = window_h - topbottomContent.height();
 			var target = m(topbottomContent).getTransform("translateY") + speedScroll * 20;
 			var bezier = 'ease-out';
 
@@ -2677,7 +2668,7 @@ var scrollLeftRight = function (m) {
 
 			window_w = m(navs).width();
 
-			var minX = window_w - navsList[0].offsetWidth;
+			var minX = window_w - navsList.width();
 
 			var translateX = eleX + dis;
 			if (translateX > 0) {
@@ -2734,7 +2725,7 @@ var scrollLeftRight = function (m) {
 			isAddMoveEvent = false; // 判断是否top拖动
 			isAddMoveEventFirst = true; // 判断是否第一往上拖动
 
-			var minX = window_w - navsList[0].offsetWidth;
+			var minX = window_w - navsList.width();
 			var target = m(navsList).getTransform("translateX") + speed * 100;
 			var bezier = '';
 			bezier = 'cubic-bezier(.17,.67,.81,.9)';
@@ -2855,7 +2846,7 @@ var slide = function (m) {
 		// start
 		function start(event) {
 			event.preventDefault();
-			window_w = m(this).width();
+			window_w = m(mobile_slide).width();
 			var touch = event.changedTouches[0];
 			isLink = true;
 			clearInterval(timerId);
@@ -2911,7 +2902,7 @@ var slide = function (m) {
 
 			// 禁止循环
 			if (isLoop) {
-				window_w = m(this).width();
+				window_w = m(mobile_slide).width();
 				var minX = Math.abs(list.width() - window_w);
 				var translateX = elementX + disX;
 				if (translateX > 0) {
@@ -2993,7 +2984,7 @@ var slide = function (m) {
 
 			return setInterval(function () {
 				list.transition("none");
-				window_w = m(this).width();
+				window_w = m(mobile_slide).width();
 
 				// 是否循环
 				if (!isLoop) {
@@ -3018,7 +3009,7 @@ var slide = function (m) {
 }(mobile);
 
 // tab
-var tab$1 = function (m) {
+var tab = function (m) {
 
 	m(function () {
 		var wrap = m(".mobile-tab-slide");
@@ -3116,7 +3107,7 @@ var tab$1 = function (m) {
 			}
 
 			// 回弹
-			window_w = m(this).width();
+			window_w = m(mobile_slide).width();
 			var minX = Math.abs(list.width() - window_w);
 			//console.log(minX)
 			var translateX = elementX + disX;
@@ -3481,7 +3472,7 @@ exports.commonStyle = commonStyle;
 exports.scrollTopBottom = scrollTopBottom;
 exports.scrollLeftRight = scrollLeftRight;
 exports.slide = slide;
-exports.tab = tab$1;
+exports.tab = tab;
 exports.aside = aside;
 
 Object.defineProperty(exports, '__esModule', { value: true });

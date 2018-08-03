@@ -108,7 +108,7 @@ var tab = (function(m) {
 			}
 
 			// 回弹
-			window_w = m(this).width();
+			window_w = m(mobile_slide).width();
 			var minX = Math.abs(list.width() - window_w);
 			//console.log(minX)
 			var translateX = elementX + disX;

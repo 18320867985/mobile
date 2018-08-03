@@ -25,10 +25,11 @@ var scrollTopBottom = (function(m) {
 			topbottomContent = many;
 			isManyContent = true;
 		}
-
+		
 		if(topbottomContent.length === 0) {
 			return;
 		}
+	
 		m(topbottomContent).setTransform('translateZ', 0.01);
 		var isScrollTop = m(scrolltb).hasAttr("data-scroll-top"); // 是否下拉
 		var isScrollBottom = m(scrolltb).hasAttr("data-scroll-bottom"); // 是否上拉
@@ -87,10 +88,11 @@ var scrollTopBottom = (function(m) {
 			isLink = true;
 
 			if(isManyContent) {
-				topbottomContent = m(this).find(".mobile-scroll-content-many.active");
+				topbottomContent = m(scrolltb).find(".mobile-scroll-content-many.active");
 			}
 
 			eleY = m(topbottomContent).getTransform("translateY");
+			
 
 			isAddMoveEvent = false; // 判断是否往上拖动
 			isAddMoveEventFirst = true; // 判断是否第一往上拖动
@@ -101,18 +103,10 @@ var scrollTopBottom = (function(m) {
 			speedlateY = eleY;
 			speedScroll = 0;
 
-			tab = m(".mobile-tab");
-			head = m(".mobile-head");
-			content = m(".mobile-content");
-			footer = m(".mobile-footer");
-			window_h = m(scrolltb).height();
-			head_h = head.height() || 0;
-			footer_h = footer.height() || 0;
-			tab_h = tab.height() || 0;
-			//window_h = window_h - (head_h + footer_h + tab_h);
 
+			window_h = m(scrolltb).height();
 			// 过度时间0s
-			topbottomContent[0].style.transition = 'none';
+			topbottomContent.transition("null");
 
 			// 滚动条
 			if(isScrollBar) {
@@ -137,6 +131,8 @@ var scrollTopBottom = (function(m) {
 
 		function move(event) {
 			event.preventDefault();
+				window_h = m(scrolltb).height();
+		
 			// 检查是否向上移动
 			if(isAddMoveEvent) {
 				return;
@@ -194,7 +190,7 @@ var scrollTopBottom = (function(m) {
 			
 			});
 
-			minY = window_h - topbottomContent[0].offsetHeight;
+			minY = window_h - topbottomContent.height();
 			var translateY = eleY + dis;
 			if(translateY > 0) {
 				var scale = 1 - translateY / window_h;
@@ -237,6 +233,7 @@ var scrollTopBottom = (function(m) {
 			}
 
 			m(topbottomContent).setTransform("translateY", translateY);
+				
 
 		}
 
@@ -263,7 +260,7 @@ var scrollTopBottom = (function(m) {
 
 			}
 
-			minY = window_h - topbottomContent[0].offsetHeight;
+			minY = window_h - topbottomContent.height();
 			var target = m(topbottomContent).getTransform("translateY") + speedScroll * 20;
 			var bezier = 'ease-out';
 

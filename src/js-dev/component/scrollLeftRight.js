@@ -90,7 +90,7 @@ var scrollLeftRight = (function(m) {
 
 			window_w =m(navs).width();
 
-			var minX = window_w - navsList[0].offsetWidth;
+			var minX = window_w - navsList.width();
 
 			var translateX = eleX + dis;
 			if(translateX > 0) {
@@ -154,7 +154,7 @@ var scrollLeftRight = (function(m) {
 			isAddMoveEvent = false; // 判断是否top拖动
 			isAddMoveEventFirst = true; // 判断是否第一往上拖动
 
-			var minX = window_w - navsList[0].offsetWidth;
+			var minX = window_w - navsList.width();
 			var target = m(navsList).getTransform("translateX") + speed * 100;
 			var bezier = '';
 			bezier = 'cubic-bezier(.17,.67,.81,.9)';

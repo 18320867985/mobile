@@ -64,7 +64,7 @@ var slide = (function(m) {
 		// start
 		function start(event) {
 			event.preventDefault();
-			window_w=m(this).width();
+			window_w=m(mobile_slide).width();
 			var touch = event.changedTouches[0];
 			isLink = true;
 			clearInterval(timerId);
@@ -121,7 +121,7 @@ var slide = (function(m) {
 
 			// 禁止循环
 			if(isLoop) {
-				window_w=m(this).width();
+				window_w=m(mobile_slide).width();
 				var minX = Math.abs(list.width() - window_w);
 				var translateX = elementX + disX;
 				if(translateX > 0) {
@@ -214,7 +214,7 @@ var slide = (function(m) {
 			
 			return setInterval(function() {
 				list.transition("none");
-				window_w=m(this).width();
+				window_w=m(mobile_slide).width();
 
 				// 是否循环
 				if(!isLoop) {

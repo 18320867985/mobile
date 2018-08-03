@@ -1346,25 +1346,23 @@
 			if(arguments.length >= 2 && typeof arguments[1] === "function") {
 				var handler = arguments[1];
 				var bl = typeof arguments[2] === "boolean" ? arguments[2] : false;
+				function f(event){
+					handler.call(event.target, event);
+					}
 				Mobile.each(this, function() {
 					if(this.addEventListener) {
-						this.addEventListener(type, function(){
-								handler.call(event.target, event);
-						}, bl);
+						this.addEventListener(type, f, bl);
 					}
+					
 					//ie8
 //					else if(this.attachEvent) {
-//						this.attachEvent("on" + type, unction() {
-//							handler(event);
-//						}, bl)
+//						this.attachEvent("on" + type, f, bl)
 //					} else {
-//						this["on" + type] = unction() {
-//							handler(event);
-//						} /*直接赋给事件*/
+//						this["on" + type] =f /*直接赋给事件*/
 //					}
 				});
 
-				m.events.on(type, handler);
+				m.events.on(type, f);
 			}
 			
 			// 正常绑定事件传object值
@@ -1372,47 +1370,37 @@
 				var obj = arguments[1]
 				var handler = arguments[2];
 				var bl = typeof arguments[3] === "boolean" ? arguments[3] : false;
+				function f(event){
+					event.data = obj;
+					handler.call(event.target, event);
+					}
 				Mobile.each(this, function() {
 					if(this.addEventListener) {
-						this.addEventListener(type, function(event) {
-							event.data = obj;
-							handler.call(event.target, event);
-						}, bl);
+						this.addEventListener(type, f, bl);
 					}
-					//ie8
-//					else if(this.attachEvent) {
-//						this.attachEvent("on" + type, function() {
-//							event.data = obj;
-//							handler(event);
-//						}, bl)
-//					} else {
-//						this["on" + type] = function() {
-//							event.data = obj;
-//							handler(event);
-//						} /*直接赋给事件*/
-//					}
+
 				});
 
-				m.events.on(type, handler);
+				m.events.on(type, f);
 			}
 
 			// 委托绑定事件
 			if(arguments.length >= 3 && typeof arguments[1] === "string" && typeof arguments[2] === "function") {
 				var el = arguments[1].trim();
 				var handler = arguments[2];
-				var bl = typeof arguments[3] === "boolean" ? arguments[3] : false
+				var bl = typeof arguments[3] === "boolean" ? arguments[3] : false;
+				function f(event){
+					if(Mobile.checkSelector(event.target, el)) {
+						handler.call(event.target, event);
+					}
+					}
 				Mobile.each(this, function() {
 					if(this.addEventListener) {
-						this.addEventListener(type, function(event) {
-							if(Mobile.checkSelector(event.target, el)) {
-								handler.call(event.target, event);
-							}
-
-						}, bl);
+						this.addEventListener(type, f, bl);
 					}
 				});
 
-				m.events.on(type, handler);
+				m.events.on(type, f);
 			}
 			
 			// 委托绑定事件传object值
@@ -1420,20 +1408,21 @@
 				var el = arguments[1].trim();
 				var obj = arguments[2];
 				var handler = arguments[3];
-				var bl = typeof arguments[4] === "boolean" ? arguments[4] : false
-				Mobile.each(this, function() {
-					if(this.addEventListener) {
-						this.addEventListener(type, function(event) {
-							if(Mobile.checkSelector(event.target, el)) {
+				var bl = typeof arguments[4] === "boolean" ? arguments[4] : false;
+				function f(event){
+					if(Mobile.checkSelector(event.target, el)) {
 								event.data=obj;
 								handler.call(event.target, event);
 							}
 
-						}, bl);
+					}
+				Mobile.each(this, function() {
+					if(this.addEventListener) {
+						this.addEventListener(type, f, bl);
 					}
 				});
 
-				m.events.on(type, handler);
+				m.events.on(type, f);
 			}
 
 
