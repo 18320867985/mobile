@@ -18,6 +18,15 @@
 				margin-bottom: 5px;
 				border-radius: 5px;
 			}
+			
+			.mobile-tab-bottom .mobile-tab-fixed li{
+				 padding: 10px;
+			}
+			.mobile-tab-bottom .mobile-tab-fixed li.active{
+				background: #fff;
+				color:#690;
+				
+			}
 		</style>
 
 		<link rel="stylesheet" type="text/css" href="../css/mobile.css" />
@@ -33,139 +42,44 @@
 		<!--content-->
 		<section class="mobile-content">
 
-			<!--tab 左右滑动内容 data-drag=左右两边回弹  data-transition="是否左右滑动动画"-->
-			<div class="mobile-tab-slide" data-transition="是否左右滑动动画" data-drag>
+				<!--tab 左右滑动内容 data-drag=左右两边回弹  data-transition="是否左右滑动动画"  data-trigger=允许触发scrollbottom事件 -->
+			<div class="mobile-tab-slide"   data-trigger>
 				<div class="mobile-tab-slide-list">
-					<div id="page1" class="mobile-tab-slide-item  mobile-scroll-topbottom" data-scroll-bar>
+					<div id="page1" class="mobile-tab-slide-item  mobile-scroll-topbottom" >
 						<div class="mobile-scroll-content">
 
 							<p>第1屏</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>1习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
+							
 
 						</div>
 					</div>
 
-					<div id="page2" class="mobile-tab-slide-item mobile-scroll-topbottom" data-scroll-bar>
+					<div id="page2" class="mobile-tab-slide-item mobile-scroll-topbottom" >
 						<div class="mobile-scroll-content">
 							<p>第2屏</p>
-							<p>2习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>2习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>2习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>2习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>2习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>2习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>2习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>2习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>2习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>2习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>2习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>2习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>2习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>2习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>2习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>2习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>2习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>2习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>2习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>2习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-
+							
 						</div>
 
 					</div>
 
-					<div id="page3" class="mobile-tab-slide-item mobile-scroll-topbottom" data-scroll-bar>
+					<div id="page3" class="mobile-tab-slide-item mobile-scroll-topbottom" >
 						<div class="mobile-scroll-content">
 							<p>第3屏</p>
-							<p>3习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>3习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>3习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>3习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>3习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>3习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>3习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>3习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>3习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>3习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>3习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>3习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-
+						
 						</div>
 					</div>
 
-					<div id="page4" class="mobile-tab-slide-item mobile-scroll-topbottom" data-scroll-bar>
+					<div id="page4" class="mobile-tab-slide-item mobile-scroll-topbottom" >
 						<div class="mobile-scroll-content">
 							<p>第4屏</p>
-							<p>4习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>4习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>4习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>4习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>4习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>4习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>4习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>4习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>4习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>4习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>4习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>4习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>4习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>4习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>4习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>4习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>4习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>4习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>4习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>4习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>4习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>4习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-
+							
 						</div>
 					</div>
 
-					<div id="page5" class="mobile-tab-slide-item mobile-scroll-topbottom" data-scroll-bar>
+					<div id="page5" class="mobile-tab-slide-item mobile-scroll-topbottom" >
 						<div class="mobile-scroll-content">
 							<p>第5屏</p>
-							<p>5习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>5习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>5习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>5习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>5习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>5习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>5习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>5习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>5习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>5习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>5习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>5习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>5习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>5习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>5习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>5习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>5习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-							<p>5习近平等党和国家领导人出席全国政协十三届一次会议闭幕会</p>
-
+							
 						</div>
 					</div>
 
@@ -177,8 +91,8 @@
 
 		<!--定位到底部-->
 		<div class="mobile-tab mobile-tab-bottom">
-			
-				<ul class="mobile-tab-nav mobile-tab-fixed">
+				<!--左右滑动组件  data-position-left=定位到left data-position-center=定位到center data-trigger=允许触发scrollbottom事件 -->
+				<ul class="mobile-tab-nav mobile-tab-fixed" data-trigger>
 					<li class="active width-2" data-target="#page1">
 						第1屏
 					</li>
@@ -215,31 +129,29 @@
 		<script src="../js/mobile.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../js/mustache.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
+			
+			m(function(){
+	
 			// 拉到底部 加载数据
-			var firstbottom = true;
-			//var bottomcontent = m(".mobile-scroll-content");
 			m(".mobile-tab-slide-item.mobile-scroll-topbottom").on("scrollbottom", function(event) {
-				var bottomcontent = m(event.detail.el);
+				var bottomcontent =m(event.detail.el);
 				//	console.log(event.detail);
-				if(firstbottom) {
-					firstbottom = false;
+				if(!bottomcontent.hasAttr("firstbottom")) {
+					bottomcontent.attr("firstbottom",true); //异步加载标识
+					
 					bottomcontent.find(".loading").remove();
 					var loading = document.createElement("div");
 					loading.innerHTML = "正在加载中...";
 					loading.classList.add("loading");
 					bottomcontent.append(loading);
-
+					
 					setTimeout(function() {
 
 						m.get("../json/tab.json", function(data) {
-							data = data.map(function(item) {
-								return {
-									content: bottomcontent.parent().attr("id") + "#" + item.content
-								};
-							});
+							data=data.map(function(item){return {content:bottomcontent.parent().attr("id")+"#"+item.content};});
 							
 							var html = Mustache.to_html($("#must").html(), {
-								must: data
+								must:data 
 							});
 							bottomcontent.find(".loading").remove();
 							bottomcontent.append(html);
@@ -248,15 +160,25 @@
 							{
 								event.detail.resetBar(); // 重置滚动条
 							}
-					
+							bottomcontent.attr("data-trigger", true); // 标记元素第一次已触发过
+							bottomcontent.removeAttr("firstbottom") ;//异步加载标识
+							
 						}, function() {
-							firstbottom = true;
+							bottomcontent.removeAttr("firstbottom") ;//异步加载标识
 							loading.innerHTML = "数据加载失败...";
 						});
 					}, 500);
 				}
 
 			});
+				
+				// 第一屏 第一次出发触发scrollbottom
+				m("#page1").emit("scrollbottom", {
+					el: m("#page1").find(".mobile-scroll-content").eq(0)
+				});
+			
+			});
+		
 		</script>
 
 	</body>

@@ -3,7 +3,7 @@
 
 	<head>
 		<meta charset="UTF-8">
-		<title>mobile触摸页面-固定顶部的tab</title>
+		<title>mobile触摸页面-固定顶部的tab下面line样式</title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<style>
 			.mobile-tab-slide .mobile-scroll-content {
@@ -18,6 +18,15 @@
 				margin-bottom: 5px;
 				border-radius: 5px;
 			}
+			
+			.mobile-tab-nav .mobile-tab-fixed li{
+				 padding: 5px;
+			}
+			.mobile-tab-nav .mobile-tab-fixed li.active{
+				background: #fff;
+				color:#690;
+				
+			}
 		</style>
 
 		<link rel="stylesheet" type="text/css" href="../css/mobile.css" />
@@ -27,13 +36,13 @@
 	<body>
 		<!--head-->
 		<div class="mobile-head">
-			<h2 class="mobile-head-ttl">固定顶部的tab标签</h2>
+			<h2 class="mobile-head-ttl">固定顶部的tab标签下面line样式</h2>
 		</div>
 		<!--定位到顶部-->
 		<div class="mobile-tab mobile-tab-top">
-	<!--左右滑动组件 data-position-left=定位到left data-position-center=定位到center data-trigger=允许触发scrollbottom事件 -->
-			<ul class="mobile-tab-nav mobile-tab-fixed"  data-trigger>
-				<li class="active width-2" data-target="#page1">
+	<!--左右滑动组件 data-position-left=定位到left data-position-center=定位到center data-trigger=允许触发scrollbottom事件  data-line=下面line样式 -->
+			<ul class="mobile-tab-nav mobile-tab-fixed mobile-tab-line" data-trigger data-line>
+				<li   data-target="#page1"  class="active width-2">
 					第1屏
 				</li>
 				<li data-target="#page2" class="width-2">
@@ -45,19 +54,21 @@
 				<li data-target="#page4" class="width-2">
 					第4屏
 				</li>
-				<li data-target="#page5" class="width-2">
+				<li data-target="#page5" class=" width-2">
 					第5屏
 				</li>
 
 			</ul>
+			
+		
 
 		</div>
 
 		<!--content-->
 		<section class="mobile-content">
 
-			<!--tab 左右滑动内容 data-drag=左右两边回弹  data-transition="是否左右滑动动画"  data-trigger=允许触发scrollbottom事件 -->
-			<div class="mobile-tab-slide" data-transition="是否左右滑动动画" data-drag data-trigger>
+				<!--tab 左右滑动内容 data-drag=左右两边回弹  data-transition="是否左右滑动动画"  data-trigger=允许触发scrollbottom事件 -->
+			<div class="mobile-tab-slide" data-transition="是否左右滑动动画" data-trigger data-drag>
 				<div class="mobile-tab-slide-list">
 					<div id="page1" class="mobile-tab-slide-item  mobile-scroll-topbottom" data-scroll-bar>
 						<div class="mobile-scroll-content">

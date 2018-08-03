@@ -720,6 +720,7 @@ a .spin {
   position: relative;
   z-index: 9999;
   padding: 5px 0;
+  width: 100%;
   overflow: hidden;
   background: #fff; }
   .mobile-scroll-leftright .mobile-scroll-content {
@@ -817,7 +818,7 @@ a .spin {
   bottom: 0;
   z-index: 99;
   width: 100%;
-  border-top: 1px solid  #ddd;
+  border-top: 1px solid #ddd;
   background: #fff; }
 
 .mobile-tab-nav {
@@ -859,6 +860,7 @@ a .spin {
 
 /*tmobile-tab-nav*/
 .mobile-tab-nav {
+  position: relative;
   padding: 0.15rem 0;
   border-bottom: 1px solid #ddd;
   -webkit-box-shadow: 0 2px 2px #ddd;
@@ -873,6 +875,24 @@ a .spin {
     .mobile-tab-fixed li.active {
       background: #690;
       color: #fff; }
+
+/*mobile-tab-nav 下面的线条*/
+.mobile-tab-fixed.mobile-tab-line li {
+  padding: 5px; }
+
+.mobile-tab-fixed.mobile-tab-line li.active {
+  background: #fff;
+  color: #690; }
+
+/*滑动线条*/
+.mobile-tab-slide-line {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 9999;
+  width: 40px;
+  height: 2px;
+  background: #690; }
 
 .mobile-aside {
   width: 100%;

@@ -1,5 +1,5 @@
 // 图片轮播
-var slide = (function() {
+var slide = (function(m) {
 
 	m(function() {
 		var slide = m(".mobile-slide");
@@ -12,7 +12,7 @@ var slide = (function() {
 
 	m(window).resize(function() {
 		var slide = m(".mobile-slide");
-		 var window_w=m(window).width();
+		 var window_w=m(slide).parent().width();//m(window).width();
 	 	slide.width(window_w);
 	 
 		slide.each(function() {
@@ -29,7 +29,7 @@ var slide = (function() {
 	});
 
 	function banner(mobile_slide) {
- 		var window_w=m(window).width();
+ 		var window_w=m(mobile_slide).width();
 		var wrap = m(mobile_slide);
 		var list = wrap.find(".mobile-slide-list");
 		var liNodes = wrap.find(".mobile-slide-item");
@@ -64,12 +64,13 @@ var slide = (function() {
 		// start
 		function start(event) {
 			event.preventDefault();
+			window_w=m(this).width();
 			var touch = event.changedTouches[0];
 			isLink = true;
 			clearInterval(timerId);
 			list.transition("none");
 			var left = m(list).getTransform("translateX");
-			var now = Math.round(-left / document.documentElement.clientWidth);
+			var now = Math.round(-left / window_w);
 
 			isAddMoveEvent = false; // 判断是否top拖动
 			isAddMoveEventFirst = true; // 判断是否第一往上拖动
@@ -83,7 +84,7 @@ var slide = (function() {
 				}
 			}
 
-			m(list).setTransform('translateX', -now * document.documentElement.clientWidth);
+			m(list).setTransform('translateX', -now * window_w);
 
 			startX = touch.clientX;
 			startY = touch.clientY;
@@ -120,9 +121,7 @@ var slide = (function() {
 
 			// 禁止循环
 			if(isLoop) {
-				var window_w = window.innerWidth ||
-					document.documentElement.clientWidth ||
-					document.body.clientWidth;
+				window_w=m(this).width();
 				var minX = Math.abs(list.width() - window_w);
 				var translateX = elementX + disX;
 				if(translateX > 0) {
@@ -154,6 +153,7 @@ var slide = (function() {
 			var touch = event.changedTouches[0];
 			var nowX = touch.clientX;
 			var nowY = touch.clientY;
+			window_w=m(this).width();
 
 			// 自动播放
 			if(isAuto && !isLoop) {
@@ -171,7 +171,7 @@ var slide = (function() {
 			}
 
 			var left = m(list).getTransform("translateX");
-			var ratio = -left / document.documentElement.clientWidth;
+			var ratio = -left / window_w
 			if(nowX > startX) {
 
 				now = m.round(ratio, 0.8);
@@ -193,7 +193,7 @@ var slide = (function() {
 			}
 
 			list.transition("all", 500);
-			m(list).setTransform('translateX', -now * document.documentElement.clientWidth);
+			m(list).setTransform('translateX', -now * window_w);
 
 			//同步小圆点
 			spanNodes.each(function(){
@@ -211,9 +211,10 @@ var slide = (function() {
 		}
 
 		function auto(t) {
-
+			
 			return setInterval(function() {
 				list.transition("none");
+				window_w=m(this).width();
 
 				// 是否循环
 				if(!isLoop) {
@@ -221,12 +222,12 @@ var slide = (function() {
 						now = spanNodes.length - 1;
 					}
 				}
-				m(list).setTransform('translateX', -now * document.documentElement.clientWidth);
+				m(list).setTransform('translateX', -now * window_w);
 				setTimeout(function() {
 					now++;
 
 					list.transition("all", 500, "ease-in-out");
-					m(list).setTransform('translateX', -now * document.documentElement.clientWidth)
+					m(list).setTransform('translateX', -now * window_w)
 					for(var i = 0; i < spanNodes.length; i++) {
 						spanNodes[i].className = '';
 					}
@@ -239,7 +240,7 @@ var slide = (function() {
 
 	}
 
-})()
+})(mobile)
 
 export {
 	slide

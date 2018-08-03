@@ -1,5 +1,5 @@
 // 菜单左右滑动
-var scrollLeftRight = (function() {
+var scrollLeftRight = (function(m) {
 
 	m(function() {
 		navSlide();
@@ -8,7 +8,6 @@ var scrollLeftRight = (function() {
 	//导航拖拽
 	function navSlide() {
 		var navs = m(".mobile-scroll-leftright");
-
 		for(var i = 0; i < navs.length; i++) {
 			navsListFun(navs[i]);
 		}
@@ -22,7 +21,7 @@ var scrollLeftRight = (function() {
 		if(navsList.length === 0) {
 			return;
 		}
-		m(navsList).setTransform('translateZ', 0.01);
+		navsList.setTransform('translateZ', 0.01);
 		var beginTime = 0;
 		var beginValue = 0;
 		var endTime = 0;
@@ -39,9 +38,7 @@ var scrollLeftRight = (function() {
 		// 定位到center
 		var isPositionCenter = m(navs).hasAttr("data-position-center");
 
-		var window_w = window.innerWidth ||
-			document.documentElement.clientWidth ||
-			document.body.clientWidth;
+		var window_w =m(navs).width();
 
 		var isAddMoveEvent = false; // 判断是否top拖动
 		var isAddMoveEventFirst = true; // 判断是否第一往上拖动
@@ -91,9 +88,7 @@ var scrollLeftRight = (function() {
 				return;
 			}
 
-			window_w = window.innerWidth ||
-				document.documentElement.clientWidth ||
-				document.body.clientWidth;
+			window_w =m(navs).width();
 
 			var minX = window_w - navsList[0].offsetWidth;
 
@@ -125,9 +120,7 @@ var scrollLeftRight = (function() {
 			event.preventDefault();
 			var touch = event.changedTouches[0];
 			var speed = disValue / (endTime - beginTime);
-			window_w = window.innerWidth ||
-				document.documentElement.clientWidth ||
-				document.body.clientWidth;
+			window_w = m(navs).width();
 
 			if(isMOve) {
 
@@ -226,7 +219,7 @@ var scrollLeftRight = (function() {
 
 	}
 
-})()
+})(mobile)
 
 export {
 	scrollLeftRight

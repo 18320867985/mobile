@@ -1,5 +1,5 @@
 // tab
-var tab = (function() {
+var tab = (function(m) {
 
 	m(function() {
 		var wrap = m(".mobile-tab-slide");
@@ -7,11 +7,14 @@ var tab = (function() {
 			tabSlide(v);
 		});
 
+		// mobile-tab-nav 标签下面线条 
+		mobile_tab_nav_line();
+
 	});
 
 	m(window).resize(function() {
 		var tab = m(".mobile-tab-slide");
-		var window_w = m(window).width();
+		var window_w = m(tab).parent().width(); //m(window).width();
 		tab.width(window_w);
 
 		tab.each(function() {
@@ -27,7 +30,7 @@ var tab = (function() {
 	});
 
 	function tabSlide(mobile_slide) {
-		var window_w = m(window).width();
+		var window_w = m(mobile_slide).width();
 		var wrap = m(mobile_slide);
 		var list = wrap.find(".mobile-tab-slide-list");
 		var liNodes = wrap.find(".mobile-tab-slide-item");
@@ -37,6 +40,7 @@ var tab = (function() {
 		list.width(wrap_w * liNodes.length);
 		liNodes.width(wrap_w);
 		var isDrag = wrap.hasAttr("data-drag"); //左右两边回弹
+		var tab_nav_slide_lineX = 0; // 滑动下面的线条
 
 		var elementX = 0;
 		var startX = 0;
@@ -47,7 +51,6 @@ var tab = (function() {
 		var isAddMoveEventFirst = true; // 判断是否第一往上拖动
 
 		m(list).setTransform('translateZ', 0.01)
-
 		wrap.on("touchstart", start);
 
 		// start
@@ -66,6 +69,14 @@ var tab = (function() {
 			startX = touch.clientX;
 			startY = touch.clientY;
 			elementX = m(list).getTransform('translateX');
+
+			// 滑动下面的线条
+			var tab_nav = m(".mobile-tab-nav");
+			var isSlieLine = tab_nav.hasAttr("data-line");
+			if(isSlieLine) {
+				tab_nav_slide_lineX = tab_nav.find(".mobile-tab-slide-line").getTransform("translateX");
+			}
+
 		}
 
 		wrap.on("touchmove", move);
@@ -76,6 +87,7 @@ var tab = (function() {
 			var nowX = touch.clientX;
 			var nowY = touch.clientY;
 			var disX = nowX - startX;
+			var line_SlideX = disX
 
 			if(Math.abs(nowX - startX) > 1 || Math.abs(nowY - startY) > 1) {
 				isLink = false;
@@ -96,7 +108,7 @@ var tab = (function() {
 			}
 
 			// 回弹
-			window_w = m(window).width();
+			window_w = m(this).width();
 			var minX = Math.abs(list.width() - window_w);
 			//console.log(minX)
 			var translateX = elementX + disX;
@@ -106,23 +118,36 @@ var tab = (function() {
 					var scale = 1 - translateX / window_w;
 					translateX = translateX * scale;
 
+					line_SlideX = translateX - scale * elementX;
+
 				} else if(Math.abs(translateX) > minX) {
 					var over = Math.abs(translateX) - Math.abs(minX);
 					var scale = 1 - over / window_w;
 					translateX = -minX - over * scale;
+
+					line_SlideX = translateX - elementX
 				}
 
 				m(list).setTransform('translateX', translateX);
 			} else {
 				if(translateX > 0) {
 					translateX = 0;
-
+					line_SlideX = 0;
 				} else if(Math.abs(translateX) > Math.abs(minX)) {
 					translateX = -minX;
+					line_SlideX = translateX - elementX;
 				}
 
 				m(list).setTransform('translateX', translateX);
 			}
+
+			//tab tabend左右滑动move发生的事件
+			m(this).trigger("tabmove", {
+				el: liNodes.eq(now),
+				translateX: line_SlideX,
+				lineX: tab_nav_slide_lineX
+
+			});
 
 		}
 
@@ -162,13 +187,37 @@ var tab = (function() {
 
 			//tab tabend左右滑动结束发生的事件
 			m(this).trigger("tabend", {
-				el: liNodes[now]
+				el: liNodes.eq(now)
 
 			});
 
 		}
 
 	}
+
+	// mobile-tab-slide滑动touchend触发的事件
+	m(".mobile-tab-slide").on("tabmove", function(event) {
+		var el = m(event.detail.el);
+		var translateX = event.detail.translateX;
+		var id = el.attr("id") || el.attr("data-id");
+		var dataId = '[data-target=\\#' + id + ']';
+		var target = m(".mobile-tab").find(dataId);
+		var isSlide_line = m(".mobile-tab .mobile-tab-nav").hasAttr("data-line");
+		if(isSlide_line) {
+			var li_w = target.width();
+			var tab_slide_w = m(this).width();
+			var sp = translateX / tab_slide_w;
+			var line = m(".mobile-tab-slide-line");
+			var lineX = event.detail.lineX;
+			var sp_v = li_w * sp;
+			var line_slideX = -sp_v + lineX;
+			line.setTransform("translateX", line_slideX);
+			line.transition("null");
+			//console.log("line")
+
+		}
+
+	});
 
 	// mobile-tab-slide滑动touchend触发的事件
 	m(".mobile-tab-slide").on("tabend", function(event) {
@@ -201,6 +250,9 @@ var tab = (function() {
 				});
 			}
 		}
+
+		// 标签下面线条
+		setLineTransleateX(target);
 
 	});
 
@@ -249,7 +301,7 @@ var tab = (function() {
 
 	}
 
-	// tab 左右滑动点击
+	// mobile-tab-nav 头部 左右滑动点击
 	var isMOve_tab = true;
 	var startX_tab = 0;
 	var startY_tab = 0;
@@ -276,10 +328,11 @@ var tab = (function() {
 		if(isMOve_tab) {
 
 			// 添加样式
-			$(this).siblings().removeClass("active");
-			$(this).addClass("active");
+			var $this = m(this);
+			$this.siblings().removeClass("active");
+			$this.addClass("active");
 
-			var id = m(this).attr("data-target");
+			var id = $this.attr("data-target");
 			var obj = m(id);
 			var p = m(obj).parents(".mobile-tab-slide-list");
 			var left = m(obj).offset().left;
@@ -287,10 +340,12 @@ var tab = (function() {
 			var istransition = m(obj).parents(".mobile-tab-slide").hasAttr("data-transition");
 			if(istransition) {
 				m(p).transition("all", 500);
+			} else {
+				m(p).transition("null");
 			}
-			
+
 			// 是否允许触发事件
-			var isTrigger = m(this).parents(".mobile-tab-nav").hasAttr("data-trigger");
+			var isTrigger = $this.parents(".mobile-tab-nav").hasAttr("data-trigger");
 			var el_content = obj.find(".mobile-scroll-content").eq(0);
 			if(isTrigger) {
 				if(!el_content.hasAttr("data-trigger")) {
@@ -300,11 +355,47 @@ var tab = (function() {
 				}
 			}
 
+			// 标签下面线条
+			setLineTransleateX($this);
+
 		}
 
 	});
 
-})()
+	//mobile-tab-nav 标签下面线条 
+	function mobile_tab_nav_line() {
+		var tab_nav = m(".mobile-tab-nav");
+		tab_nav.each(function(i, v) {
+
+			var ul = m(v);
+			var isLine = ul.hasAttr("data-line");
+			if(isLine) {
+				var line = document.createElement("div");
+				line.classList.add("mobile-tab-slide-line");
+				ul.append(line);
+
+				var li = ul.find("li");
+				var line = ul.find(".mobile-tab-slide-line");
+				line.width(li.width());
+				line.css("left", ul.css("padding-left"));
+				setLineTransleateX(ul.find("li.active"));
+			}
+
+		});
+
+	}
+
+	function setLineTransleateX($this) {
+
+		var li_w = $this.outerWidth();
+		var li_index = $this.index();
+		var line = $this.parents(".mobile-tab-nav").find(".mobile-tab-slide-line");
+		line.setTransform("translateX", li_w * li_index);
+		line.transition("transform", 500);
+
+	}
+
+})(mobile);
 
 export {
 	tab

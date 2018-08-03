@@ -1,4 +1,4 @@
-var scrollTopBottom = (function() {
+var scrollTopBottom = (function(m) {
 
 	m(function() {
 		topBottom();
@@ -331,7 +331,7 @@ var scrollTopBottom = (function() {
 
 	}
 
-})();
+})(mobile);
 
 export {
 
