@@ -97,7 +97,7 @@
 						// 单例对象 
 						arrs.push(selector);
 					}
-					
+
 					Array.prototype.push.apply(this, arrs);
 
 				}
@@ -363,24 +363,38 @@
 		// addClass
 		addClass: function(className) {
 
+			if(typeof className === "string") {
+				className = className.split(/\s+/);
+
+			} else {
+
+				return this;
+			}
+
 			if(arguments.length === 1) {
 
 				Mobile.each(this, function() {
-					this.classList.add(className);
+					for(var y = 0; y < className.length; y++) {
+						if(className[y]) {
+							this.classList.add(className[y]);
+						}
+
+					}
 				});
 
 			}
 
 			return this;
 		},
+
 		//  hasclass
 		hasClass: function(className) {
-			var ishasClass=false;
+			var ishasClass = false;
 			if(arguments.length === 1) {
 
 				Mobile.each(this, function() {
-					ishasClass=this.classList.contains(className);
-					return  false;
+					ishasClass = this.classList.contains(className);
+					return false;
 				});
 
 			}
@@ -391,10 +405,23 @@
 		// removeClass
 		removeClass: function(className) {
 
+			if(typeof className === "string") {
+				className = className.split(/\s+/);
+
+			} else {
+
+				return this;
+			}
+
 			if(arguments.length === 1) {
 
 				Mobile.each(this, function() {
-					this.classList.remove(className);
+					for(var y = 0; y < className.length; y++) {
+						if(className[y]) {
+							this.classList.remove(className[y]);
+						}
+
+					}
 
 				});
 
@@ -405,7 +432,7 @@
 		// parent 
 		parent: function() {
 			var arr = [];
-			var obj=m(this);
+			var obj = m(this);
 			for(var i = 0; i < obj.length; i++) {
 				var _arr = obj[i].parentElement;
 				if(_arr) {
@@ -422,7 +449,7 @@
 		parents: function(selector) {
 			selector = typeof selector === "string" ? selector : "";
 			var arr = [];
-			var obj=m(this);
+			var obj = m(this);
 			for(var i = 0; i < obj.length; i++) {
 
 				var p = _searchParents(obj[i], function(elm) {
@@ -445,7 +472,7 @@
 		closest: function(selector) {
 			selector = typeof selector === "string" ? selector : "";
 			var arr = [];
-			var obj=m(this);
+			var obj = m(this);
 			for(var i = 0; i < obj.length; i++) {
 				var p;
 				if(Mobile.checkSelector(obj[i], selector)) {
@@ -473,7 +500,7 @@
 				throw Error("index property must is number type")
 			}
 			var arr = [];
-			var obj=m(this);
+			var obj = m(this);
 			for(var i = 0; i < obj.length; i++) {
 				if(i === index) {
 					arr.push(obj[i])
@@ -481,7 +508,7 @@
 				delete obj[i];
 			}
 			delete obj.length;
-			
+
 			Array.prototype.push.apply(obj, arr);
 			return obj;
 		},
@@ -490,7 +517,7 @@
 		first: function() {
 
 			var arr = [];
-			var obj=m(this);
+			var obj = m(this);
 			for(var i = 0; i < obj.length; i++) {
 				if(i === 0) {
 					arr.push(obj[i])
@@ -505,7 +532,7 @@
 		//  prev
 		prev: function() {
 			var arr = [];
-			var obj=m(this);
+			var obj = m(this);
 			Mobile.each(obj, function(i, v) {
 				var _prev = v.previousElementSibling;
 				if(_prev) {
@@ -521,7 +548,7 @@
 		//  next
 		next: function() {
 			var arr = [];
-			var obj=m(this);
+			var obj = m(this);
 			Mobile.each(obj, function(i, v) {
 				var _next = v.nextElementSibling;
 				if(_next) {
@@ -537,11 +564,11 @@
 		//  siblings
 		siblings: function() {
 			var arr = [];
-			var obj=m(this);
+			var obj = m(this);
 			Mobile.each(obj, function(i, v) {
 				var _children = v.parentElement.children;
 				var _index = m(v).index();
-				
+
 				for(var y = 0; y < _children.length; y++) {
 					if(y !== _index) {
 						arr.push(_children[y]);
@@ -558,7 +585,7 @@
 		last: function() {
 
 			var arr = [];
-			var obj=m(this);
+			var obj = m(this);
 			for(var i = 0; i < obj.length; i++) {
 				var _length = (obj.length > 0) ? obj.length - 1 : 0;
 				if(i === _length) {
@@ -784,8 +811,8 @@
 
 					return false;
 				});
-			} 
-			
+			}
+
 			return _index;
 		},
 
@@ -1089,13 +1116,13 @@
 			var _transition = "all " + time / 1000 + "s  " + ease + " " + (delay / 1000) + "s";
 
 			if(typeof option === "string") {
-				
-				if(arguments.length===1){
-					_transition=option;
-				}else if(arguments.length>1){
+
+				if(arguments.length === 1) {
+					_transition = option;
+				} else if(arguments.length > 1) {
 					_transition = option + " " + time / 1000 + "s  " + ease + " " + (delay / 1000) + "s";
 				}
-				
+
 				Mobile.each(this, function() {
 					this.style.MozTransition = _transition;
 					this.style.msTransition = _transition;
@@ -1103,7 +1130,7 @@
 					this.style.OTransition = _transition;
 					this.style.transition = _transition;
 				});
-				
+
 				return this;
 			}
 
@@ -1321,14 +1348,49 @@
 				var bl = typeof arguments[2] === "boolean" ? arguments[2] : false;
 				Mobile.each(this, function() {
 					if(this.addEventListener) {
-						this.addEventListener(type, handler, bl);
+						this.addEventListener(type, function(){
+								handler.call(event.target, event);
+						}, bl);
 					}
 					//ie8
-					else if(this.attachEvent) {
-						this.attachEvent("on" + type, handler, bl)
-					} else {
-						this["on" + type] = handler /*直接赋给事件*/
+//					else if(this.attachEvent) {
+//						this.attachEvent("on" + type, unction() {
+//							handler(event);
+//						}, bl)
+//					} else {
+//						this["on" + type] = unction() {
+//							handler(event);
+//						} /*直接赋给事件*/
+//					}
+				});
+
+				m.events.on(type, handler);
+			}
+			
+			// 正常绑定事件传object值
+			if(arguments.length>=3 && typeof arguments[1] === "object" && typeof arguments[2] === "function") {
+				var obj = arguments[1]
+				var handler = arguments[2];
+				var bl = typeof arguments[3] === "boolean" ? arguments[3] : false;
+				Mobile.each(this, function() {
+					if(this.addEventListener) {
+						this.addEventListener(type, function(event) {
+							event.data = obj;
+							handler.call(event.target, event);
+						}, bl);
 					}
+					//ie8
+//					else if(this.attachEvent) {
+//						this.attachEvent("on" + type, function() {
+//							event.data = obj;
+//							handler(event);
+//						}, bl)
+//					} else {
+//						this["on" + type] = function() {
+//							event.data = obj;
+//							handler(event);
+//						} /*直接赋给事件*/
+//					}
 				});
 
 				m.events.on(type, handler);
@@ -1352,6 +1414,28 @@
 
 				m.events.on(type, handler);
 			}
+			
+			// 委托绑定事件传object值
+			if(arguments.length >= 4 && typeof arguments[1] === "string" &&typeof arguments[2] === "object" && typeof arguments[3] === "function") {
+				var el = arguments[1].trim();
+				var obj = arguments[2];
+				var handler = arguments[3];
+				var bl = typeof arguments[4] === "boolean" ? arguments[4] : false
+				Mobile.each(this, function() {
+					if(this.addEventListener) {
+						this.addEventListener(type, function(event) {
+							if(Mobile.checkSelector(event.target, el)) {
+								event.data=obj;
+								handler.call(event.target, event);
+							}
+
+						}, bl);
+					}
+				});
+
+				m.events.on(type, handler);
+			}
+
 
 			return this;
 
@@ -2015,24 +2099,24 @@
 
 			return null;
 		},
-		
+
 		// 检查是否为移动端
-		isMobile:function(){
-			
+		isMobile: function() {
+
 			var userAgentInfo = navigator.userAgent.toString().toLowerCase();
-				var Agents = ["Android", "iPhone",
-					"SymbianOS", "Windows Phone",
-					"iPad", "iPod"
-				];
-				//console.log(userAgentInfo)
-				var flag = false;
-				for(var v = 0; v < Agents.length; v++) {
-					if(userAgentInfo.indexOf(Agents[v].toLowerCase()) > 0) {
-						flag = true;
-						break;
-					}
+			var Agents = ["Android", "iPhone",
+				"SymbianOS", "Windows Phone",
+				"iPad", "iPod"
+			];
+			//console.log(userAgentInfo)
+			var flag = false;
+			for(var v = 0; v < Agents.length; v++) {
+				if(userAgentInfo.indexOf(Agents[v].toLowerCase()) > 0) {
+					flag = true;
+					break;
 				}
-				return flag;
+			}
+			return flag;
 		},
 
 	});

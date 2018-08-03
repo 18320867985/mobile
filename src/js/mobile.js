@@ -350,15 +350,27 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 		// addClass
 		addClass: function addClass(className) {
 
+			if (typeof className === "string") {
+				className = className.split(/\s+/);
+			} else {
+
+				return this;
+			}
+
 			if (arguments.length === 1) {
 
 				Mobile.each(this, function () {
-					this.classList.add(className);
+					for (var y = 0; y < className.length; y++) {
+						if (className[y]) {
+							this.classList.add(className[y]);
+						}
+					}
 				});
 			}
 
 			return this;
 		},
+
 		//  hasclass
 		hasClass: function hasClass(className) {
 			var ishasClass = false;
@@ -376,10 +388,21 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 		// removeClass
 		removeClass: function removeClass(className) {
 
+			if (typeof className === "string") {
+				className = className.split(/\s+/);
+			} else {
+
+				return this;
+			}
+
 			if (arguments.length === 1) {
 
 				Mobile.each(this, function () {
-					this.classList.remove(className);
+					for (var y = 0; y < className.length; y++) {
+						if (className[y]) {
+							this.classList.remove(className[y]);
+						}
+					}
 				});
 			}
 			return this;
@@ -1267,14 +1290,49 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 				var bl = typeof arguments[2] === "boolean" ? arguments[2] : false;
 				Mobile.each(this, function () {
 					if (this.addEventListener) {
-						this.addEventListener(type, handler, bl);
+						this.addEventListener(type, function () {
+							handler.call(event.target, event);
+						}, bl);
 					}
 					//ie8
-					else if (this.attachEvent) {
-							this.attachEvent("on" + type, handler, bl);
-						} else {
-							this["on" + type] = handler; /*直接赋给事件*/
-						}
+					//					else if(this.attachEvent) {
+					//						this.attachEvent("on" + type, unction() {
+					//							handler(event);
+					//						}, bl)
+					//					} else {
+					//						this["on" + type] = unction() {
+					//							handler(event);
+					//						} /*直接赋给事件*/
+					//					}
+				});
+
+				m.events.on(type, handler);
+			}
+
+			// 正常绑定事件传object值
+			if (arguments.length >= 3 && _typeof(arguments[1]) === "object" && typeof arguments[2] === "function") {
+				var obj = arguments[1];
+				var handler = arguments[2];
+				var bl = typeof arguments[3] === "boolean" ? arguments[3] : false;
+				Mobile.each(this, function () {
+					if (this.addEventListener) {
+						this.addEventListener(type, function (event) {
+							event.data = obj;
+							handler.call(event.target, event);
+						}, bl);
+					}
+					//ie8
+					//					else if(this.attachEvent) {
+					//						this.attachEvent("on" + type, function() {
+					//							event.data = obj;
+					//							handler(event);
+					//						}, bl)
+					//					} else {
+					//						this["on" + type] = function() {
+					//							event.data = obj;
+					//							handler(event);
+					//						} /*直接赋给事件*/
+					//					}
 				});
 
 				m.events.on(type, handler);
@@ -1289,6 +1347,26 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 					if (this.addEventListener) {
 						this.addEventListener(type, function (event) {
 							if (Mobile.checkSelector(event.target, el)) {
+								handler.call(event.target, event);
+							}
+						}, bl);
+					}
+				});
+
+				m.events.on(type, handler);
+			}
+
+			// 委托绑定事件传object值
+			if (arguments.length >= 4 && typeof arguments[1] === "string" && _typeof(arguments[2]) === "object" && typeof arguments[3] === "function") {
+				var el = arguments[1].trim();
+				var obj = arguments[2];
+				var handler = arguments[3];
+				var bl = typeof arguments[4] === "boolean" ? arguments[4] : false;
+				Mobile.each(this, function () {
+					if (this.addEventListener) {
+						this.addEventListener(type, function (event) {
+							if (Mobile.checkSelector(event.target, el)) {
+								event.data = obj;
 								handler.call(event.target, event);
 							}
 						}, bl);
