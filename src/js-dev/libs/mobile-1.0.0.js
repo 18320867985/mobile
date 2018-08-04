@@ -312,9 +312,12 @@
 
 			// 返回第一个属性值
 			if(arguments.length === 1 && typeof attr === "string") {
-				var _attr;
+				var _attr=undefined;
 				Mobile.each(this, function() {
 					_attr = this.getAttribute(attr);
+					if(_attr===null){
+						_attr=undefined;
+					}
 					return false;
 				});
 				return _attr;

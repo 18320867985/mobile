@@ -301,9 +301,12 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 			// 返回第一个属性值
 			if (arguments.length === 1 && typeof _attr2 === "string") {
-				var _attr;
+				var _attr = undefined;
 				Mobile.each(this, function () {
 					_attr = this.getAttribute(_attr2);
+					if (_attr === null) {
+						_attr = undefined;
+					}
 					return false;
 				});
 				return _attr;
