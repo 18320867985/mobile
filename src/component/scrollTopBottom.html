@@ -145,20 +145,9 @@
 		<!--footer-->
 		<!--<footer class="mobile-footer">
 				<h2>页脚</h2>
-			</footer>-->
-		<script type="text/html" id="must">
-			{{#must}}
-
-			<li>
-				<a href="tab.html">
-					<img src="{{src}}" alt="" />
-					<h5>{{text}}</h5>
-				</a>
-			</li>
-			{{/must}}
-		</script>
+		</footer>-->
+		
 		<script src="../js/mobile.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../js/mustache.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			// 拉到底部 加载数据
 			var firstbottom = true;
@@ -177,12 +166,20 @@
 					setTimeout(function() {
 
 						m.get("../json/topbottom.json", function(data) {
-
-							var html = Mustache.to_html($("#must").html(), {
-								must: data
+							var temp="";
+							data.forEach(function(item){
+								temp+=`
+								<li>
+									<a href="tab.html">
+										<img src="${item.src}" alt="" />
+										<h5>${item.text}</h5>
+									</a>
+								</li>`
+								
 							});
+							
 							bottomcontent.find(".loading").remove();
-							bottomcontent.find(".scrolltopbottom").append(html);
+							bottomcontent.find(".scrolltopbottom").append(temp);
 							firstbottom = true;
 							if(event.detail.resetBar) {
 								event.detail.resetBar(); // 重置滚动条
@@ -210,6 +207,11 @@
 				//console.log(event.detail);
 				//console.log("scrolltopbottom");
 			})
+			
+			
+		
+			  
+			  
 		</script>
 
 	</body>

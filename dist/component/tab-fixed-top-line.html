@@ -19,13 +19,13 @@
 				border-radius: 5px;
 			}
 			
-			.mobile-tab-nav .mobile-tab-fixed li{
-				 padding: 5px;
+			.mobile-tab-nav .mobile-tab-fixed li {
+				padding: 5px;
 			}
-			.mobile-tab-nav .mobile-tab-fixed li.active{
+			
+			.mobile-tab-nav .mobile-tab-fixed li.active {
 				background: #fff;
-				color:#690;
-				
+				color: #690;
 			}
 		</style>
 
@@ -40,9 +40,9 @@
 		</div>
 		<!--定位到顶部-->
 		<div class="mobile-tab mobile-tab-top">
-	<!--左右滑动组件 data-position-left=定位到left data-position-center=定位到center data-trigger=允许触发scrollbottom事件  data-line=下面line样式 -->
+			<!--左右滑动组件 data-position-left=定位到left data-position-center=定位到center data-trigger=允许触发scrollbottom事件  data-line=下面line样式 -->
 			<ul class="mobile-tab-nav mobile-tab-fixed mobile-tab-line" data-trigger data-line>
-				<li   data-target="#page1"  class="active width-2">
+				<li data-target="#page1" class="active width-2">
 					第1屏
 				</li>
 				<li data-target="#page2" class="width-2">
@@ -59,29 +59,27 @@
 				</li>
 
 			</ul>
-			
-		
 
 		</div>
 
 		<!--content-->
 		<section class="mobile-content">
 
-				<!--tab 左右滑动内容 data-drag=左右两边回弹  data-transition="是否左右滑动动画"  data-trigger=允许触发scrollbottom事件 -->
+			<!--tab 左右滑动内容 data-drag=左右两边回弹  data-transition="是否左右滑动动画"  data-trigger=允许触发scrollbottom事件 -->
 			<div class="mobile-tab-slide" data-transition="是否左右滑动动画" data-trigger data-drag>
 				<div class="mobile-tab-slide-list">
 					<div id="page1" class="mobile-tab-slide-item  mobile-scroll-topbottom" data-scroll-bar>
 						<div class="mobile-scroll-content">
 
 							<p>第1屏</p>
-							
+
 						</div>
 					</div>
 
 					<div id="page2" class="mobile-tab-slide-item mobile-scroll-topbottom" data-scroll-bar>
 						<div class="mobile-scroll-content">
 							<p>第2屏</p>
-							
+
 						</div>
 
 					</div>
@@ -89,22 +87,21 @@
 					<div id="page3" class="mobile-tab-slide-item mobile-scroll-topbottom" data-scroll-bar>
 						<div class="mobile-scroll-content">
 							<p>第3屏</p>
-						
-							
+
 						</div>
 					</div>
 
 					<div id="page4" class="mobile-tab-slide-item mobile-scroll-topbottom" data-scroll-bar>
 						<div class="mobile-scroll-content">
 							<p>第4屏</p>
-							
+
 						</div>
 					</div>
 
 					<div id="page5" class="mobile-tab-slide-item mobile-scroll-topbottom" data-scroll-bar>
 						<div class="mobile-scroll-content">
 							<p>第5屏</p>
-							
+
 						</div>
 					</div>
 
@@ -149,7 +146,6 @@
 			{{/must}}
 		</script>
 		<script src="../js/mobile.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../js/mustache.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			m(function() {
 
@@ -174,12 +170,16 @@
 										content: bottomcontent.parent().attr("id") + "#" + item.content
 									};
 								});
+								var temp = "";
+								data.forEach(function(item) {
+									temp +=
+										`
+									<p>${item.content}</p>
+								`
 
-								var html = Mustache.to_html($("#must").html(), {
-									must: data
 								});
 								bottomcontent.find(".loading").remove();
-								bottomcontent.append(html);
+								bottomcontent.append(temp);
 								firstbottom = true;
 								if(event.detail.resetBar) {
 									event.detail.resetBar(); // 重置滚动条

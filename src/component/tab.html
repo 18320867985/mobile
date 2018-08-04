@@ -220,7 +220,6 @@
 			{{/must}}
 		</script>
 		<script src="../js/mobile.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../js/mustache.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			m(function(){
 	
@@ -241,12 +240,18 @@
 
 						m.get("../json/tab.json", function(data) {
 							data=data.map(function(item){return {content:bottomcontent.parent().attr("id")+"#"+item.content};});
-							
-							var html = Mustache.to_html($("#must").html(), {
-								must:data 
+						
+							var temp="";
+							data.forEach(function(item){
+								temp+=
+								`
+									<p>${item.content}</p>
+								`
+								
 							});
+							
 							bottomcontent.find(".loading").remove();
-							bottomcontent.append(html);
+							bottomcontent.append(temp);
 							firstbottom = true;
 							if(event.detail.resetBar)
 							{

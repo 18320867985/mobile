@@ -31,8 +31,8 @@
 		</div>
 		<!--定位到顶部-->
 		<div class="mobile-tab mobile-tab-top">
-	<!--左右滑动组件 data-position-left=定位到left data-position-center=定位到center data-trigger=允许触发scrollbottom事件 -->
-			<ul class="mobile-tab-nav mobile-tab-fixed"  data-trigger>
+			<!--左右滑动组件 data-position-left=定位到left data-position-center=定位到center data-trigger=允许触发scrollbottom事件 -->
+			<ul class="mobile-tab-nav mobile-tab-fixed" data-trigger>
 				<li class="active width-2" data-target="#page1">
 					第1屏
 				</li>
@@ -63,14 +63,14 @@
 						<div class="mobile-scroll-content">
 
 							<p>第1屏</p>
-							
+
 						</div>
 					</div>
 
 					<div id="page2" class="mobile-tab-slide-item mobile-scroll-topbottom" data-scroll-bar>
 						<div class="mobile-scroll-content">
 							<p>第2屏</p>
-							
+
 						</div>
 
 					</div>
@@ -78,22 +78,21 @@
 					<div id="page3" class="mobile-tab-slide-item mobile-scroll-topbottom" data-scroll-bar>
 						<div class="mobile-scroll-content">
 							<p>第3屏</p>
-						
-							
+
 						</div>
 					</div>
 
 					<div id="page4" class="mobile-tab-slide-item mobile-scroll-topbottom" data-scroll-bar>
 						<div class="mobile-scroll-content">
 							<p>第4屏</p>
-							
+
 						</div>
 					</div>
 
 					<div id="page5" class="mobile-tab-slide-item mobile-scroll-topbottom" data-scroll-bar>
 						<div class="mobile-scroll-content">
 							<p>第5屏</p>
-							
+
 						</div>
 					</div>
 
@@ -138,7 +137,6 @@
 			{{/must}}
 		</script>
 		<script src="../js/mobile.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../js/mustache.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			m(function() {
 
@@ -164,11 +162,16 @@
 									};
 								});
 
-								var html = Mustache.to_html($("#must").html(), {
-									must: data
+								var temp = "";
+								data.forEach(function(item) {
+									temp +=
+										`
+									<p>${item.content}</p>
+								`
+
 								});
 								bottomcontent.find(".loading").remove();
-								bottomcontent.append(html);
+								bottomcontent.append(temp);
 								firstbottom = true;
 								if(event.detail.resetBar) {
 									event.detail.resetBar(); // 重置滚动条

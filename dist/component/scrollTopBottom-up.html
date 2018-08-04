@@ -6,7 +6,6 @@
 		<title>mobile触摸页面</title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<style>
-			
 			.mobile-slide {
 				height: 10rem;
 			}
@@ -21,13 +20,13 @@
 		<div class="mobile-head">
 			<h2 class="mobile-head-ttl">下拉更新-上拉加载</h2>
 		</div>
-		
+
 		<!--content-->
 		<!-- data-scroll-top 是否下拉#   data-scroll-bottom 是否上拉   data-scroll-bar 是否显示滚动条-->
-		<section class="mobile-content mobile-scroll-topbottom"   data-scroll-bottomt  >
+		<section class="mobile-content mobile-scroll-topbottom" data-scroll-bottomt>
 
 			<!--滚动的底部文本-->
-	<!--		<div class="mobile-toptext">别拉了，我已到顶了。</div>-->
+			<!--		<div class="mobile-toptext">别拉了，我已到顶了。</div>-->
 
 			<!--滚动的整体内容-->
 			<div class=" mobile-scroll-content">
@@ -38,11 +37,11 @@
 					<ul class="mobile-slide-list">
 						<li class="mobile-slide-item">
 							<a href="#" id="a">
-							
+
 								<img src="../images/1.jpg" alt="">
 
 						</li>
-					<li class="mobile-slide-item">
+						<li class="mobile-slide-item">
 							<a href="http://www.51zxw.com">
 								<img src="../images/2.jpg" alt="">
 							</a>
@@ -127,9 +126,9 @@
 				</ul>
 
 			</div>
-		
+
 		</section>
-		
+
 		<div class="mobile-tab mobile-tab-bottom">
 			<nav class="mobile-tab-nav">
 				<div class="mobile-tab-item width-2-5 active">
@@ -156,18 +155,9 @@
 				<h2>页脚</h2>
 		</footer>-->
 
-		<script type="text/html" id="must">
-			{{#must}}
-			<li>
-				<a href="scrollTopBottom.html">
-					<img src="{{src}}" alt="" />
-					<h5>{{text}}</h5>
-				</a>
-			</li>
-			{{/must}}
 		</script>
 		<script src="../js/mobile.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../js/mustache.js" type="text/javascript" charset="utf-8"></script>
+
 		<script type="text/javascript">
 			// 拉到底部 加载数据
 			var firstbottom = true;
@@ -186,18 +176,25 @@
 					setTimeout(function() {
 
 						m.get("../json/topbottom.json", function(data) {
+							var temp = "";
+							data.forEach(function(item) {
+								temp += `
+								<li>
+									<a href="tab.html">
+										<img src="${item.src}" alt="" />
+										<h5>${item.text}</h5>
+									</a>
+								</li>`
 
-							var html = Mustache.to_html($("#must").html(), {
-								must: data
 							});
+
 							bottomcontent.find(".loading").remove();
-							bottomcontent.find(".scrolltopbottom").append(html);
+							bottomcontent.find(".scrolltopbottom").append(temp);
 							firstbottom = true;
-							if(event.detail.resetBar)
-							{
+							if(event.detail.resetBar) {
 								event.detail.resetBar(); // 重置滚动条
 							}
-							
+
 						}, function() {
 							firstbottom = true;
 							loading.innerHTML = "数据加载失败...";
