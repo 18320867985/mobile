@@ -59,7 +59,7 @@
 /*  tab内容 slide*/
 
 .mobile-tab-slide {
-    // position: absolute;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
@@ -70,13 +70,20 @@
 
 .mobile-tab-slide-list {
     height: 100%;
+    
+    .mobile-scroll-content-many{
+         min-height: 100%;
+         background: #fff;
+    }
 }
 
 .mobile-tab-slide-item {
     float: left;
     padding: 10px;
-    height: 100%;
-    // background: #fff;
+ 
+    &.mobile-scroll-topbottom{
+         height: 100%;
+    }
 }
 
 

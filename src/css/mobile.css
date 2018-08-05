@@ -704,17 +704,6 @@ a .spin {
   border-radius: 8px;
   opacity: 1; }
 
-.mobile-scroll-content-many {
-  position: relative;
-  top: 0;
-  left: 0;
-  display: none;
-  min-height: 100%;
-  padding: 5px;
-  background: #fff; }
-  .mobile-scroll-content-many.active {
-    display: block; }
-
 /* mobile-scroll 导航左右滑动 */
 .mobile-scroll-leftright {
   position: relative;
@@ -843,6 +832,7 @@ a .spin {
 
 /*  tab内容 slide*/
 .mobile-tab-slide {
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
@@ -852,11 +842,15 @@ a .spin {
 
 .mobile-tab-slide-list {
   height: 100%; }
+  .mobile-tab-slide-list .mobile-scroll-content-many {
+    min-height: 100%;
+    background: #fff; }
 
 .mobile-tab-slide-item {
   float: left;
-  padding: 10px;
-  height: 100%; }
+  padding: 10px; }
+  .mobile-tab-slide-item.mobile-scroll-topbottom {
+    height: 100%; }
 
 /*tmobile-tab-nav*/
 .mobile-tab-nav {
@@ -925,6 +919,17 @@ a .spin {
     display: block; }
   .mobile-aside-item .mobile-scroll-content {
     padding: 0.25rem; }
+
+.mobile-aside-content .mobile-scroll-content-many {
+  position: relative;
+  top: 0;
+  left: 0;
+  display: none;
+  min-height: 100%;
+  padding: 5px;
+  background: #fff; }
+  .mobile-aside-content .mobile-scroll-content-many.active {
+    display: block; }
 
 .scrolltopbottom {
   -webkit-box-shadow: -2px 0px 3px #ddd;

@@ -99,7 +99,7 @@ var scrollTopBottom = (function(m) {
 				topbottomContent = m(scrolltb).find(".mobile-scroll-content-many.active");
 				loading = m(topbottomContent).find(".mobile-loading");
 			}
-
+console.log(topbottomContent)
 			eleY = m(topbottomContent).getTransform("translateY");
 
 			isAddMoveEvent = false; // 判断是否往上拖动
@@ -257,6 +257,8 @@ var scrollTopBottom = (function(m) {
 			}
 
 			m(topbottomContent).setTransform("translateY", translateY);
+			console.log(topbottomContent)
+			console.log(translateY)
 
 		}
 

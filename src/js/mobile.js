@@ -2370,7 +2370,7 @@ var scrollTopBottom = function (m) {
 				topbottomContent = m(scrolltb).find(".mobile-scroll-content-many.active");
 				loading = m(topbottomContent).find(".mobile-loading");
 			}
-
+			console.log(topbottomContent);
 			eleY = m(topbottomContent).getTransform("translateY");
 
 			isAddMoveEvent = false; // 判断是否往上拖动
@@ -2522,6 +2522,8 @@ var scrollTopBottom = function (m) {
 			}
 
 			m(topbottomContent).setTransform("translateY", translateY);
+			console.log(topbottomContent);
+			console.log(translateY);
 		}
 
 		m(scrolltb).on("touchend", end);
@@ -3370,7 +3372,10 @@ var tab = function (m) {
 			// tuochend 发生的事件
 			$this.emit("tabnavend", { el: this });
 
-			var p = m(obj).parents(".mobile-tab-slide-list");
+			var p = obj.parents(".mobile-tab-slide-list");
+			// add active
+			p.find(".mobile-tab-slide-item").removeClass("active");
+			obj.addClass("active");
 			var left = m(obj).offset().left;
 			m(p).setTransform("translateX", -left);
 			var istransition = m(obj).parents(".mobile-tab-slide").hasAttr("data-transition");
