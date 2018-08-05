@@ -25,11 +25,11 @@ var scrollTopBottom = (function(m) {
 			topbottomContent = many;
 			isManyContent = true;
 		}
-		
+
 		if(topbottomContent.length === 0) {
 			return;
 		}
-	
+
 		m(topbottomContent).setTransform('translateZ', 0.01);
 		var isScrollTop = m(scrolltb).hasAttr("data-scroll-top"); // 是否下拉
 		var isScrollBottom = m(scrolltb).hasAttr("data-scroll-bottom"); // 是否上拉
@@ -78,6 +78,14 @@ var scrollTopBottom = (function(m) {
 		var speedlateY = 0;
 		var speedlateYOld = 0;
 
+		// 是否下拉加载
+		var loading = m(topbottomContent).find(".mobile-loading");
+		var isLoading = m(scrolltb).hasAttr("data-loading");
+		var loadingY = 0;
+		if(isLoading) {
+			loadingY = loading.offsetTop();
+		}
+
 		m(scrolltb).on("touchstart", start);
 
 		function start(event) {
@@ -89,10 +97,10 @@ var scrollTopBottom = (function(m) {
 
 			if(isManyContent) {
 				topbottomContent = m(scrolltb).find(".mobile-scroll-content-many.active");
+				loading = m(topbottomContent).find(".mobile-loading");
 			}
 
 			eleY = m(topbottomContent).getTransform("translateY");
-			
 
 			isAddMoveEvent = false; // 判断是否往上拖动
 			isAddMoveEventFirst = true; // 判断是否第一往上拖动
@@ -102,7 +110,6 @@ var scrollTopBottom = (function(m) {
 			speedSetIntervalFisrt = true;
 			speedlateY = eleY;
 			speedScroll = 0;
-
 
 			window_h = m(scrolltb).height();
 			// 过度时间0s
@@ -116,7 +123,7 @@ var scrollTopBottom = (function(m) {
 				sale_bar = bar_wrap_h / bar_h;
 				scroll_bar_h = window_h * sale_bar;
 				mobile_scroll_bar = m(scrolltb).find(".mobile-scroll-bar");
-			
+
 				if(window_h < bar_h) {
 					mobile_scroll_bar.height(scroll_bar_h);
 				}
@@ -131,8 +138,8 @@ var scrollTopBottom = (function(m) {
 
 		function move(event) {
 			event.preventDefault();
-				window_h = m(scrolltb).height();
-		
+			window_h = m(scrolltb).height();
+
 			// 检查是否向上移动
 			if(isAddMoveEvent) {
 				return;
@@ -166,7 +173,7 @@ var scrollTopBottom = (function(m) {
 					isAddMoveEvent = true;
 				}
 			}
-			
+
 			if(isAddMoveEvent) {
 				return;
 			}
@@ -183,15 +190,32 @@ var scrollTopBottom = (function(m) {
 				}, 20);
 			}
 
+			minY = window_h - topbottomContent.height();
+			var translateY = eleY + dis;
+
+			// 是否下拉加载
+			if(isLoading) {
+				loadingY = loading.offsetTop();
+
+				// scroll上下滚动加载数据scrollloading自定义事件
+				m(this).trigger("scrollloading", {
+					el: topbottomContent.eq(0),
+					resetBar: scrollBarFun,
+					translateY: translateY, // 滚动translateY
+					loading: loading,
+					loadingY: loadingY, // loanding offsetTop值
+					isLoading: (Math.abs(translateY)) >= (loadingY - window_h)
+
+				});
+			}
+
 			// scroll上下滚动scrolltopbottom自定义事件
 			m(this).trigger("scrolltopbottom", {
 				el: topbottomContent.eq(0),
-				resetBar:scrollBarFun
-			
+				resetBar: scrollBarFun,
+
 			});
 
-			minY = window_h - topbottomContent.height();
-			var translateY = eleY + dis;
 			if(translateY > 0) {
 				var scale = 1 - translateY / window_h;
 				translateY = translateY * scale;
@@ -204,8 +228,8 @@ var scrollTopBottom = (function(m) {
 				// scroll顶部 scrolltop自定义事件
 				m(this).trigger("scrolltop", {
 					el: topbottomContent.eq(0),
-					resetBar:scrollBarFun
-				
+					resetBar: scrollBarFun,
+
 				});
 
 			} else if(translateY < minY) {
@@ -222,8 +246,8 @@ var scrollTopBottom = (function(m) {
 				// scroll底部 scrollbottom自定义事件
 				m(this).trigger("scrollbottom", {
 					el: topbottomContent.eq(0),
-					resetBar:scrollBarFun
-					
+					resetBar: scrollBarFun,
+
 				});
 
 				if((m(topbottomContent).height()) < (window_h)) {
@@ -233,7 +257,6 @@ var scrollTopBottom = (function(m) {
 			}
 
 			m(topbottomContent).setTransform("translateY", translateY);
-				
 
 		}
 
@@ -259,6 +282,10 @@ var scrollTopBottom = (function(m) {
 				}
 
 			}
+			// 检查是否向上移动
+			if(isAddMoveEvent) {
+				return;
+			}
 
 			minY = window_h - topbottomContent.height();
 			var target = m(topbottomContent).getTransform("translateY") + speedScroll * 20;
@@ -276,7 +303,7 @@ var scrollTopBottom = (function(m) {
 				m(topbottomContent).transition("all", 500, bezier);
 
 			} else {
-				m(topbottomContent).transition("all", 1000, bezier);
+				m(topbottomContent).transition("all", 800, bezier);
 			}
 
 			// 滚动条
@@ -285,7 +312,25 @@ var scrollTopBottom = (function(m) {
 				var scroll_box_h = m(topbottomContent).height();
 				var scroll_box_sale = scroll_Y / scroll_box_h;
 				mobile_scroll_bar.setTransform("translateY", -m(scrolltb).height() * scroll_box_sale);
-				mobile_scroll_bar.transition("all",1000);
+				mobile_scroll_bar.transition("all", 800);
+
+			}
+
+			// 是否下拉加载
+			if(isLoading) {
+				loadingY = loading.offsetTop();
+
+				// scroll上下滚动加载数据scrollloading自定义事件
+				m(this).trigger("scrollloading", {
+					el: topbottomContent.eq(0),
+					resetBar: scrollBarFun,
+					translateY: target, // 滚动translateY
+					loading: loading,
+					loadingY: loadingY, // loanding offsetTop值
+					isLoading: (Math.abs(target)) >= (loadingY - window_h)
+
+				});
+				//console.log("end")
 
 			}
 
@@ -319,8 +364,8 @@ var scrollTopBottom = (function(m) {
 				scroll_bar_h = window_h * sale_bar;
 				mobile_scroll_bar = m(scrolltb).find(".mobile-scroll-bar");
 				mobile_scroll_bar.height(scroll_bar_h);
-//				mobile_scroll_bar.css("opacity",0);
-//				mobile_scroll_bar.transition("transform 1s,opacity 1s ease 1s");
+				//				mobile_scroll_bar.css("opacity",0);
+				//				mobile_scroll_bar.transition("transform 1s,opacity 1s ease 1s");
 
 			}
 

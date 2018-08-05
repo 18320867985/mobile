@@ -161,7 +161,7 @@ var tab = (function(m) {
 			var nowY = touch.clientY;
 
 			var left = m(list).getTransform("translateX");
-			var ratio = -left / document.documentElement.clientWidth;
+			var ratio = -left / m(mobile_slide).width();
 			if(nowX > startX) {
 
 				now = m.round(ratio, 0.8);
@@ -181,15 +181,16 @@ var tab = (function(m) {
 			} else if(now > liNodes.length - 1) {
 				now = liNodes.length - 1
 			}
-
-			list.transition("all", 500);
-			m(list).setTransform('translateX', -now * document.documentElement.clientWidth);
-
 			//tab tabend左右滑动结束发生的事件
 			m(this).trigger("tabend", {
 				el: liNodes.eq(now)
 
 			});
+			
+			list.transition("all", 500);
+			m(list).setTransform('translateX', -now * m(mobile_slide).width());
+
+			
 
 		}
 
@@ -243,13 +244,18 @@ var tab = (function(m) {
 		// 是否允许触发事件
 		var isTrigger = el.parents(".mobile-tab-slide").hasAttr("data-trigger");
 		var el_content = el.find(".mobile-scroll-content").eq(0);
+		
 		if(isTrigger) {
 			if(!el_content.hasAttr("data-trigger")) {
-				el.emit("scrollbottom", {
-					el: el_content
+				el.emit("scrollloading", {
+					el: el_content,
+					isLoading:true,
+					loading: el_content.find(".mobile-loading"),
 				});
 			}
 		}
+
+		
 
 		// 标签下面线条
 		setLineTransleateX(target);
@@ -334,6 +340,10 @@ var tab = (function(m) {
 
 			var id = $this.attr("data-target");
 			var obj = m(id);
+			
+			// tuochend 发生的事件
+			$this.emit("tabnavend",{el:this});
+			
 			var p = m(obj).parents(".mobile-tab-slide-list");
 			var left = m(obj).offset().left;
 			m(p).setTransform("translateX", -left);
@@ -349,8 +359,11 @@ var tab = (function(m) {
 			var el_content = obj.find(".mobile-scroll-content").eq(0);
 			if(isTrigger) {
 				if(!el_content.hasAttr("data-trigger")) {
-					el_content.emit("scrollbottom", {
-						el: el_content
+					el_content.emit("scrollloading", {
+						el: el_content,
+						isLoading:true,
+						loading: el_content.find(".mobile-loading"),
+						
 					});
 				}
 			}

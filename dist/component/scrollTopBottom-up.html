@@ -22,8 +22,8 @@
 		</div>
 
 		<!--content-->
-		<!-- data-scroll-top 是否下拉#   data-scroll-bottom 是否上拉   data-scroll-bar 是否显示滚动条-->
-		<section class="mobile-content mobile-scroll-topbottom" data-scroll-bottomt>
+		<!-- data-scroll-top 是否下拉#   data-scroll-bottom 是否上拉   data-scroll-bar 是否显示滚动条 data-loading=是否上拉加载数据 -->
+		<section class="mobile-content mobile-scroll-topbottom" data-scroll-bottomt data-loading data-scroll-bar>
 
 			<!--滚动的底部文本-->
 			<!--		<div class="mobile-toptext">别拉了，我已到顶了。</div>-->
@@ -57,73 +57,16 @@
 				</div>
 
 				<!-- 包含a连接 加mobile-link -->
-				<ul class="mobile-link scrolltopbottom clearfix">
-					<li>
-						<img src="../images/1段奶粉.png" alt="" />
-						<h5>1段奶粉</h5>
-					</li>
-					<li>
-						<img src="../images/2段奶粉.png" alt="" />
-						<h5>2段奶粉</h5>
-					</li>
-					<li>
-						<img src="../images/3段奶粉.png" alt="" />
-						<h5>3段奶粉</h5>
-					</li>
-					<li>
-						<img src="../images/4断乃恩.png" alt="" />
-						<h5>4断乃恩</h5>
-					</li>
-					<li>
-						<img src="../images/1段奶粉.png" alt="" />
-						<h5>1段奶粉</h5>
-					</li>
-					<li>
-						<img src="../images/2段奶粉.png" alt="" />
-						<h5>2段奶粉</h5>
-					</li>
-					<li>
-						<img src="../images/3段奶粉.png" alt="" />
-						<h5>3段奶粉</h5>
-					</li>
-					<li>
-						<img src="../images/4断乃恩.png" alt="" />
-						<h5>4断乃恩</h5>
-					</li>
-					<li>
-						<img src="../images/1段奶粉.png" alt="" />
-						<h5>1段奶粉</h5>
-					</li>
-					<li>
-						<img src="../images/2段奶粉.png" alt="" />
-						<h5>2段奶粉</h5>
-					</li>
-					<li>
-						<img src="../images/3段奶粉.png" alt="" />
-						<h5>3段奶粉</h5>
-					</li>
-					<li>
-						<img src="../images/4断乃恩.png" alt="" />
-						<h5>4断乃恩</h5>
-					</li>
-					<li>
-						<img src="../images/1段奶粉.png" alt="" />
-						<h5>1段奶粉</h5>
-					</li>
-					<li>
-						<img src="../images/2段奶粉.png" alt="" />
-						<h5>2段奶粉</h5>
-					</li>
-					<li>
-						<img src="../images/3段奶粉.png" alt="" />
-						<h5>3段奶粉</h5>
-					</li>
-					<li>
-						<img src="../images/4断乃恩.png" alt="" />
-						<h5>4断乃恩</h5>
-					</li>
+					<ul class="mobile-loading-content scrolltopbottom  mobile-link clearfix">
+						<!--<li>
+							<img src="../images/1段奶粉.png" alt="" />
+							<h5>1段奶粉</h5>
+						</li>-->
 
-				</ul>
+					</ul>
+					<div class="mobile-loading">
+						上拉加载更多
+					</div>
 
 			</div>
 
@@ -160,49 +103,62 @@
 
 		<script type="text/javascript">
 			// 拉到底部 加载数据
-			var firstbottom = true;
-			var bottomcontent = m(".mobile-scroll-content");
-			m(".mobile-scroll-topbottom").on("scrollbottom", function(event) {
-				//				console.log(event.detail);
-				//				console.log("bottom");
-				//				
-				if(firstbottom) {
-					firstbottom = false;
-					bottomcontent.find(".loading").remove();
-					var loading = document.createElement("div");
-					loading.innerHTML = "正在加载中...";
-					loading.classList.add("loading");
-					bottomcontent.append(loading);
+			var count = 0;
+			m(".mobile-scroll-topbottom").on("scrollloading", function(event) {
+				var bottomcontent = m(event.detail.el);
+				var loading = event.detail.loading || {};
+				var translateY = event.detail.translateY || 0;
+				var loadingY = event.detail.loadingY || 0;
+				var isLoading = event.detail.isLoading || false;
+
+				if(!isLoading) {
+					return;
+
+				}
+
+				if(!bottomcontent.hasAttr("firstbottom")) {
+					bottomcontent.attr("firstbottom", true); //异步加载标识
+					m(loading).html("正在加载中...");
 					setTimeout(function() {
 
 						m.get("../json/topbottom.json", function(data) {
+						
 							var temp = "";
 							data.forEach(function(item) {
-								temp += `
-								<li>
-									<a href="tab.html">
+								temp +=
+									`<li>
 										<img src="${item.src}" alt="" />
 										<h5>${item.text}</h5>
-									</a>
-								</li>`
+									</li>
+								`;
 
 							});
+							//console.log(++count);
+							bottomcontent.find(".mobile-loading-content").append(temp);
+							m(loading).html("上拉加载更多");
 
-							bottomcontent.find(".loading").remove();
-							bottomcontent.find(".scrolltopbottom").append(temp);
-							firstbottom = true;
 							if(event.detail.resetBar) {
 								event.detail.resetBar(); // 重置滚动条
 							}
+							bottomcontent.attr("data-trigger", true); // 标记元素第一次已触发过
+							bottomcontent.removeAttr("firstbottom"); //异步加载标识
 
 						}, function() {
-							firstbottom = true;
-							loading.innerHTML = "数据加载失败...";
+							bottomcontent.removeAttr("firstbottom"); //异步加载标识
+							m(loading).html("数据加载失败");
 						});
 					}, 500);
 				}
 
 			});
+
+			// 第一屏 第一次出发触发scrollbottom
+			m(".mobile-scroll-topbottom").emit("scrollloading", {
+				el: m(".mobile-scroll-topbottom").find(".mobile-scroll-content").eq(0),
+				loading: m(".mobile-scroll-topbottom").find(".mobile-loading"),
+				isLoading: true
+			});
+
 
 			// 拉到顶部
 			m(".mobile-scroll-topbottom").on("scrolltop", function(event) {

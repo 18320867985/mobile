@@ -51,13 +51,16 @@ var aside = (function(m) {
 			var isTrigger=parent.hasAttr("data-trigger");
 			if(isTrigger){
 				if(!$(obj).hasAttr("data-trigger")){
-					$(obj).trigger("scrollbottom",{el:obj.eq(0)});
+					$(obj).trigger("scrollloading",{
+						el:obj,
+						isLoading:true,
+						loading:obj.find(".mobile-loading")
+						
+					});
 				}
 				
 			}
 			
-			
-
 		}
 
 	});

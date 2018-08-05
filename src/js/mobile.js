@@ -2350,6 +2350,13 @@ var scrollTopBottom = function (m) {
 		var speedSetIntervalFisrt = true;
 		var speedScroll = 0;
 		var speedlateY = 0;
+		var loading = m(topbottomContent).find(".mobile-loading");
+		var isLoading = m(scrolltb).hasAttr("data-loading");
+		var loadingY = 0;
+		if (isLoading) {
+			loadingY = loading.offsetTop();
+		}
+
 		m(scrolltb).on("touchstart", start);
 
 		function start(event) {
@@ -2361,6 +2368,7 @@ var scrollTopBottom = function (m) {
 
 			if (isManyContent) {
 				topbottomContent = m(scrolltb).find(".mobile-scroll-content-many.active");
+				loading = m(topbottomContent).find(".mobile-loading");
 			}
 
 			eleY = m(topbottomContent).getTransform("translateY");
@@ -2449,6 +2457,25 @@ var scrollTopBottom = function (m) {
 				}, 20);
 			}
 
+			minY = window_h - topbottomContent.height();
+			var translateY = eleY + dis;
+
+			// 是否下拉加载
+			if (isLoading) {
+				loadingY = loading.offsetTop();
+
+				// scroll上下滚动加载数据scrollloading自定义事件
+				m(this).trigger("scrollloading", {
+					el: topbottomContent.eq(0),
+					resetBar: scrollBarFun,
+					translateY: translateY, // 滚动translateY
+					loading: loading,
+					loadingY: loadingY, // loanding offsetTop值
+					isLoading: Math.abs(translateY) >= loadingY - window_h
+
+				});
+			}
+
 			// scroll上下滚动scrolltopbottom自定义事件
 			m(this).trigger("scrolltopbottom", {
 				el: topbottomContent.eq(0),
@@ -2456,8 +2483,6 @@ var scrollTopBottom = function (m) {
 
 			});
 
-			minY = window_h - topbottomContent.height();
-			var translateY = eleY + dis;
 			if (translateY > 0) {
 				var scale = 1 - translateY / window_h;
 				translateY = translateY * scale;
@@ -2520,6 +2545,10 @@ var scrollTopBottom = function (m) {
 					window.location.assign(href);
 				}
 			}
+			// 检查是否向上移动
+			if (isAddMoveEvent) {
+				return;
+			}
 
 			minY = window_h - topbottomContent.height();
 			var target = m(topbottomContent).getTransform("translateY") + speedScroll * 20;
@@ -2535,7 +2564,7 @@ var scrollTopBottom = function (m) {
 				}
 				m(topbottomContent).transition("all", 500, bezier);
 			} else {
-				m(topbottomContent).transition("all", 1000, bezier);
+				m(topbottomContent).transition("all", 800, bezier);
 			}
 
 			// 滚动条
@@ -2544,7 +2573,24 @@ var scrollTopBottom = function (m) {
 				var scroll_box_h = m(topbottomContent).height();
 				var scroll_box_sale = scroll_Y / scroll_box_h;
 				mobile_scroll_bar.setTransform("translateY", -m(scrolltb).height() * scroll_box_sale);
-				mobile_scroll_bar.transition("all", 1000);
+				mobile_scroll_bar.transition("all", 800);
+			}
+
+			// 是否下拉加载
+			if (isLoading) {
+				loadingY = loading.offsetTop();
+
+				// scroll上下滚动加载数据scrollloading自定义事件
+				m(this).trigger("scrollloading", {
+					el: topbottomContent.eq(0),
+					resetBar: scrollBarFun,
+					translateY: target, // 滚动translateY
+					loading: loading,
+					loadingY: loadingY, // loanding offsetTop值
+					isLoading: Math.abs(target) >= loadingY - window_h
+
+				});
+				//console.log("end")
 			}
 
 			m(topbottomContent).setTransform("translateY", target);
@@ -3161,7 +3207,7 @@ var tab = function (m) {
 			var nowY = touch.clientY;
 
 			var left = m(list).getTransform("translateX");
-			var ratio = -left / document.documentElement.clientWidth;
+			var ratio = -left / m(mobile_slide).width();
 			if (nowX > startX) {
 
 				now = m.round(ratio, 0.8);
@@ -3176,15 +3222,14 @@ var tab = function (m) {
 			} else if (now > liNodes.length - 1) {
 				now = liNodes.length - 1;
 			}
-
-			list.transition("all", 500);
-			m(list).setTransform('translateX', -now * document.documentElement.clientWidth);
-
 			//tab tabend左右滑动结束发生的事件
 			m(this).trigger("tabend", {
 				el: liNodes.eq(now)
 
 			});
+
+			list.transition("all", 500);
+			m(list).setTransform('translateX', -now * m(mobile_slide).width());
 		}
 	}
 
@@ -3234,10 +3279,13 @@ var tab = function (m) {
 		// 是否允许触发事件
 		var isTrigger = el.parents(".mobile-tab-slide").hasAttr("data-trigger");
 		var el_content = el.find(".mobile-scroll-content").eq(0);
+
 		if (isTrigger) {
 			if (!el_content.hasAttr("data-trigger")) {
-				el.emit("scrollbottom", {
-					el: el_content
+				el.emit("scrollloading", {
+					el: el_content,
+					isLoading: true,
+					loading: el_content.find(".mobile-loading")
 				});
 			}
 		}
@@ -3318,6 +3366,10 @@ var tab = function (m) {
 
 			var id = $this.attr("data-target");
 			var obj = m(id);
+
+			// tuochend 发生的事件
+			$this.emit("tabnavend", { el: this });
+
 			var p = m(obj).parents(".mobile-tab-slide-list");
 			var left = m(obj).offset().left;
 			m(p).setTransform("translateX", -left);
@@ -3333,8 +3385,11 @@ var tab = function (m) {
 			var el_content = obj.find(".mobile-scroll-content").eq(0);
 			if (isTrigger) {
 				if (!el_content.hasAttr("data-trigger")) {
-					el_content.emit("scrollbottom", {
-						el: el_content
+					el_content.emit("scrollloading", {
+						el: el_content,
+						isLoading: true,
+						loading: el_content.find(".mobile-loading")
+
 					});
 				}
 			}
@@ -3425,7 +3480,12 @@ var aside = function (m) {
 			var isTrigger = parent.hasAttr("data-trigger");
 			if (isTrigger) {
 				if (!$(obj).hasAttr("data-trigger")) {
-					$(obj).trigger("scrollbottom", { el: obj.eq(0) });
+					$(obj).trigger("scrollloading", {
+						el: obj,
+						isLoading: true,
+						loading: obj.find(".mobile-loading")
+
+					});
 				}
 			}
 		}

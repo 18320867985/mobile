@@ -3,7 +3,7 @@
 
 	<head>
 		<meta charset="UTF-8">
-		<title>mobile触摸页面-固定顶部的tab下面line样式</title>
+		<title>mobile触摸页面-滑动的tab的多个content</title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<style>
 			.mobile-tab-slide .mobile-scroll-content {
@@ -19,13 +19,15 @@
 				border-radius: 5px;
 			}
 			
-			.mobile-tab-nav .mobile-tab-fixed li {
-				padding: 5px;
-			}
-			
-			.mobile-tab-nav .mobile-tab-fixed li.active {
-				background: #fff;
-				color: #690;
+			.mobile-head2 {
+				position: fixed;
+				top: 0;
+				left: 0;
+				z-index: 99998;
+				width: 100%;
+				height: 40px;
+				background: red;
+				;
 			}
 		</style>
 
@@ -36,54 +38,68 @@
 	<body>
 		<!--head-->
 		<div class="mobile-head">
-			<h2 class="mobile-head-ttl">固定顶部的tab标签下面line样式</h2>
+			<h2 class="mobile-head-ttl">滑动的tab 标签</h2>
 		</div>
 		<!--定位到顶部-->
 		<div class="mobile-tab mobile-tab-top">
-			<!--左右滑动组件 data-position-left=定位到left data-position-center=定位到center data-trigger=允许触发scrollbottom事件  data-line=下面line样式 -->
-			<ul class="mobile-tab-nav mobile-tab-fixed mobile-tab-line" data-trigger data-line>
-				<li data-target="#page1" class="active width-2">
-					第1屏
-				</li>
-				<li data-target="#page2" class="width-2">
-					第2屏
-				</li>
-				<li data-target="#page3" class="width-2">
-					第3屏
-				</li>
-				<li data-target="#page4" class="width-2">
-					第4屏
-				</li>
-				<li data-target="#page5" class=" width-2">
-					第5屏
-				</li>
+			<!--左右滑动组件  data-position-left=定位到left data-position-center=定位到center data-trigger=允许触发scrollbottom事件 -->
+			<nav class="mobile-tab-nav mobile-scroll-leftright" data-position-center data-trigger>
+				<ul class="mobile-scroll-content">
+					<li class="active" data-target="#page1">
+						第1屏
+					</li>
+					<li data-target="#page2">
+						第2屏
+					</li>
+					<li data-target="#page3">
+						第3屏
+					</li>
+					<li data-target="#page4">
+						第4屏
+					</li>
+					<li data-target="#page5">
+						第5屏
+					</li>
+					<li data-target="#page6">
+						第6屏
+					</li>
+					<li data-target="#page7">
+						第7屏
+					</li>
+					<li data-target="#page8">
+						第8屏
+					</li>
+					<li data-target="#page9">
+						第9屏
+					</li>
+					<li data-target="#page10">
+						第10屏
+					</li>
 
-			</ul>
+				</ul>
+			</nav>
 
 		</div>
 
 		<!--content-->
 		<section class="mobile-content">
-
-			<!--tab 左右滑动内容 data-drag=左右两边回弹  data-transition="是否左右滑动动画"  data-trigger=允许触发scrollbottom事件 -->
-			<div class="mobile-tab-slide" data-transition="是否左右滑动动画" data-trigger data-drag>
+			<!--tab 左右滑动内容 data-drag=左右两边回弹  data-transition="是否左右滑动动画"  data-trigger=允许触发scrollloading事件 -->
+			<div class="mobile-tab-slide" data-transition="是否左右滑动动画" data-drag data-trigger>
 				<div class="mobile-tab-slide-list">
-					<div id="page1" class="mobile-tab-slide-item  mobile-scroll-topbottom" data-scroll-bar data-loading>
+					<div id="page1" class="mobile-tab-slide-item  mobile-scroll-topbottom" data-scroll-bar data-scroll-bottom data-loading>
 						<div class="mobile-scroll-content">
-
 							<div class="mobile-loading-content">
 								<p>第1屏</p>
 
 							</div>
 							<div class="mobile-loading">
-								上拉加载更多
+							上拉加载更多
 							</div>
-
 
 						</div>
 					</div>
 
-					<div id="page2" class="mobile-tab-slide-item mobile-scroll-topbottom" data-scroll-bar data-loading>
+					<div id="page2" class="mobile-tab-slide-item mobile-scroll-topbottom" data-scroll-bar data-scroll-bottom data-loading>
 						<div class="mobile-scroll-content">
 							<div class="mobile-loading-content">
 								<p>第2屏</p>
@@ -93,12 +109,11 @@
 								上拉加载更多
 							</div>
 
-
 						</div>
 
 					</div>
 
-					<div id="page3" class="mobile-tab-slide-item mobile-scroll-topbottom" data-scroll-bar data-loading>
+					<div id="page3" class="mobile-tab-slide-item mobile-scroll-topbottom" data-scroll-bar data-scroll-bottom data-loading>
 						<div class="mobile-scroll-content">
 							<div class="mobile-loading-content">
 								<p>第3屏</p>
@@ -108,11 +123,10 @@
 								上拉加载更多
 							</div>
 
-
 						</div>
 					</div>
 
-					<div id="page4" class="mobile-tab-slide-item mobile-scroll-topbottom" data-scroll-bar data-loading>
+					<div id="page4" class="mobile-tab-slide-item mobile-scroll-topbottom" data-scroll-bar data-scroll-bottom data-loading>
 						<div class="mobile-scroll-content">
 							<div class="mobile-loading-content">
 								<p>第4屏</p>
@@ -122,11 +136,10 @@
 								上拉加载更多
 							</div>
 
-
 						</div>
 					</div>
 
-					<div id="page5" class="mobile-tab-slide-item mobile-scroll-topbottom" data-scroll-bar data-loading>
+					<div id="page5" class="mobile-tab-slide-item mobile-scroll-topbottom" data-scroll-bar data-scroll-bottom data-loading>
 						<div class="mobile-scroll-content">
 							<div class="mobile-loading-content">
 								<p>第5屏</p>
@@ -136,6 +149,67 @@
 								上拉加载更多
 							</div>
 
+						</div>
+					</div>
+
+					<div id="page6" class="mobile-tab-slide-item mobile-scroll-topbottom" data-scroll-bar data-scroll-bottom data-loading>
+						<div class="mobile-scroll-content">
+							<div class="mobile-loading-content">
+								<p>第6屏</p>
+
+							</div>
+							<div class="mobile-loading">
+								上拉加载更多
+							</div>
+
+						</div>
+					</div>
+
+					<div id="page7" class="mobile-tab-slide-item mobile-scroll-topbottom" data-scroll-bar data-scroll-bottom data-loading>
+						<div class="mobile-scroll-content">
+							<div class="mobile-loading-content">
+								<p>第7屏</p>
+
+							</div>
+							<div class="mobile-loading">
+								上拉加载更多
+							</div>
+
+						</div>
+					</div>
+					<div id="page8" class="mobile-tab-slide-item mobile-scroll-topbottom" data-scroll-bar data-scroll-bottom data-loading>
+						<div class="mobile-scroll-content">
+							<div class="mobile-loading-content">
+								<p>第8屏</p>
+
+							</div>
+							<div class="mobile-loading">
+								上拉加载更多
+							</div>
+
+						</div>
+					</div>
+					<div id="page9" class="mobile-tab-slide-item mobile-scroll-topbottom" data-scroll-bar data-scroll-bottom data-loading>
+						<div class="mobile-scroll-content">
+							<div class="mobile-loading-content">
+								<p>第9屏</p>
+
+							</div>
+							<div class="mobile-loading">
+								上拉加载更多
+							</div>
+
+						</div>
+					</div>
+					<div id="page10" class="mobile-tab-slide-item mobile-scroll-topbottom" data-scroll-bar data-scroll-bottom data-loading>
+						<div class="mobile-scroll-content">
+							<div class="mobile-loading-content">
+								<p>第10屏</p>
+
+							</div>
+							<div class="mobile-loading">
+								上拉加载更多
+							</div>
 
 						</div>
 					</div>
@@ -167,22 +241,36 @@
 			</nav>
 
 		</div>-->
+		<!--<div class="mobile-tab mobile-tab-bottom">
+			<nav class="mobile-tab-nav">
+				<div class="mobile-tab-item width-2-5 active">
+					<span>首页</span>
+				</div>
+
+				<div class="mobile-tab-item width-2-5">
+					<span class="">电话</span>
+				</div>
+
+				<div class="mobile-tab-item width-2-5">
+					<span>邮件</span>
+				</div>
+				<div class="mobile-tab-item width-2-5">
+					<span>设置</span>
+				</div>
+
+			</nav>
+
+		</div>-->
 
 		<!--footer-->
 		<!--<footer class="mobile-footer">
 				<h2>页脚</h2>
 		</footer>-->
 
-		<script type="text/html" id="must">
-			{{#must}}
-
-			<p>{{content}}</p>
-
-			{{/must}}
-		</script>
 		<script src="../js/mobile.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			m(function() {
+				var count = 0;
 
 				// 拉到底部 加载数据
 				m(".mobile-tab-slide-item.mobile-scroll-topbottom").on("scrollloading", function(event) {
@@ -231,7 +319,7 @@
 								bottomcontent.removeAttr("firstbottom"); //异步加载标识
 								m(loading).html("数据加载失败");
 							});
-						}, 500);
+						}, 1000);
 					}
 
 				});

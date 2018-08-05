@@ -68,39 +68,74 @@
 			<!--tab 左右滑动内容 data-drag=左右两边回弹  data-transition="是否左右滑动动画"  data-trigger=允许触发scrollbottom事件 -->
 			<div class="mobile-tab-slide" data-transition="是否左右滑动动画" data-trigger data-drag>
 				<div class="mobile-tab-slide-list">
-					<div id="page1" class="mobile-tab-slide-item  mobile-scroll-topbottom" data-scroll-bar>
+					<div id="page1" class="mobile-tab-slide-item  mobile-scroll-topbottom" data-scroll-bar data-loading>
 						<div class="mobile-scroll-content">
 
-							<p>第1屏</p>
+							<div class="mobile-loading-content">
+								<p>第1屏</p>
+
+							</div>
+							<div class="mobile-loading">
+								上拉加载更多
+							</div>
+
 
 						</div>
 					</div>
 
-					<div id="page2" class="mobile-tab-slide-item mobile-scroll-topbottom" data-scroll-bar>
+					<div id="page2" class="mobile-tab-slide-item mobile-scroll-topbottom" data-scroll-bar data-loading>
 						<div class="mobile-scroll-content">
-							<p>第2屏</p>
+							<div class="mobile-loading-content">
+								<p>第2屏</p>
+
+							</div>
+							<div class="mobile-loading">
+								上拉加载更多
+							</div>
+
 
 						</div>
 
 					</div>
 
-					<div id="page3" class="mobile-tab-slide-item mobile-scroll-topbottom" data-scroll-bar>
+					<div id="page3" class="mobile-tab-slide-item mobile-scroll-topbottom" data-scroll-bar data-loading>
 						<div class="mobile-scroll-content">
-							<p>第3屏</p>
+							<div class="mobile-loading-content">
+								<p>第3屏</p>
+
+							</div>
+							<div class="mobile-loading">
+								上拉加载更多
+							</div>
+
 
 						</div>
 					</div>
 
-					<div id="page4" class="mobile-tab-slide-item mobile-scroll-topbottom" data-scroll-bar>
+					<div id="page4" class="mobile-tab-slide-item mobile-scroll-topbottom" data-scroll-bar data-loading>
 						<div class="mobile-scroll-content">
-							<p>第4屏</p>
+							<div class="mobile-loading-content">
+								<p>第4屏</p>
+
+							</div>
+							<div class="mobile-loading">
+								上拉加载更多
+							</div>
+
 
 						</div>
 					</div>
 
-					<div id="page5" class="mobile-tab-slide-item mobile-scroll-topbottom" data-scroll-bar>
+					<div id="page5" class="mobile-tab-slide-item mobile-scroll-topbottom" data-scroll-bar data-loading>
 						<div class="mobile-scroll-content">
-							<p>第5屏</p>
+							<div class="mobile-loading-content">
+								<p>第5屏</p>
+
+							</div>
+							<div class="mobile-loading">
+								上拉加载更多
+							</div>
+
 
 						</div>
 					</div>
@@ -150,18 +185,21 @@
 			m(function() {
 
 				// 拉到底部 加载数据
-				m(".mobile-tab-slide-item.mobile-scroll-topbottom").on("scrollbottom", function(event) {
+				m(".mobile-tab-slide-item.mobile-scroll-topbottom").on("scrollloading", function(event) {
 					var bottomcontent = m(event.detail.el);
-					//	console.log(event.detail);
+					var loading = event.detail.loading || {};
+					var translateY = event.detail.translateY || 0;
+					var loadingY = event.detail.loadingY || 0;
+					var isLoading = event.detail.isLoading || false;
+
+					if(!isLoading) {
+						return;
+
+					}
+
 					if(!bottomcontent.hasAttr("firstbottom")) {
 						bottomcontent.attr("firstbottom", true); //异步加载标识
-
-						bottomcontent.find(".loading").remove();
-						var loading = document.createElement("div");
-						loading.innerHTML = "正在加载中...";
-						loading.classList.add("loading");
-						bottomcontent.append(loading);
-
+						m(loading).html("正在加载中...");
 						setTimeout(function() {
 
 							m.get("../json/tab.json", function(data) {
@@ -170,6 +208,7 @@
 										content: bottomcontent.parent().attr("id") + "#" + item.content
 									};
 								});
+
 								var temp = "";
 								data.forEach(function(item) {
 									temp +=
@@ -178,9 +217,10 @@
 								`
 
 								});
-								bottomcontent.find(".loading").remove();
-								bottomcontent.append(temp);
-								firstbottom = true;
+								//console.log(++count);
+								bottomcontent.find(".mobile-loading-content").append(temp);
+								m(loading).html("上拉加载更多");
+
 								if(event.detail.resetBar) {
 									event.detail.resetBar(); // 重置滚动条
 								}
@@ -189,7 +229,7 @@
 
 							}, function() {
 								bottomcontent.removeAttr("firstbottom"); //异步加载标识
-								loading.innerHTML = "数据加载失败...";
+								m(loading).html("数据加载失败");
 							});
 						}, 500);
 					}
@@ -197,8 +237,10 @@
 				});
 
 				// 第一屏 第一次出发触发scrollbottom
-				m("#page1").emit("scrollbottom", {
-					el: m("#page1").find(".mobile-scroll-content").eq(0)
+				m("#page1").emit("scrollloading", {
+					el: m("#page1").find(".mobile-scroll-content").eq(0),
+					loading: m("#page1").find(".mobile-loading"),
+					isLoading: true
 				});
 
 			});
