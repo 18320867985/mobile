@@ -5,7 +5,7 @@ var slide = (function(m) {
 		var slide = m(".mobile-slide");
 		slide.each(function() {
 			banner(this);
-			
+
 		});
 
 	});
@@ -14,26 +14,29 @@ var slide = (function(m) {
 		reset();
 
 	});
-	
-	function reset(){
-		var slide = m(".mobile-slide");
-		 var window_w=m(slide).parent().width();//m(window).width();
-	 	slide.width(window_w);
-	 
-		slide.each(function() {
-			var wrap = m(this);
-			var list = wrap.find(".mobile-slide-list");
-			var liNodes = wrap.find(".mobile-slide-item");
-			
-			var wrap_w = wrap.width();
-			list.width(wrap_w * liNodes.length);
-			liNodes.width(wrap_w);
 
-		});
+	function reset() {
+		var slide = m(".mobile-slide");
+		if(slide.length > 0) {
+			var window_w = m(slide).parent().width(); //m(window).width();
+			slide.width(window_w);
+
+			slide.each(function() {
+				var wrap = m(this);
+				var list = wrap.find(".mobile-slide-list");
+				var liNodes = wrap.find(".mobile-slide-item");
+
+				var wrap_w = wrap.width();
+				list.width(wrap_w * liNodes.length);
+				liNodes.width(wrap_w);
+
+			});
+
+		}
 	}
 
 	function banner(mobile_slide) {
- 		var window_w=m(mobile_slide).width();
+		var window_w = m(mobile_slide).width();
 		var wrap = m(mobile_slide);
 		var list = wrap.find(".mobile-slide-list");
 		var liNodes = wrap.find(".mobile-slide-item");
@@ -68,7 +71,7 @@ var slide = (function(m) {
 		// start
 		function start(event) {
 			event.preventDefault();
-			window_w=m(mobile_slide).width();
+			window_w = m(mobile_slide).width();
 			var touch = event.changedTouches[0];
 			isLink = true;
 			clearInterval(timerId);
@@ -93,7 +96,7 @@ var slide = (function(m) {
 			startX = touch.clientX;
 			startY = touch.clientY;
 			elementX = m(list).getTransform('translateX');
-		
+
 		}
 
 		wrap.on("touchmove", move);
@@ -108,7 +111,7 @@ var slide = (function(m) {
 			if(Math.abs(nowX - startX) > 1 || Math.abs(nowY - startY) > 1) {
 				isLink = false;
 			}
-		
+
 			// 检查是否向上移动
 			var _x = Math.abs(nowX - startX);
 			var _y = Math.abs(nowY - startY);
@@ -125,7 +128,7 @@ var slide = (function(m) {
 
 			// 禁止循环
 			if(isLoop) {
-				window_w=m(mobile_slide).width();
+				window_w = m(mobile_slide).width();
 				var minX = Math.abs(list.width() - window_w);
 				var translateX = elementX + disX;
 				if(translateX > 0) {
@@ -145,8 +148,7 @@ var slide = (function(m) {
 				clearInterval(timerId);
 				m(list).setTransform('translateX', elementX + disX);
 			}
-			
-			
+
 		}
 
 		wrap.on("touchend", end);
@@ -157,7 +159,7 @@ var slide = (function(m) {
 			var touch = event.changedTouches[0];
 			var nowX = touch.clientX;
 			var nowY = touch.clientY;
-			window_w=m(this).width();
+			window_w = m(this).width();
 
 			// 自动播放
 			if(isAuto && !isLoop) {
@@ -200,13 +202,12 @@ var slide = (function(m) {
 			m(list).setTransform('translateX', -now * window_w);
 
 			//同步小圆点
-			spanNodes.each(function(){
+			spanNodes.each(function() {
 				this.classList.remove("active");
-				
-				
+
 			});
 			spanNodes.eq(now % spanNodes.length).addClass("active");
-	
+
 		}
 
 		// 自动播放
@@ -215,10 +216,10 @@ var slide = (function(m) {
 		}
 
 		function auto(t) {
-			
+
 			return setInterval(function() {
 				list.transition("none");
-				window_w=m(mobile_slide).width();
+				window_w = m(mobile_slide).width();
 
 				// 是否循环
 				if(!isLoop) {
@@ -243,8 +244,8 @@ var slide = (function(m) {
 		}
 
 	}
-	
-	m.slide={
+
+	m.slide = {
 		reset
 	}
 

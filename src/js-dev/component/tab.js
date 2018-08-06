@@ -19,25 +19,24 @@ var tab = (function(m) {
 	function reset() {
 
 		var tab = m(".mobile-tab-slide");
-		var window_w = m(tab).parent().width(); //m(window).width();
-		tab.width(window_w);
+		if(tab.length > 0) {
+			var window_w = m(tab).parent().width(); //m(window).width();
+			tab.width(window_w);
 
-		tab.each(function() {
-			var wrap = m(this);
-			var list = wrap.find(".mobile-tab-slide-list");
-			var liNodes = wrap.find(".mobile-tab-slide-item");
-			var wrap_w = wrap.width();
-			list.width(wrap_w * liNodes.length);
-			liNodes.width(wrap_w);
-		
+			tab.each(function() {
+				var wrap = m(this);
+				var list = wrap.find(".mobile-tab-slide-list");
+				var liNodes = wrap.find(".mobile-tab-slide-item");
+				var wrap_w = wrap.width();
+				list.width(wrap_w * liNodes.length);
+				liNodes.width(wrap_w);
 
-		});
-		
-	
+			});
+
+		}
 
 	}
 
-	
 	function tabSlide(mobile_slide) {
 		var window_w = m(mobile_slide).width();
 		var wrap = m(mobile_slide);
@@ -66,18 +65,18 @@ var tab = (function(m) {
 		function start(event) {
 			event.preventDefault();
 			var touch = event.changedTouches[0];
-			 list = wrap.find(".mobile-tab-slide-list");
-			 liNodes = wrap.find(".mobile-tab-slide-item");
+			list = wrap.find(".mobile-tab-slide-list");
+			liNodes = wrap.find(".mobile-tab-slide-item");
 
 			isLink = true;
 			list.transition("null");
 			var left = m(list).getTransform("translateX");
-			var now = Math.round(-left /  m(mobile_slide).width());
+			 now = Math.round(-left / m(mobile_slide).width());
 
 			isAddMoveEvent = false; // 判断是否top拖动
 			isAddMoveEventFirst = true; // 判断是否第一往上拖动
 
-			m(list).setTransform('translateX', -now *  m(mobile_slide).width());
+			m(list).setTransform('translateX', -now * m(mobile_slide).width());
 			startX = touch.clientX;
 			startY = touch.clientY;
 			elementX = m(list).getTransform('translateX');
@@ -151,7 +150,7 @@ var tab = (function(m) {
 				}
 
 				m(list).setTransform('translateX', translateX);
-				
+
 			}
 
 			//tab tabend左右滑动move发生的事件
@@ -178,15 +177,11 @@ var tab = (function(m) {
 			if(nowX > startX) {
 
 				now = m.round(ratio, 0.8);
-				if(left > 0) {
-
-				}
+				
 
 			} else {
 				now = m.round(ratio, 0.2);
-				if(left < 0) {
-
-				}
+				
 			}
 
 			if(now < 0) {
@@ -255,8 +250,8 @@ var tab = (function(m) {
 		// 是否允许触发事件
 		var isTrigger = el.parents(".mobile-tab-slide").hasAttr("data-trigger");
 		var el_content = el.find(".mobile-scroll-content");
-		if(el_content.length<=0){
-				el_content = el;
+		if(el_content.length <= 0) {
+			el_content = el;
 		}
 
 		if(isTrigger) {
@@ -374,11 +369,11 @@ var tab = (function(m) {
 			// 是否允许触发事件
 			var isTrigger = $this.parents(".mobile-tab-nav").hasAttr("data-trigger");
 			var el_content = obj.find(".mobile-scroll-content");
-		
-			if(el_content.length<=0){
+
+			if(el_content.length <= 0) {
 				el_content = obj;
 			}
-		
+
 			if(isTrigger) {
 				if(!el_content.hasAttr("data-trigger")) {
 					el_content.emit("scrollloading", {
@@ -429,7 +424,7 @@ var tab = (function(m) {
 		line.transition("transform", 500);
 
 	}
-	
+
 	m.tab = {
 		reset: reset
 	}

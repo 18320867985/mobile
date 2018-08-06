@@ -931,6 +931,16 @@ a .spin {
   .mobile-aside-content .mobile-scroll-content-many.active {
     display: block; }
 
+/*上下拉全屏页*/
+.mobile-fullpage {
+  width: 100%;
+  height: 100%;
+  overflow: hidden; }
+
+.mobile-fullpage-list,
+.mobile-fullpage-list-item {
+  width: 100%; }
+
 .scrolltopbottom {
   -webkit-box-shadow: -2px 0px 3px #ddd;
           box-shadow: -2px 0px 3px #ddd; }

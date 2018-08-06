@@ -14,5 +14,7 @@ export {tab} from "./component/tab.js";
 
 export {aside} from "./component/aside.js";
 
+export {fullpage} from "./component/fullpage.js";
+
 
 
