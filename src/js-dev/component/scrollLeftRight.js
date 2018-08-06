@@ -155,7 +155,7 @@ var scrollLeftRight = (function(m) {
 			isAddMoveEventFirst = true; // 判断是否第一往上拖动
 
 			var minX = window_w - navsList.width();
-			var target = m(navsList).getTransform("translateX") + speed * 100;
+			var target = m(navsList).getTransform("translateX") + speed * 150;
 			var bezier = '';
 			bezier = 'cubic-bezier(.17,.67,.81,.9)';
 			if(target > 0) {

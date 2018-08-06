@@ -7,11 +7,10 @@ var scrollTopBottom = (function(m) {
 	//导航拖拽
 	function topBottom() {
 		var scrolltb = m(".mobile-scroll-topbottom");
+		scrolltb.each(function(i, v) {
+			topBottomFun(v);
 
-		for(var i = 0; i < scrolltb.length; i++) {
-			topBottomFun(scrolltb[i]);
-
-		}
+		});
 
 	}
 
@@ -24,10 +23,6 @@ var scrollTopBottom = (function(m) {
 		if(topbottomContent.length === 0) {
 			topbottomContent = many;
 			isManyContent = true;
-		}
-
-		if(topbottomContent.length === 0) {
-			return;
 		}
 
 		m(topbottomContent).setTransform('translateZ', 0.01);
@@ -89,6 +84,7 @@ var scrollTopBottom = (function(m) {
 		m(scrolltb).on("touchstart", start);
 
 		function start(event) {
+
 			event.preventDefault();
 			var touch = event.touches[0];
 			startY = touch.clientY;
@@ -99,7 +95,7 @@ var scrollTopBottom = (function(m) {
 				topbottomContent = m(scrolltb).find(".mobile-scroll-content-many.active");
 				loading = m(topbottomContent).find(".mobile-loading");
 			}
-console.log(topbottomContent)
+
 			eleY = m(topbottomContent).getTransform("translateY");
 
 			isAddMoveEvent = false; // 判断是否往上拖动
@@ -257,8 +253,6 @@ console.log(topbottomContent)
 			}
 
 			m(topbottomContent).setTransform("translateY", translateY);
-			console.log(topbottomContent)
-			console.log(translateY)
 
 		}
 
@@ -290,7 +284,7 @@ console.log(topbottomContent)
 			}
 
 			minY = window_h - topbottomContent.height();
-			var target = m(topbottomContent).getTransform("translateY") + speedScroll * 20;
+			var target = m(topbottomContent).getTransform("translateY") + speedScroll * 30;
 			var bezier = 'ease-out';
 
 			if(target > 0) {
@@ -374,6 +368,7 @@ console.log(topbottomContent)
 		}
 
 	}
+	
 
 })(mobile);
 

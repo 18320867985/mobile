@@ -11,6 +11,11 @@ var slide = (function(m) {
 	});
 
 	m(window).resize(function() {
+		reset();
+
+	});
+	
+	function reset(){
 		var slide = m(".mobile-slide");
 		 var window_w=m(slide).parent().width();//m(window).width();
 	 	slide.width(window_w);
@@ -25,8 +30,7 @@ var slide = (function(m) {
 			liNodes.width(wrap_w);
 
 		});
-
-	});
+	}
 
 	function banner(mobile_slide) {
  		var window_w=m(mobile_slide).width();
@@ -238,6 +242,10 @@ var slide = (function(m) {
 			}, t);
 		}
 
+	}
+	
+	m.slide={
+		reset
 	}
 
 })(mobile)

@@ -2214,6 +2214,17 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 	}
 })();
 
+var reset = function () {
+
+	function reset() {
+		m.slide.reset();
+		m.tab.reset();
+		m.commonStyle.reset();
+	}
+
+	m.reset = reset;
+}(mobile);
+
 /*公共js设置样式*/
 var commonStyle = function (m) {
 	if (m.isMobile()) {
@@ -2231,14 +2242,17 @@ var commonStyle = function (m) {
 
 	// 设置主题内容样式
 	m(function () {
-		mobileContent();
-		mobileTab();
+		reset();
 
 		m(window).resize(function () {
-			mobileContent();
-			mobileTab();
+			reset();
 		});
 	});
+
+	function reset() {
+		mobileContent();
+		mobileTab();
+	}
 
 	// scroll-content内容
 	function mobileContent() {
@@ -2281,6 +2295,10 @@ var commonStyle = function (m) {
 		var footer_h = footer.height() || 0;
 		tab_bottom.css("bottom", footer_h);
 	}
+
+	m.commonStyle = {
+		reset: reset
+	};
 }(mobile);
 
 var scrollTopBottom = function (m) {
@@ -2292,10 +2310,9 @@ var scrollTopBottom = function (m) {
 	//导航拖拽
 	function topBottom() {
 		var scrolltb = m(".mobile-scroll-topbottom");
-
-		for (var i = 0; i < scrolltb.length; i++) {
-			topBottomFun(scrolltb[i]);
-		}
+		scrolltb.each(function (i, v) {
+			topBottomFun(v);
+		});
 	}
 
 	//导航拖拽fun
@@ -2307,10 +2324,6 @@ var scrollTopBottom = function (m) {
 		if (topbottomContent.length === 0) {
 			topbottomContent = many;
 			isManyContent = true;
-		}
-
-		if (topbottomContent.length === 0) {
-			return;
 		}
 
 		m(topbottomContent).setTransform('translateZ', 0.01);
@@ -2360,6 +2373,7 @@ var scrollTopBottom = function (m) {
 		m(scrolltb).on("touchstart", start);
 
 		function start(event) {
+
 			event.preventDefault();
 			var touch = event.touches[0];
 			startY = touch.clientY;
@@ -2370,7 +2384,7 @@ var scrollTopBottom = function (m) {
 				topbottomContent = m(scrolltb).find(".mobile-scroll-content-many.active");
 				loading = m(topbottomContent).find(".mobile-loading");
 			}
-			console.log(topbottomContent);
+
 			eleY = m(topbottomContent).getTransform("translateY");
 
 			isAddMoveEvent = false; // 判断是否往上拖动
@@ -2522,8 +2536,6 @@ var scrollTopBottom = function (m) {
 			}
 
 			m(topbottomContent).setTransform("translateY", translateY);
-			console.log(topbottomContent);
-			console.log(translateY);
 		}
 
 		m(scrolltb).on("touchend", end);
@@ -2553,7 +2565,7 @@ var scrollTopBottom = function (m) {
 			}
 
 			minY = window_h - topbottomContent.height();
-			var target = m(topbottomContent).getTransform("translateY") + speedScroll * 20;
+			var target = m(topbottomContent).getTransform("translateY") + speedScroll * 30;
 			var bezier = 'ease-out';
 
 			if (target > 0) {
@@ -2777,7 +2789,7 @@ var scrollLeftRight = function (m) {
 			isAddMoveEventFirst = true; // 判断是否第一往上拖动
 
 			var minX = window_w - navsList.width();
-			var target = m(navsList).getTransform("translateX") + speed * 100;
+			var target = m(navsList).getTransform("translateX") + speed * 150;
 			var bezier = '';
 			bezier = 'cubic-bezier(.17,.67,.81,.9)';
 			if (target > 0) {
@@ -2846,6 +2858,10 @@ var slide = function (m) {
 	});
 
 	m(window).resize(function () {
+		reset();
+	});
+
+	function reset() {
 		var slide = m(".mobile-slide");
 		var window_w = m(slide).parent().width(); //m(window).width();
 		slide.width(window_w);
@@ -2859,7 +2875,7 @@ var slide = function (m) {
 			list.width(wrap_w * liNodes.length);
 			liNodes.width(wrap_w);
 		});
-	});
+	}
 
 	function banner(mobile_slide) {
 		var window_w = m(mobile_slide).width();
@@ -3057,6 +3073,10 @@ var slide = function (m) {
 			}, t);
 		}
 	}
+
+	m.slide = {
+		reset: reset
+	};
 }(mobile);
 
 // tab
@@ -3073,6 +3093,11 @@ var tab = function (m) {
 	});
 
 	m(window).resize(function () {
+		reset();
+	});
+
+	function reset() {
+
 		var tab = m(".mobile-tab-slide");
 		var window_w = m(tab).parent().width(); //m(window).width();
 		tab.width(window_w);
@@ -3085,7 +3110,7 @@ var tab = function (m) {
 			list.width(wrap_w * liNodes.length);
 			liNodes.width(wrap_w);
 		});
-	});
+	}
 
 	function tabSlide(mobile_slide) {
 		var window_w = m(mobile_slide).width();
@@ -3114,14 +3139,17 @@ var tab = function (m) {
 		function start(event) {
 			event.preventDefault();
 			var touch = event.changedTouches[0];
+			list = wrap.find(".mobile-tab-slide-list");
+			liNodes = wrap.find(".mobile-tab-slide-item");
+
 			list.transition("null");
 			var left = m(list).getTransform("translateX");
-			var now = Math.round(-left / document.documentElement.clientWidth);
+			var now = Math.round(-left / m(mobile_slide).width());
 
 			isAddMoveEvent = false; // 判断是否top拖动
 			isAddMoveEventFirst = true; // 判断是否第一往上拖动
 
-			m(list).setTransform('translateX', -now * document.documentElement.clientWidth);
+			m(list).setTransform('translateX', -now * m(mobile_slide).width());
 			startX = touch.clientX;
 			startY = touch.clientY;
 			elementX = m(list).getTransform('translateX');
@@ -3280,12 +3308,15 @@ var tab = function (m) {
 
 		// 是否允许触发事件
 		var isTrigger = el.parents(".mobile-tab-slide").hasAttr("data-trigger");
-		var el_content = el.find(".mobile-scroll-content").eq(0);
+		var el_content = el.find(".mobile-scroll-content");
+		if (el_content.length <= 0) {
+			el_content = el;
+		}
 
 		if (isTrigger) {
 			if (!el_content.hasAttr("data-trigger")) {
 				el.emit("scrollloading", {
-					el: el_content,
+					el: el_content.eq(0),
 					isLoading: true,
 					loading: el_content.find(".mobile-loading")
 				});
@@ -3370,7 +3401,9 @@ var tab = function (m) {
 			var obj = m(id);
 
 			// tuochend 发生的事件
-			$this.emit("tabnavend", { el: this });
+			$this.emit("tabnavend", {
+				el: this
+			});
 
 			var p = obj.parents(".mobile-tab-slide-list");
 			// add active
@@ -3387,11 +3420,16 @@ var tab = function (m) {
 
 			// 是否允许触发事件
 			var isTrigger = $this.parents(".mobile-tab-nav").hasAttr("data-trigger");
-			var el_content = obj.find(".mobile-scroll-content").eq(0);
+			var el_content = obj.find(".mobile-scroll-content");
+
+			if (el_content.length <= 0) {
+				el_content = obj;
+			}
+
 			if (isTrigger) {
 				if (!el_content.hasAttr("data-trigger")) {
 					el_content.emit("scrollloading", {
-						el: el_content,
+						el: el_content.eq(0),
 						isLoading: true,
 						loading: el_content.find(".mobile-loading")
 
@@ -3433,6 +3471,10 @@ var tab = function (m) {
 		line.setTransform("translateX", li_w * li_index);
 		line.transition("transform", 500);
 	}
+
+	m.tab = {
+		reset: reset
+	};
 }(mobile);
 
 var aside = function (m) {
@@ -3536,6 +3578,7 @@ var aside = function (m) {
 	}
 }(mobile);
 
+exports.reset = reset;
 exports.commonStyle = commonStyle;
 exports.scrollTopBottom = scrollTopBottom;
 exports.scrollLeftRight = scrollLeftRight;

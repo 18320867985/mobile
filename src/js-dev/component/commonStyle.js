@@ -14,21 +14,23 @@ var commonStyle = (function(m) {
 			event.preventDefault();
 
 		});
-			
 
 	}
 
 	// 设置主题内容样式
 	m(function() {
-		mobileContent();
-		mobileTab();
+		reset();
 
 		m(window).resize(function() {
-			mobileContent();
-			mobileTab();
+			reset();
 		});
 
 	});
+
+	function reset() {
+		mobileContent();
+		mobileTab();
+	}
 
 	// scroll-content内容
 	function mobileContent() {
@@ -58,7 +60,7 @@ var commonStyle = (function(m) {
 		//		console.log(tab_h)
 		//		console.log(content_h)
 		//		console.log(window_h)
-		
+
 	}
 
 	// scroll-tab
@@ -72,7 +74,11 @@ var commonStyle = (function(m) {
 		var footer = m(".mobile-footer");
 		var footer_h = footer.height() || 0;
 		tab_bottom.css("bottom", footer_h);
-		
+
+	}
+
+	m.commonStyle = {
+		reset: reset
 	}
 
 })(mobile);

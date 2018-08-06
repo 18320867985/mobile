@@ -45,12 +45,9 @@
 			<!--左右滑动组件  data-position-left=定位到left data-position-center=定位到center data-trigger=允许触发scrollbottom事件 -->
 			<nav class="mobile-tab-nav mobile-scroll-leftright" data-position-center data-trigger>
 				<ul class="mobile-scroll-content">
-					<li class="active" data-target="#page1">
+					<!--<li class="active" data-target="#page1">
 						第1屏
-					</li>
-					<li data-target="#page2">
-						第2屏
-					</li>
+					</li>-->
 
 				</ul>
 			</nav>
@@ -61,52 +58,21 @@
 		<section class="mobile-content">
 			<!--tab 左右滑动内容 data-drag=左右两边回弹  data-transition="是否左右滑动动画"  data-trigger=允许触发scrollloading事件 -->
 			<div class="mobile-tab-slide" data-transition="是否左右滑动动画" data-drag data-trigger>
-				<div class="mobile-tab-slide-list mobile-scroll-topbottom" data-scroll-bottom>
-
-					<div class="mobile-tab-slide-item mobile-scroll-content-many active" id="page1">
+				<div class="mobile-tab-slide-list mobile-scroll-topbottom" data-scroll-bottom data-loading data-scroll-bar>
+					<!--异步加载内容很有用 mobile-scroll-content-many内容hide 只一个显示active-->
+					<!--<div class="mobile-tab-slide-item mobile-scroll-content-many active" id="page1">
 						<div class="mobile-loading-content">
 							<p>第1屏</p>
-							<p>第1屏</p>
-							<p>第1屏</p>
-							<p>第1屏</p>
-							<p>第1屏</p>
-							<p>第1屏</p>
-							<p>第1屏</p>
-							<p>第1屏</p>
-							<p>第1屏</p>
-							<p>第1屏</p>
-							<p>第1屏</p>
-							<p>第1屏</p>
-							<p>第1屏</p>
-							<p>第1屏</p>
-							<p>第1屏</p>
-							<p>第1屏</p>
-							<p>第1屏</p>
-							<p>第1屏</p>
-							<p>第1屏</p>
-							<p>第1屏</p>
-							
-							
-						</div>
-						<div class="mobile-loading">
-							上拉加载更多
-						</div>
-
-					</div>
-
-					<div class="mobile-tab-slide-item mobile-scroll-content-many " id="page2">
-						<div class="mobile-loading-content">
-							<p>第2屏</p>
 
 						</div>
 						<div class="mobile-loading">
 							上拉加载更多
 						</div>
 
-					</div>
+					</div>-->
 
 				</div>
-		</div>
+			</div>
 
 		</section>
 
@@ -162,14 +128,49 @@
 			m(function() {
 				var count = 0;
 
+				// 动态添加el
+				var temp_ttl = "";
+				var tab_ttl = m(".mobile-tab-nav .mobile-scroll-content");
+				var temp_content = "";
+				var tab_content = m(".mobile-tab-slide-list");
+				for(var i = 1; i < 41; i++) {
+
+					// tab-nav
+					temp_ttl += `
+							<li class="${i==1?'active':''}" data-target="#page${i}">
+								第${i}屏
+							</li>
+						`;
+					
+					// tab-content
+					temp_content += `
+						<div class="mobile-tab-slide-item mobile-scroll-content-many ${i==1?'active':''}" id="page${i}">
+							<div class="mobile-loading-content">
+								<p>第${i}屏</p>
+	
+							</div>
+							<div class="mobile-loading">
+								上拉加载更多
+							</div>
+
+						</div>
+						`;
+
+				}
+				tab_ttl.append(temp_ttl);
+				tab_content.append(temp_content);
+				m.reset(); //重设异步加载元素样式
+				
+
 				// 拉到底部 加载数据
-				m(".mobile-tab-slide-item.mobile-scroll-topbottom").on("scrollloading", function(event) {
+				m(".mobile-tab-slide-list.mobile-scroll-topbottom").on("scrollloading", function(event) {
 					var bottomcontent = m(event.detail.el);
 					var loading = event.detail.loading || {};
 					var translateY = event.detail.translateY || 0;
 					var loadingY = event.detail.loadingY || 0;
 					var isLoading = event.detail.isLoading || false;
-
+//					console.log(bottomcontent)
+					console.log(loadingY)
 					if(!isLoading) {
 						return;
 
@@ -183,7 +184,7 @@
 							m.get("../json/tab.json", function(data) {
 								data = data.map(function(item) {
 									return {
-										content: bottomcontent.parent().attr("id") + "#" + item.content
+										content: bottomcontent.attr("id") + "#" + item.content
 									};
 								});
 
@@ -195,7 +196,7 @@
 								`
 
 								});
-								//console.log(++count);
+								console.log(++count);
 								bottomcontent.find(".mobile-loading-content").append(temp);
 								m(loading).html("上拉加载更多");
 
@@ -212,14 +213,14 @@
 						}, 1000);
 					}
 
-				});
+			});
 
 				// 第一屏 第一次出发触发scrollbottom
-				//				m("#page1").emit("scrollloading", {
-				//					el: m("#page1").find(".mobile-scroll-content").eq(0),
-				//					loading: m("#page1").find(".mobile-loading"),
-				//					isLoading: true
-				//				});
+					m(".mobile-scroll-content-many.active").emit("scrollloading", {
+						el: m(".mobile-scroll-content-many.active"),
+						loading: m(".mobile-scroll-content-many.active").find(".mobile-loading"),
+						isLoading: true
+						});
 
 			});
 		</script>

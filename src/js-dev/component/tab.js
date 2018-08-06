@@ -13,6 +13,11 @@ var tab = (function(m) {
 	});
 
 	m(window).resize(function() {
+		reset()
+	});
+
+	function reset() {
+
 		var tab = m(".mobile-tab-slide");
 		var window_w = m(tab).parent().width(); //m(window).width();
 		tab.width(window_w);
@@ -24,11 +29,15 @@ var tab = (function(m) {
 			var wrap_w = wrap.width();
 			list.width(wrap_w * liNodes.length);
 			liNodes.width(wrap_w);
+		
 
 		});
+		
+	
 
-	});
+	}
 
+	
 	function tabSlide(mobile_slide) {
 		var window_w = m(mobile_slide).width();
 		var wrap = m(mobile_slide);
@@ -57,15 +66,18 @@ var tab = (function(m) {
 		function start(event) {
 			event.preventDefault();
 			var touch = event.changedTouches[0];
+			 list = wrap.find(".mobile-tab-slide-list");
+			 liNodes = wrap.find(".mobile-tab-slide-item");
+
 			isLink = true;
 			list.transition("null");
 			var left = m(list).getTransform("translateX");
-			var now = Math.round(-left / document.documentElement.clientWidth);
+			var now = Math.round(-left /  m(mobile_slide).width());
 
 			isAddMoveEvent = false; // 判断是否top拖动
 			isAddMoveEventFirst = true; // 判断是否第一往上拖动
 
-			m(list).setTransform('translateX', -now * document.documentElement.clientWidth);
+			m(list).setTransform('translateX', -now *  m(mobile_slide).width());
 			startX = touch.clientX;
 			startY = touch.clientY;
 			elementX = m(list).getTransform('translateX');
@@ -139,6 +151,7 @@ var tab = (function(m) {
 				}
 
 				m(list).setTransform('translateX', translateX);
+				
 			}
 
 			//tab tabend左右滑动move发生的事件
@@ -186,11 +199,9 @@ var tab = (function(m) {
 				el: liNodes.eq(now)
 
 			});
-			
+
 			list.transition("all", 500);
 			m(list).setTransform('translateX', -now * m(mobile_slide).width());
-
-			
 
 		}
 
@@ -243,19 +254,20 @@ var tab = (function(m) {
 
 		// 是否允许触发事件
 		var isTrigger = el.parents(".mobile-tab-slide").hasAttr("data-trigger");
-		var el_content = el.find(".mobile-scroll-content").eq(0);
-		
+		var el_content = el.find(".mobile-scroll-content");
+		if(el_content.length<=0){
+				el_content = el;
+		}
+
 		if(isTrigger) {
 			if(!el_content.hasAttr("data-trigger")) {
 				el.emit("scrollloading", {
-					el: el_content,
-					isLoading:true,
+					el: el_content.eq(0),
+					isLoading: true,
 					loading: el_content.find(".mobile-loading"),
 				});
 			}
 		}
-
-		
 
 		// 标签下面线条
 		setLineTransleateX(target);
@@ -340,10 +352,12 @@ var tab = (function(m) {
 
 			var id = $this.attr("data-target");
 			var obj = m(id);
-			
+
 			// tuochend 发生的事件
-			$this.emit("tabnavend",{el:this});
-			
+			$this.emit("tabnavend", {
+				el: this
+			});
+
 			var p = obj.parents(".mobile-tab-slide-list");
 			// add active
 			p.find(".mobile-tab-slide-item").removeClass("active");
@@ -359,14 +373,19 @@ var tab = (function(m) {
 
 			// 是否允许触发事件
 			var isTrigger = $this.parents(".mobile-tab-nav").hasAttr("data-trigger");
-			var el_content = obj.find(".mobile-scroll-content").eq(0);
+			var el_content = obj.find(".mobile-scroll-content");
+		
+			if(el_content.length<=0){
+				el_content = obj;
+			}
+		
 			if(isTrigger) {
 				if(!el_content.hasAttr("data-trigger")) {
 					el_content.emit("scrollloading", {
-						el: el_content,
-						isLoading:true,
+						el: el_content.eq(0),
+						isLoading: true,
 						loading: el_content.find(".mobile-loading"),
-						
+
 					});
 				}
 			}
@@ -409,6 +428,10 @@ var tab = (function(m) {
 		line.setTransform("translateX", li_w * li_index);
 		line.transition("transform", 500);
 
+	}
+	
+	m.tab = {
+		reset: reset
 	}
 
 })(mobile);
