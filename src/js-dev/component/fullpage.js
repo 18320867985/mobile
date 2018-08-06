@@ -28,13 +28,11 @@ var fullpage = (function(m) {
 					var wrap_w = wrap.height();
 					list.height(wrap_w * liNodes.length);
 					liNodes.height(wrap_w);
-				
-	
 				});
+				
+				 setFullpageNavTop();
 	
 			}
-			
-			//m.commonStyle.reset();
 	
 		}
 
@@ -43,7 +41,7 @@ var fullpage = (function(m) {
 		var wrap = m(mobile_slide);
 		var list = wrap.find(".mobile-fullpage-list");
 		var liNodes = wrap.find(".mobile-fullpage-list-item");
-
+	
 		wrap.height(window_h);
 		var wrap_h = wrap.height();
 		list.height(wrap_h * liNodes.length);
@@ -51,6 +49,8 @@ var fullpage = (function(m) {
 		
 		var isDrag = wrap.hasAttr("data-drag"); //左右两边回弹
 		var tab_nav_slide_lineX = 0; // 滑动下面的线条
+		
+		var fullpagetTimeId=0 ; // 添加active样式的定时器
 
 		var elementY = 0;
 		var startX = 0;
@@ -59,6 +59,13 @@ var fullpage = (function(m) {
 		var isLink = true;
 		var isAddMoveEvent = false; // 判断是否往上拖动
 		var isAddMoveEventFirst = true; // 判断是否第一往上拖动
+		
+		setFullpageNavTop();  // 设置fullpageNav Top样式
+		var isNav=wrap.hasAttr("data-nav");
+		if(isNav){
+			addNav();
+			setFullpageNavTop()
+		}
 
 		m(list).setTransform('translateZ', 0.01)
 		wrap.on("touchstart", start);
@@ -90,11 +97,13 @@ var fullpage = (function(m) {
 
 		function move(event) {
 			event.preventDefault();
+			clearTimeout(fullpagetTimeId);
 			var touch = event.changedTouches[0];
 			var nowX = touch.clientX;
 			var nowY = touch.clientY;
 			var disY = nowY - startY;
-
+			
+			
 			if(Math.abs(nowY - startY) > 1 || Math.abs(nowX - startX) > 1) {
 				isLink = false;
 			}
@@ -177,15 +186,58 @@ var fullpage = (function(m) {
 			});
 			
 			// 添加active
+			clearTimeout(fullpagetTimeId);
+			//isSlideTime=false;
+			fullpageetTimeId=setTimeout(function(){
 				liNodes.removeClass("active");
 				liNodes.eq(now).addClass("active");
+				// 设置fullpageNav样式
+				setFullpageNav(now) ; 
+				
+			},500);
+				
 			list.transition("all", 500);
 			m(list).setTransform('translateY', -now * m(mobile_slide).height());
-
+			
+			
+			
 		}
 
 	}
-
+	
+	// 设置fullpageNav样式
+	function setFullpageNav(now){
+		var nav=m(".mobile-fullpage-nav");
+		var list=nav.find(".mobile-fullpage-nav-item");
+		list.removeClass("active");
+		list.eq(now).addClass("active");
+		
+	}
+	
+	// 设置fullpageNav Top样式
+	function setFullpageNavTop(){
+		var nav=m(".mobile-fullpage-nav");
+		var nav_h=nav.height()/2;
+		nav.css("margin-top",-nav_h+"px");
+		
+		
+	}
+	// 设置fullpageNav Top样式
+	function addNav(){
+		var nav=m(".mobile-fullpage-list-item");
+		var temp="<ul class='mobile-fullpage-nav'>";
+		for(var i=0;i<nav.length;i++){
+			temp+=`
+			<li class="mobile-fullpage-nav-item ${i===0?'active':''}"></li>
+			`;
+		}
+		 temp+="</ul>";
+		 console.log(nav)
+		m(".mobile-fullpage").append(temp);
+	}
+	
+	
+	
 })(mobile);
 
 export {

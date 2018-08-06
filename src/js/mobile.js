@@ -3609,9 +3609,9 @@ var fullpage = function (m) {
 				list.height(wrap_w * liNodes.length);
 				liNodes.height(wrap_w);
 			});
-		}
 
-		//m.commonStyle.reset();
+			setFullpageNavTop();
+		}
 	}
 
 	function fullpageSlide(mobile_slide) {
@@ -3626,12 +3626,21 @@ var fullpage = function (m) {
 		liNodes.height(wrap_h);
 
 		var isDrag = wrap.hasAttr("data-drag"); //左右两边回弹
+		var fullpagetTimeId = 0; // 添加active样式的定时器
+
 		var elementY = 0;
 		var startX = 0;
 		var startY = 0;
 		var now = 0;
 		var isAddMoveEvent = false; // 判断是否往上拖动
 		var isAddMoveEventFirst = true; // 判断是否第一往上拖动
+
+		setFullpageNavTop(); // 设置fullpageNav Top样式
+		var isNav = wrap.hasAttr("data-nav");
+		if (isNav) {
+			addNav();
+			setFullpageNavTop();
+		}
 
 		m(list).setTransform('translateZ', 0.01);
 		wrap.on("touchstart", start);
@@ -3660,6 +3669,7 @@ var fullpage = function (m) {
 
 		function move(event) {
 			event.preventDefault();
+			clearTimeout(fullpagetTimeId);
 			var touch = event.changedTouches[0];
 			var nowX = touch.clientX;
 			var nowY = touch.clientY;
@@ -3739,11 +3749,44 @@ var fullpage = function (m) {
 			});
 
 			// 添加active
-			liNodes.removeClass("active");
-			liNodes.eq(now).addClass("active");
+			clearTimeout(fullpagetTimeId);
+			//isSlideTime=false;
+			fullpageetTimeId = setTimeout(function () {
+				liNodes.removeClass("active");
+				liNodes.eq(now).addClass("active");
+				// 设置fullpageNav样式
+				setFullpageNav(now);
+			}, 500);
+
 			list.transition("all", 500);
 			m(list).setTransform('translateY', -now * m(mobile_slide).height());
 		}
+	}
+
+	// 设置fullpageNav样式
+	function setFullpageNav(now) {
+		var nav = m(".mobile-fullpage-nav");
+		var list = nav.find(".mobile-fullpage-nav-item");
+		list.removeClass("active");
+		list.eq(now).addClass("active");
+	}
+
+	// 设置fullpageNav Top样式
+	function setFullpageNavTop() {
+		var nav = m(".mobile-fullpage-nav");
+		var nav_h = nav.height() / 2;
+		nav.css("margin-top", -nav_h + "px");
+	}
+	// 设置fullpageNav Top样式
+	function addNav() {
+		var nav = m(".mobile-fullpage-list-item");
+		var temp = "<ul class='mobile-fullpage-nav'>";
+		for (var i = 0; i < nav.length; i++) {
+			temp += "\n\t\t\t<li class=\"mobile-fullpage-nav-item " + (i === 0 ? 'active' : '') + "\"></li>\n\t\t\t";
+		}
+		temp += "</ul>";
+		console.log(nav);
+		m(".mobile-fullpage").append(temp);
 	}
 }(mobile);
 
