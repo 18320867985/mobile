@@ -16,5 +16,7 @@ export {aside} from "./component/aside.js";
 
 export {fullpage} from "./component/fullpage.js";
 
+export {indexlist} from "./component/indexlist.js";
+
 
 

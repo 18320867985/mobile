@@ -961,6 +961,71 @@ a .spin {
   .mobile-fullpage-nav-item.active {
     background: red; }
 
+/*索引列表*/
+.mobile-indexlist {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden; }
+
+.mobile-indexlist-list li {
+  padding: 0.5rem;
+  background: #fff;
+  font-size: 0.7rem; }
+  .mobile-indexlist-list li + li {
+    border-top: 1px solid #ccc; }
+  .mobile-indexlist-list li.mobile-indexlist-list-ttl {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+    background: #ddd; }
+
+.mobile-indexlist-nav {
+  position: absolute;
+  z-index: 9999;
+  top: 0;
+  right: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: column nowrap;
+          flex-flow: column nowrap;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  width: 1.2rem;
+  height: 100%;
+  background: rgba(119, 119, 119, 0.3); }
+  .mobile-indexlist-nav a {
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    font-size: 0.7rem;
+    color: #444; }
+
+.mobile-indexlist-tip {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 9999;
+  display: none;
+  width: 2rem;
+  height: 2rem;
+  margin-left: -1rem;
+  margin-top: -1rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #444;
+  font-weight: 400;
+  line-height: 2rem;
+  background: #ccc;
+  border-radius: 5px; }
+
 .scrolltopbottom {
   -webkit-box-shadow: -2px 0px 3px #ddd;
           box-shadow: -2px 0px 3px #ddd; }
