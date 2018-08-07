@@ -20,17 +20,20 @@ var indexlist = (function(m) {
 		var indexlist_h = indexlistwrap.height();
 		var clientTop = window_h - indexlist_h;
 		var translateY= ul.height()-indexlistwrap.height();
-		console.log(clientTop)
+		
 		indexlist_a.touchstart(function(event) {
 
 			var v = m(this).text();
 			var group = "[data-group=" + v + "]";
 			var li = ul.find(group);
 			var top = li.offsetTop();
-			console.log(top)
+		
 			ul.setTransform("translateY", -top);
 			ul.transition("null");
+			indexlist_a.removeClass("active");
+			m(this).addClass("active");
 			tip.text(v);
+			
 
 		});
 
@@ -77,7 +80,6 @@ var indexlist = (function(m) {
 		});
 		
 		
-		
 		function setindexlistTop(i){
 			var group = "[data-group=" + items[i].name + "]";
 			var li = ul.find(group);
@@ -87,8 +89,12 @@ var indexlist = (function(m) {
 			}
 			ul.setTransform("translateY", -top);
 			ul.transition("null");
+			indexlist_a.removeClass("active");
+			indexlist_a.eq(i).addClass("active");
 			tip.text(items[i].name);
 		}
+		
+		
 		
 	}
 

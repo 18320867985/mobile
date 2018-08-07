@@ -1007,6 +1007,8 @@ a .spin {
     display: flex;
     font-size: 0.7rem;
     color: #444; }
+    .mobile-indexlist-nav a.active {
+      color: red; }
 
 .mobile-indexlist-tip {
   position: absolute;

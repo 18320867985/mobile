@@ -206,11 +206,14 @@ var scrollTopBottom = (function(m) {
 			}
 
 			// scroll上下滚动scrolltopbottom自定义事件
-			m(this).trigger("scrolltopbottom", {
-				el: topbottomContent.eq(0),
-				resetBar: scrollBarFun,
+			if(Math.abs(speedScroll) === 0) {
+				m(this).trigger("scrolltopbottom", {
+					el: topbottomContent.eq(0),
+					translateY: translateY,
+					resetBar: scrollBarFun,
 
-			});
+				});
+			}
 
 			if(translateY > 0) {
 				var scale = 1 - translateY / window_h;
@@ -225,6 +228,7 @@ var scrollTopBottom = (function(m) {
 				m(this).trigger("scrolltop", {
 					el: topbottomContent.eq(0),
 					resetBar: scrollBarFun,
+					translateY: translateY,
 
 				});
 
@@ -243,6 +247,7 @@ var scrollTopBottom = (function(m) {
 				m(this).trigger("scrollbottom", {
 					el: topbottomContent.eq(0),
 					resetBar: scrollBarFun,
+					translateY: translateY,
 
 				});
 
@@ -326,9 +331,19 @@ var scrollTopBottom = (function(m) {
 					isLoading: (Math.abs(target)) >= (loadingY - window_h)
 
 				});
-				//console.log("end")
-
 			}
+
+			// scroll上下滚动scrolltopbottom自定义事件
+			if(Math.abs(speedScroll) != 0) {
+				m(this).trigger("scrolltopbottom", {
+					el: topbottomContent.eq(0),
+					translateY: target,
+					resetBar: scrollBarFun,
+
+				});
+			}
+
+			//console.log(speedScroll)
 
 			m(topbottomContent).setTransform("translateY", target);
 
@@ -368,7 +383,7 @@ var scrollTopBottom = (function(m) {
 		}
 
 	}
-	
+
 
 })(mobile);
 

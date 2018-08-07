@@ -44,6 +44,9 @@
             font-size: 14rem/$rem;
             color:#444;
          
+             &.active{
+                 color:red;
+             }
              
         }
 }
