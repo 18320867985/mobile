@@ -3828,11 +3828,13 @@ var indexlist = function (m) {
 		var translateY = ul.height() - indexlistwrap.height();
 
 		indexlist_a.touchstart(function (event) {
-
 			var v = m(this).text();
 			var group = "[data-group=" + v + "]";
 			var li = ul.find(group);
 			var top = li.offsetTop();
+			if (top > translateY) {
+				top = translateY;
+			}
 
 			ul.setTransform("translateY", -top);
 			ul.transition("null");
@@ -3933,7 +3935,10 @@ var spy = function (m) {
 			var translateY = event.detail.translateY;
 			translateY = translateY > 0 ? 0 : translateY;
 			translateY = Math.abs(translateY);
-
+			if (translateY >= Math.abs(lastY)) {
+				setindexlistTop(items.length - 1, items);
+				return;
+			}
 			for (var i = 0; i < items.length; i++) {
 
 				if (i < items.length - 1) {
@@ -3945,11 +3950,6 @@ var spy = function (m) {
 					setindexlistTop(i, items);
 					break;
 				}
-			}
-
-			if (translateY >= Math.abs(lastY)) {
-
-				setindexlistTop(items.length - 1, items);
 			}
 		});
 

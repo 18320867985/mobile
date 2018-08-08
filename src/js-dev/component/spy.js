@@ -19,7 +19,7 @@ var spy = (function(m) {
 		if(!isSpy) {
 			return;
 		}
-		
+
 		wrap.find(".mobile-scroll-topbottom").on("touchstart", function(event) {
 			lastY = content.height() - p.height();
 			var spys = wrap.find(".mobile-spy-item");
@@ -39,7 +39,10 @@ var spy = (function(m) {
 			var translateY = event.detail.translateY;
 			translateY = translateY > 0 ? 0 : translateY;
 			translateY = Math.abs(translateY);
-
+			if(translateY >= Math.abs(lastY)) {
+				setindexlistTop(items.length - 1, items);
+				return;
+			}
 			for(var i = 0; i < items.length; i++) {
 
 				if(i < (items.length - 1)) {
@@ -52,11 +55,6 @@ var spy = (function(m) {
 					break;
 
 				}
-			}
-
-			if(translateY >= Math.abs(lastY)) {
-
-				setindexlistTop(items.length - 1, items);
 			}
 
 		});
