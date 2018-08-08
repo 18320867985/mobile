@@ -2277,6 +2277,9 @@ var commonStyle = function (m) {
 		m(document).touchend(function (event) {
 			event.preventDefault();
 		});
+		m(document).touchcancel(function (event) {
+			event.preventDefault();
+		});
 	}
 
 	// 设置主题内容样式
@@ -2383,6 +2386,7 @@ var scrollTopBottom = function (m) {
 		var isAddMoveEvent = false; // 判断是否往上拖动
 		var isAddMoveEventFirst = true; // 判断是否第一往上拖动
 		var dis = 0;
+		var speedDcrt = "auto"; //速度方向
 
 		var window_h = m(scrolltb).height();
 		var minY = window_h - topbottomContent.height();
@@ -2418,6 +2422,7 @@ var scrollTopBottom = function (m) {
 			startY = touch.clientY;
 			startX = touch.clientX;
 			isLink = true;
+			speedDcrt = "auto"; //速度方向
 
 			if (isManyContent) {
 				topbottomContent = m(scrolltb).find(".mobile-scroll-content-many.active");
@@ -2538,10 +2543,11 @@ var scrollTopBottom = function (m) {
 
 				});
 			}
-
+			speedDcrt = "auto"; //速度方向
 			if (translateY > 0) {
 				var scale = 1 - translateY / window_h;
 				translateY = translateY * scale;
+				speedDcrt = "down"; //速度方向
 
 				// 是否下拉
 				if (!isScrollTop) {
@@ -2559,10 +2565,9 @@ var scrollTopBottom = function (m) {
 				var over = Math.abs(translateY - minY);
 				var scale = 1 - over / window_h;
 				translateY = minY - over * scale;
-
-				// 是否下拉
+				speedDcrt = "up"; //速度方向
+				// 是否上拉
 				if (!isScrollBottom) {
-
 					translateY = minY;
 				}
 
@@ -2609,8 +2614,18 @@ var scrollTopBottom = function (m) {
 			}
 
 			minY = window_h - topbottomContent.height();
-			var target = m(topbottomContent).getTransform("translateY") + speedScroll * 30;
+			var _target = m(topbottomContent).getTransform("translateY");
+			var target = _target + speedScroll * 30;
 			var bezier = 'ease-out';
+
+			//速度方向
+			if (speedDcrt == "up") {
+				target = -Math.abs(target);
+				m(topbottomContent).transition("all", 500, bezier);
+			} else if (speedDcrt == "down") {
+				target = 0;
+				m(topbottomContent).transition("all", 500, bezier);
+			}
 
 			if (target > 0) {
 				target = 0;
@@ -2623,6 +2638,14 @@ var scrollTopBottom = function (m) {
 				m(topbottomContent).transition("all", 500, bezier);
 			} else {
 				m(topbottomContent).transition("all", 800, bezier);
+			}
+			//速度方向
+			if (speedDcrt == "up") {
+				target = minY;
+				m(topbottomContent).transition("all", 500, bezier);
+			} else if (speedDcrt == "down") {
+				target = 0;
+				m(topbottomContent).transition("all", 500, bezier);
 			}
 
 			// 滚动条
@@ -2659,8 +2682,6 @@ var scrollTopBottom = function (m) {
 
 				});
 			}
-
-			//console.log(speedScroll)
 
 			m(topbottomContent).setTransform("translateY", target);
 		}

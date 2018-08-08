@@ -14,6 +14,10 @@ var commonStyle = (function(m) {
 			event.preventDefault();
 
 		});
+		m(document).touchcancel(function(event) {
+			event.preventDefault();
+
+		});
 
 	}
 
