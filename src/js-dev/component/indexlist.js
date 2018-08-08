@@ -7,7 +7,7 @@ var indexlist = (function(m) {
 
 		});
 
-	})
+	});
 
 	function indexlistWrap(wrap) {
 		var indexlistwrap = m(wrap);
@@ -18,7 +18,9 @@ var indexlist = (function(m) {
 		var items = [];
 		var window_h = m(window).height();
 		var indexlist_h = indexlistwrap.height();
-		var clientTop = window_h - indexlist_h;
+		var footer_h = m(".mobile-footer").height() || 0;
+		var tab_bottom_h = m(".mobile-tab-bottom").height() || 0;
+		var clientTop = window_h - (indexlist_h + footer_h + tab_bottom_h);
 		var translateY = ul.height() - indexlistwrap.height();
 
 		indexlist_a.touchstart(function(event) {
@@ -50,7 +52,10 @@ var indexlist = (function(m) {
 			});
 			window_h = m(window).height();
 			indexlist_h = m(".mobile-indexlist").height();
-			clientTop = window_h - indexlist_h;
+			footer_h = m(".mobile-footer").height() || 0;
+			tab_bottom_h = m(".mobile-tab-bottom").height() || 0;
+			clientTop = window_h - (indexlist_h + footer_h + tab_bottom_h);
+
 			translateY = ul.height() - indexlistwrap.height();
 			tip.fadeIn();
 

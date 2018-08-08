@@ -1287,10 +1287,20 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 	Mobile.fn.extend({
 		on: function on(type) {
 
-			// 第二个参数为函数 正常绑定事件
+			var $this = this;
+			var isonebind = $this.length > 0 && $this.bindOneElementEvent ? true : false; // m(el).one()只绑定一次事件
+
+			// 正常绑定事件
 			if (arguments.length >= 2 && typeof arguments[1] === "function") {
 				var f = function f(event) {
 					handler.call(event.target, event);
+
+					// m(el).one()只绑定一次事件
+					if (isonebind) {
+						m(this).off(type, f, bl);
+						m.events.on(type, f);
+						$this.bindOneElementEvent = false;
+					}
 				};
 
 				var handler = arguments[1];
@@ -1300,7 +1310,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 					if (this.addEventListener) {
 						this.addEventListener(type, f, bl);
 					}
-
 					//ie8
 					//					else if(this.attachEvent) {
 					//						this.attachEvent("on" + type, f, bl)
@@ -1317,6 +1326,13 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 				var _f = function _f(event) {
 					event.data = obj;
 					handler.call(event.target, event);
+
+					// m(el).one()只绑定一次事件
+					if (isonebind) {
+						m(this).off(type, _f, bl);
+						m.events.on(type, _f);
+						$this.bindOneElementEvent = false;
+					}
 				};
 
 				var obj = arguments[1];
@@ -1337,6 +1353,13 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 				var _f2 = function _f2(event) {
 					if (Mobile.checkSelector(event.target, el)) {
 						handler.call(event.target, event);
+
+						// m(el).one()只绑定一次事件
+						if (isonebind) {
+							m(this).off(type, _f2, bl);
+							m.events.on(type, _f2);
+							$this.bindOneElementEvent = false;
+						}
 					}
 				};
 
@@ -1359,6 +1382,13 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 					if (Mobile.checkSelector(event.target, el)) {
 						event.data = obj;
 						handler.call(event.target, event);
+
+						// m(el).one()只绑定一次事件
+						if (isonebind) {
+							m(this).off(type, _f3, bl);
+							m.events.on(type, _f3);
+							$this.bindOneElementEvent = false;
+						}
 					}
 				};
 
@@ -1424,6 +1454,15 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 		emit: function emit(type, obj) {
 			Mobile.each(this, function () {
 				m(this).trigger(type, obj);
+			});
+		},
+
+		one: function one() {
+			var args = arguments;
+			var $this = this;
+			this.bindOneElementEvent = true; //  只绑定一次事件
+			Mobile.each($this, function (i, v) {
+				m(this).on.apply($this, args);
 			});
 		},
 
@@ -3824,7 +3863,9 @@ var indexlist = function (m) {
 		var items = [];
 		var window_h = m(window).height();
 		var indexlist_h = indexlistwrap.height();
-		var clientTop = window_h - indexlist_h;
+		var footer_h = m(".mobile-footer").height() || 0;
+		var tab_bottom_h = m(".mobile-tab-bottom").height() || 0;
+		var clientTop = window_h - (indexlist_h + footer_h + tab_bottom_h);
 		var translateY = ul.height() - indexlistwrap.height();
 
 		indexlist_a.touchstart(function (event) {
@@ -3854,7 +3895,10 @@ var indexlist = function (m) {
 			});
 			window_h = m(window).height();
 			indexlist_h = m(".mobile-indexlist").height();
-			clientTop = window_h - indexlist_h;
+			footer_h = m(".mobile-footer").height() || 0;
+			tab_bottom_h = m(".mobile-tab-bottom").height() || 0;
+			clientTop = window_h - (indexlist_h + footer_h + tab_bottom_h);
+
 			translateY = ul.height() - indexlistwrap.height();
 			tip.fadeIn();
 		});

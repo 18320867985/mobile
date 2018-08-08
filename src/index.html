@@ -5,23 +5,25 @@
 		<meta charset="UTF-8">
 		<title></title>
 		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
-	
+
 	</head>
 
 	<body>
-<h1 data-id-name="123">mobile</h1>
-		<script src="js/mobile.js" type="text/javascript" charset="utf-8"></script>
+		<h1 data-id-name="123">mobile</h1>
+		<script src="js-dev/libs/mobile-1.0.0.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
-			var arrs=[1,2,3,4,5,6,7,8,9,10,]
-			for(var i=0;i<arrs.length;i++){
-				if(i===5){
-					 break;
-				}
-				console.log(i)
-			}
-			
-		
-	
+			m("h1").on("click","h1",function(event) {
+				
+				console.log(event);
+				event.stopPropagation();
+				m(document).one("click", function(event) {
+					console.log("2");
+				});
+				
+			});
+			m(document).one("click", function(event) {
+					console.log("2");
+				});
 		</script>
 
 	</body>

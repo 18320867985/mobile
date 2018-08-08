@@ -312,9 +312,12 @@
 
 			// 返回第一个属性值
 			if(arguments.length === 1 && typeof attr === "string") {
-				var _attr;
+				var _attr = undefined;
 				Mobile.each(this, function() {
 					_attr = this.getAttribute(attr);
+					if(_attr === null) {
+						_attr = undefined;
+					}
 					return false;
 				});
 				return _attr;
@@ -1342,38 +1345,58 @@
 	Mobile.fn.extend({
 		on: function(type) {
 
-			// 第二个参数为函数 正常绑定事件
+			var $this = this;
+			var isonebind = $this.length > 0 && $this.bindOneElementEvent ? true : false; // m(el).one()只绑定一次事件
+
+			// 正常绑定事件
 			if(arguments.length >= 2 && typeof arguments[1] === "function") {
 				var handler = arguments[1];
 				var bl = typeof arguments[2] === "boolean" ? arguments[2] : false;
-				function f(event){
+
+				function f(event) {
 					handler.call(event.target, event);
+
+					// m(el).one()只绑定一次事件
+					if(isonebind) {
+						m(this).off(type, f, bl);
+						m.events.on(type, f);
+						$this.bindOneElementEvent = false;
 					}
+				}
+
 				Mobile.each(this, function() {
 					if(this.addEventListener) {
 						this.addEventListener(type, f, bl);
 					}
-					
 					//ie8
-//					else if(this.attachEvent) {
-//						this.attachEvent("on" + type, f, bl)
-//					} else {
-//						this["on" + type] =f /*直接赋给事件*/
-//					}
+					//					else if(this.attachEvent) {
+					//						this.attachEvent("on" + type, f, bl)
+					//					} else {
+					//						this["on" + type] =f /*直接赋给事件*/
+					//					}
 				});
 
 				m.events.on(type, f);
 			}
-			
+
 			// 正常绑定事件传object值
-			if(arguments.length>=3 && typeof arguments[1] === "object" && typeof arguments[2] === "function") {
+			if(arguments.length >= 3 && typeof arguments[1] === "object" && typeof arguments[2] === "function") {
 				var obj = arguments[1]
 				var handler = arguments[2];
 				var bl = typeof arguments[3] === "boolean" ? arguments[3] : false;
-				function f(event){
+
+				function f(event) {
 					event.data = obj;
 					handler.call(event.target, event);
+
+					// m(el).one()只绑定一次事件
+					if(isonebind) {
+						m(this).off(type, f, bl);
+						m.events.on(type, f);
+						$this.bindOneElementEvent = false;
 					}
+				}
+
 				Mobile.each(this, function() {
 					if(this.addEventListener) {
 						this.addEventListener(type, f, bl);
@@ -1389,11 +1412,19 @@
 				var el = arguments[1].trim();
 				var handler = arguments[2];
 				var bl = typeof arguments[3] === "boolean" ? arguments[3] : false;
-				function f(event){
+
+				function f(event) {
 					if(Mobile.checkSelector(event.target, el)) {
 						handler.call(event.target, event);
+
+						// m(el).one()只绑定一次事件
+						if(isonebind) {
+							m(this).off(type, f, bl);
+							m.events.on(type, f);
+							$this.bindOneElementEvent = false;
+						}
 					}
-					}
+				}
 				Mobile.each(this, function() {
 					if(this.addEventListener) {
 						this.addEventListener(type, f, bl);
@@ -1402,20 +1433,28 @@
 
 				m.events.on(type, f);
 			}
-			
+
 			// 委托绑定事件传object值
-			if(arguments.length >= 4 && typeof arguments[1] === "string" &&typeof arguments[2] === "object" && typeof arguments[3] === "function") {
+			if(arguments.length >= 4 && typeof arguments[1] === "string" && typeof arguments[2] === "object" && typeof arguments[3] === "function") {
 				var el = arguments[1].trim();
 				var obj = arguments[2];
 				var handler = arguments[3];
 				var bl = typeof arguments[4] === "boolean" ? arguments[4] : false;
-				function f(event){
-					if(Mobile.checkSelector(event.target, el)) {
-								event.data=obj;
-								handler.call(event.target, event);
-							}
 
+				function f(event) {
+					if(Mobile.checkSelector(event.target, el)) {
+						event.data = obj;
+						handler.call(event.target, event);
+
+						// m(el).one()只绑定一次事件
+						if(isonebind) {
+							m(this).off(type, f, bl);
+							m.events.on(type, f);
+							$this.bindOneElementEvent = false;
+						}
 					}
+
+				}
 				Mobile.each(this, function() {
 					if(this.addEventListener) {
 						this.addEventListener(type, f, bl);
@@ -1424,7 +1463,6 @@
 
 				m.events.on(type, f);
 			}
-
 
 			return this;
 
@@ -1478,6 +1516,16 @@
 		emit: function(type, obj) {
 			Mobile.each(this, function() {
 				m(this).trigger(type, obj);
+			});
+		},
+
+		one: function() {
+			var args = arguments;
+			var $this = this;
+			this.bindOneElementEvent = true; //  只绑定一次事件
+			Mobile.each($this, function(i, v) {
+				m(this).on.apply($this, args);
+
 			});
 		},
 

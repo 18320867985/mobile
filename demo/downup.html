@@ -16,6 +16,7 @@
 			@charset "utf-8";
 			body {
 				padding: 10px;
+				 background: #fafafa;
 			}
 			
 			* {
@@ -106,28 +107,32 @@
 				bottom: 0;
 				z-index: 9;
 				display: none;
-				background: rgba(0, 0, 0, .1);
+				background: rgba(54, 54, 54, .3);
 				transition: .5s;
 			}
 			
 			.mask-content {
 				position: fixed;
-				bottom: -60%;
+				bottom: -80%;
+				opacity: 0;
 				left: 0;
 				right: 0;
 				z-index: 99;
-				height: 60%;
+				height: 80%;
 				width: 100%;
 				box-sizing: border-box;
 				padding: 20px;
 				overflow-y: auto;
 				background: #fff;
-				-webkit-transition: .5s;
-				transition: .5s;
+				-webkit-transition: .4s;
+				transition: .4s;
+				 background: transparent;
 			}
 			
 			.mask-content.active {
 				bottom: 0;
+				opacity: 1;
+				 background: #fff;
 			}
 		</style>
 
@@ -136,9 +141,35 @@
 	<body id="body">
 
 		<button id="btn" type="button">btn</button>
-		<div class="mask" id="mask">
+		<ul >
+				<li>
+					让房价调控更令人宽心 算好污染防治账
+				</li>
+				<li>
+					让房价调控更令人宽心 算好污染防治账
+				</li>
+				<li>
+					让房价调控更令人宽心 算好污染防治账
+				</li>
+				<li>
+					让房价调控更令人宽心 算好污染防治账
+				</li>
+				<li>
+					让房价调控更令人宽心 算好污染防治账
+				</li>
+				<li>
+					让房价调控更令人宽心 算好污染防治账
+				</li>
+				<li>
+					让房价调控更令人宽心 算好污染防治账
+				</li>
+				<li>
+					让房价调控更令人宽心 算好污染防治账
+				</li>
+			</ul>
 
 		</div>
+		<div class="mask" id="mask"></div>
 		<div class="mask-content ">
 
 			<ul>
@@ -191,7 +222,7 @@
 					clearTimeout(setId);
 					setId = setTimeout(function() {
 						mask.style.display = "none";
-					}, 500)
+					}, 400)
 
 				});
 				event.stopPropagation();
