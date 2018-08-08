@@ -5,7 +5,7 @@
     z-index: 9;
     box-sizing: border-box;
     width: 100%;
-    min-height: 150px;
+    min-height: 100px;
     overflow: hidden;
 }
 
@@ -41,8 +41,8 @@
 
 .mobile-slide-radius span {
     display: inline-block;
-    height: 10px;
-    width: 10px;
+    height: 6rem/$rem;
+    width: 6rem/$rem;
     background: $slide-rd-df;
     ;
     border-radius: 50%;

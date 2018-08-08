@@ -16,6 +16,7 @@ var commonStyle = (function(m) {
 		});
 		m(document).touchcancel(function(event) {
 			event.preventDefault();
+					alert("cancel")
 
 		});
 

@@ -1,53 +1,67 @@
 [
-	{	"src":"../images/1段奶粉.png",
-		"text":"1段奶粉"
-		
+	{	
+		"src":"../images/index-list-1.png"
 	},
-	{	"src":"../images/2段奶粉.png",
-		"text":"2段奶粉"
-		
+	{	
+		"src":"../images/index-list-2.png"
 	}
 	,
-	{	"src":"../images/3段奶粉.png",
-		"text":"3段奶粉"
-		
+	{	
+		"src":"../images/index-list-3.png"
 	},
-	{	"src":"../images/4断乃恩.png",
-		"text":"4断乃恩"
-		
+	{	
+		"src":"../images/index-list-4.png"
 	},
-	{	"src":"../images/1段奶粉.png",
-		"text":"1段奶粉"
-		
+	{	
+		"src":"../images/index-list-1.png"
 	},
-	{	"src":"../images/2段奶粉.png",
-		"text":"2段奶粉"
-		
+	{	
+		"src":"../images/index-list-2.png"
 	}
 	,
-	{	"src":"../images/3段奶粉.png",
-		"text":"3段奶粉"
-		
+	{	
+		"src":"../images/index-list-3.png"
 	},
-	{	"src":"../images/4断乃恩.png",
-		"text":"4断乃恩"
-		
-	},{	"src":"../images/1段奶粉.png",
-		"text":"1段奶粉"
-		
+	{	
+		"src":"../images/index-list-4.png"
 	},
-	{	"src":"../images/2段奶粉.png",
-		"text":"2段奶粉"
-		
+	{	
+		"src":"../images/index-list-1.png"
+	},
+	{	
+		"src":"../images/index-list-2.png"
 	}
 	,
-	{	"src":"../images/3段奶粉.png",
-		"text":"3段奶粉"
-		
+	{	
+		"src":"../images/index-list-3.png"
 	},
-	{	"src":"../images/4断乃恩.png",
-		"text":"4断乃恩"
-		
+	{	
+		"src":"../images/index-list-4.png"
+	},
+	{	
+		"src":"../images/index-list-1.png"
+	},
+	{	
+		"src":"../images/index-list-2.png"
+	}
+	,
+	{	
+		"src":"../images/index-list-3.png"
+	},
+	{	
+		"src":"../images/index-list-4.png"
+	},{	
+		"src":"../images/index-list-1.png"
+	},
+	{	
+		"src":"../images/index-list-2.png"
+	}
+	,
+	{	
+		"src":"../images/index-list-3.png"
+	},
+	{	
+		"src":"../images/index-list-4.png"
 	}
 	
 ]

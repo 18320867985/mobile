@@ -2279,6 +2279,7 @@ var commonStyle = function (m) {
 		});
 		m(document).touchcancel(function (event) {
 			event.preventDefault();
+			alert("cancel");
 		});
 	}
 
@@ -2618,35 +2619,28 @@ var scrollTopBottom = function (m) {
 			var target = _target + speedScroll * 30;
 			var bezier = 'ease-out';
 
-			//速度方向
-			if (speedDcrt == "up") {
-				target = -Math.abs(target);
-				m(topbottomContent).transition("all", 500, bezier);
-			} else if (speedDcrt == "down") {
-				target = 0;
-				m(topbottomContent).transition("all", 500, bezier);
-			}
-
-			if (target > 0) {
-				target = 0;
-				m(topbottomContent).transition("all", 500, bezier);
-			} else if (target < minY) {
-				target = minY;
-				if (m(topbottomContent).height() < window_h) {
+			if (speedDcrt == "auto") {
+				if (target > 0) {
 					target = 0;
+					m(topbottomContent).transition("all", 500, bezier);
+				} else if (target < minY) {
+					target = minY;
+					if (m(topbottomContent).height() < window_h) {
+						target = 0;
+					}
+					m(topbottomContent).transition("all", 500, bezier);
+				} else {
+					m(topbottomContent).transition("all", 800, bezier);
 				}
-				m(topbottomContent).transition("all", 500, bezier);
-			} else {
-				m(topbottomContent).transition("all", 800, bezier);
 			}
 			//速度方向
-			if (speedDcrt == "up") {
-				target = minY;
-				m(topbottomContent).transition("all", 500, bezier);
-			} else if (speedDcrt == "down") {
-				target = 0;
-				m(topbottomContent).transition("all", 500, bezier);
-			}
+			else if (speedDcrt == "up") {
+					target = minY;
+					m(topbottomContent).transition("all", 500, bezier);
+				} else if (speedDcrt == "down") {
+					target = 0;
+					m(topbottomContent).transition("all", 500, bezier);
+				}
 
 			// 滚动条
 			if (isScrollBar) {
@@ -2693,6 +2687,7 @@ var scrollTopBottom = function (m) {
 			// 计算移动速度
 			speedSetIntervalFisrt = true;
 			clearInterval(speedSetIntervalId);
+			alert("cancel");
 		}
 
 		function scrollBarFun(event) {
