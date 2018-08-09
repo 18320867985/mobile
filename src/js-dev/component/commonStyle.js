@@ -5,7 +5,6 @@ var commonStyle = (function(m) {
 			event.preventDefault();
 
 		});
-
 		m(document).touchmove(function(event) {
 			event.preventDefault();
 
@@ -16,7 +15,6 @@ var commonStyle = (function(m) {
 		});
 		m(document).touchcancel(function(event) {
 			event.preventDefault();
-					alert("cancel")
 
 		});
 
@@ -25,9 +23,16 @@ var commonStyle = (function(m) {
 	// 设置主题内容样式
 	m(function() {
 		reset();
-
 		m(window).resize(function() {
 			reset();
+		});
+		
+		// 返回上一页
+		m(".mobile-back").on("touchend", function(event) {
+			event.preventDefault();
+			if(history.back) {
+				history.back();
+			}
 		});
 
 	});

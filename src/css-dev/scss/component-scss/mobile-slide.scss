@@ -44,8 +44,10 @@
     height: 6rem/$rem;
     width: 6rem/$rem;
     background: $slide-rd-df;
-    ;
     border-radius: 50%;
+    &+span{
+        margin-left: 2rem/$rem;
+    }
 }
 
 .mobile-slide-radius .active {

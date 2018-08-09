@@ -294,7 +294,7 @@ var scrollTopBottom = (function(m) {
 
 			minY = window_h - topbottomContent.height();
 			var _target = m(topbottomContent).getTransform("translateY");
-			var target = _target + speedScroll * 30;
+			var target = _target + speedScroll * 20;
 			var bezier = 'ease-out';
 
 			if(speedDcrt == "auto") {
@@ -370,8 +370,7 @@ var scrollTopBottom = (function(m) {
 			// 计算移动速度
 			speedSetIntervalFisrt = true;
 			clearInterval(speedSetIntervalId);
-			alert("cancel")
-
+		
 		}
 
 		function scrollBarFun(event) {

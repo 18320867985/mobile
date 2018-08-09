@@ -627,11 +627,12 @@ a .spin {
   outline: none;
   background: none; }
 
-.mobile-head .mobile-back span {
-  margin-left: 0.5rem;
-  font-size: .7rem;
+.mobile-head .mobile-back.icon-back-left {
+  padding-left: 0.5rem;
+  font-size: 1.4rem;
   vertical-align: middle;
-  color: #777; }
+  color: #666;
+  cursor: pointer; }
 
 .mobile-head .mobile-back span:active {
   color: red;
@@ -639,11 +640,12 @@ a .spin {
   background: none; }
 
 .mobile-head-ttl {
-  height: 2.2rem;
-  line-height: 2.2rem;
-  width: 100%;
+  display: inline-block;
+  height: 2rem;
+  line-height: 2rem;
+  width: 70%;
   margin: 0 auto;
-  font-size: .8rem;
+  font-size: .7rem;
   text-align: center;
   color: #444; }
 
@@ -785,6 +787,8 @@ a .spin {
   width: 0.3rem;
   background: #ccc;
   border-radius: 50%; }
+  .mobile-slide-radius span + span {
+    margin-left: 0.1rem; }
 
 .mobile-slide-radius .active {
   background: red; }
