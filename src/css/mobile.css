@@ -619,10 +619,14 @@ a .spin {
   top: 0;
   left: 0;
   z-index: 9999;
-  background: #f0f0f0; }
+  background: #f0f0f0;
+  overflow: hidden; }
 
 .mobile-head .mobile-back {
-  display: inline-block;
+  display: block;
+  height: 2rem;
+  line-height: 2rem;
+  float: left;
   width: 15%;
   outline: none;
   background: none; }
@@ -640,14 +644,18 @@ a .spin {
   background: none; }
 
 .mobile-head-ttl {
-  display: inline-block;
+  display: block;
+  float: left;
   height: 2rem;
   line-height: 2rem;
   width: 70%;
   margin: 0 auto;
   font-size: .7rem;
   text-align: center;
-  color: #444; }
+  color: #444;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden; }
 
 .mobile-content {
   position: absolute;
