@@ -1,24 +1,24 @@
 import   "./libs/mobile-1.0.0.js";
 
-export {reset} from "./component/reset.js";
+export {reset} from "./component/mobile-reset.js";
 
-export {commonStyle} from "./component/commonStyle.js";
+export {commonStyle} from "./component/mobile-commonStyle.js";
 
-export {scrollTopBottom} from "./component/scrollTopBottom.js";
+export {scrollTopBottom} from "./component/mobile-scrollTopBottom.js";
 
-export {scrollLeftRight} from  "./component/scrollLeftRight.js";
+export {scrollLeftRight} from  "./component/mobile-scrollLeftRight.js";
 
-export {slide} from "./component/slide.js";
+export {slide} from "./component/mobile-slide.js";
 
-export {tab} from "./component/tab.js";
+export {tab} from "./component/mobile-tab.js";
 
-export {aside} from "./component/aside.js";
+export {aside} from "./component/mobile-aside.js";
 
-export {fullpage} from "./component/fullpage.js";
+export {fullpage} from "./component/mobile-fullpage.js";
 
-export {indexlist} from "./component/indexlist.js";
+export {indexlist} from "./component/mobile-indexlist.js";
 
-export {spy} from "./component/spy.js";
+export {spy} from "./component/mobile-spy.js";
 
 
 
