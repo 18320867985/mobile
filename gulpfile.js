@@ -11,6 +11,10 @@ var minCss = require('gulp-minify-css'); //gulp-minify-css:压缩css文件 npm i
 var connect = require('gulp-connect'); //gulp-connect 创建服务器  npm install --save-dev gulp-connect
 var minJs = require('gulp-uglify'); //压缩javascript文件  npm install gulp-uglify
 var img = require('gulp-imagemin'); //gulp-imagemin:压缩png、jpj、git、svg格式图片 npm install --save-dev gulp-imagemin
+var rename = require("gulp-rename"); // npm install gulp-rename --save-dev  重命名文件，把一个文件储存不同版本时使用
+var concat = require('gulp-concat'); //npm install gulp-concat --save-dev  整合文件
+var minHtml = require('gulp-htmlmin'); //npm install gulp-htmlmin --save-dev 压缩html，可以压缩页面javascript、css，去除页面空格、注释，删除多余属性等操作
+
 
 var rollup = require('rollup');
 var babel = require('rollup-plugin-babel');
