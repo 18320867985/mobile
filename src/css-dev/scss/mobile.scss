@@ -1,5 +1,4 @@
 
-
 @import "var.scss";                           // variable   
 
 @import "_media.scss";                  //_media
@@ -8,7 +7,7 @@
 
 //@import "mixin.scss";                          // 函数
 
-@import "df-wx.scss";                         //   default scss
+@import "_default.scss";                         //   default scss
 
 @import "component-scss/comp-all.scss";          //  组件
 

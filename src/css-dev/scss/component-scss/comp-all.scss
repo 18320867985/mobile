@@ -1,4 +1,6 @@
 
+@import "mobile-default.scss";   
+
 @import "mobile-head.scss";   
 
 @import "mobile-content.scss";   
@@ -17,5 +19,7 @@
 
 @import "mobile-fullpage.scss"; 
 
-@import "mobile-indexlist.scss"; 
+@import "mobile-indexlist.scss";  
+
+@import "mobile-table-view.scss"; 
 

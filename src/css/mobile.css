@@ -3,6 +3,7 @@
 /*rem 份数*/
 /* 320/16 =20px=1rem */
 /*html rem比例*/
+/* text-color*/
 @media screen and (max-width: 319px) {
   html {
     font-size: 20px; } }
@@ -235,7 +236,7 @@ th {
 
 body {
   font-size: 14px;
-  font-family: "微软雅黑", "宋体";
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
   background: #fafafa;
   color: #444; }
 
@@ -253,103 +254,18 @@ a,
 a:link,
 a:active {
   text-decoration: none;
-  color: blue; }
-
-ul {
-  list-style: none; }
-
-/*颜色*/
-.text-white {
-  color: #fff; }
-
-.bg-white {
-  background: #fff; }
-
-/*边框与背景*/
-.rd {
-  border-radius: 5px; }
-
-.rd-no {
-  border-radius: 0px; }
-
-.rd-no2 {
-  border-radius: 0px !important; }
-
-.br-no {
-  border: none; }
-
-.br-no2 {
-  border: none !important; }
-
-.bg-no {
-  background: none; }
-
-.bg-no2 {
-  background: none !important; }
-
-/*定位display*/
-.absolute {
-  position: absolute; }
-
-.relative {
-  position: relative; }
-
-.fixed {
-  position: fixed; }
-
-.inline-block {
-  display: inline-block; }
-
-.inline-block-none {
-  display: inline-block;
-  float: none; }
+  color: #0000cc; }
 
 /*input*/
 input,
-.btn {
+button,
+textarea {
   outline: none; }
 
 input:focus,
-.btn:focus {
+button:focus,
+button:active {
   outline: none !important; }
-
-.input-underline {
-  border-top: none !important;
-  border-left: none !important;
-  border-right: none !important;
-  -webkit-box-shadow: 0px 0px 0px #fff, 0px 0px 0px #fff !important;
-          box-shadow: 0px 0px 0px #fff, 0px 0px 0px #fff !important; }
-
-.input-underline:focus {
-  border-top: none !important;
-  border-left: none !important;
-  border-right: none !important;
-  -webkit-box-shadow: 0px 0px 0px #fff, 0px 0px 0px #fff !important;
-          box-shadow: 0px 0px 0px #fff, 0px 0px 0px #fff !important; }
-
-.input-br-no {
-  border: none !important;
-  -webkit-box-shadow: 0px 0px 0px #fff, 0px 0px 0px #fff !important;
-          box-shadow: 0px 0px 0px #fff, 0px 0px 0px #fff !important;
-  background: none; }
-
-.input-br-no:focus {
-  border: none !important;
-  background: none;
-  -webkit-box-shadow: 0px 0px 0px #fff, 0px 0px 0px #fff !important;
-          box-shadow: 0px 0px 0px #fff, 0px 0px 0px #fff !important; }
-
-.input-xs-x {
-  line-height: 25px;
-  height: 25px;
-  padding: 2px 8px;
-  font-size: 12px; }
-
-.btn-xs-x {
-  line-height: 25px !important;
-  height: 25px !important;
-  padding: 0px 7px !important;
-  font-size: 12px !important; }
 
 .width-0-5 {
   width: 5%;
@@ -432,6 +348,12 @@ input:focus,
   clear: both; }
 
 /* use table width no float */
+.table-fixed {
+  table-layout: fixed; }
+
+.table-auto {
+  table-layout: auto; }
+
 .table-0-5 {
   width: 5%; }
 
@@ -492,38 +414,6 @@ input:focus,
 .table-100 {
   width: 100%; }
 
-/*其他*/
-.overflow-y {
-  overflow-y: hidden; }
-
-.overflow-x {
-  overflow-y: hidden; }
-
-.mobile-hide {
-  display: none; }
-
-.mobile-hide-text-index {
-  position: absolute !important;
-  display: inline-block !important;
-  text-indent: -99999px;
-  margin: -2px !important;
-  padding: 0 !important;
-  width: 0 !important;
-  height: 0 !important;
-  outline: none !important; }
-
-.content-responsive img {
-  height: auto;
-  max-width: 100% !important; }
-
-.response-img {
-  height: auto;
-  width: 100% !important; }
-
-.img-100 {
-  width: 100%;
-  height: auto; }
-
 /* 输入框focus焦点*/
 input[type=text]:focus,
 input[type=password]:focus,
@@ -535,6 +425,46 @@ a:hover {
   text-decoration: none; }
 
 select option {
+  outline: none !important; }
+
+/*clr*/
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: " "; }
+
+.clearfix:after {
+  clear: both;
+  overflow: hidden; }
+
+.content-responsive img {
+  height: auto;
+  max-width: 100% !important; }
+
+.response-img {
+  height: auto;
+  width: 100% !important; }
+
+/*default*/
+.mobile-title {
+  padding: .5rem;
+  font-size: 0.75rem; }
+
+/*display*/
+.mobile-hide {
+  display: none; }
+
+.mobile-show {
+  display: block; }
+
+.mobile-hide-text-index {
+  position: absolute !important;
+  display: inline-block !important;
+  text-indent: -99999px;
+  margin: -2px !important;
+  padding: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
   outline: none !important; }
 
 /*ellipsis*/
@@ -557,60 +487,6 @@ select option {
   word-wrap: break-word;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical; }
-
-.table-fixed {
-  table-layout: fixed; }
-
-.table-auto {
-  table-layout: auto; }
-
-.padding-l-no {
-  padding-left: 0; }
-
-.padding-r-no {
-  padding-right: 0; }
-
-.padding-lr-no {
-  padding-left: 0;
-  padding-right: 0; }
-
-/*clr*/
-.clearfix:before,
-.clearfix:after {
-  display: table;
-  content: " "; }
-
-.clearfix:after {
-  clear: both;
-  overflow: hidden; }
-
-/* Animated rotating icon */
-.spin {
-  display: inline-block;
-  -webkit-animation: spin 1.5s infinite linear;
-          animation: spin 1.5s infinite linear; }
-
-/* Prevent stack and spinners from being taken inline when inside a link */
-a .stack,
-a .spin {
-  display: inline-block;
-  text-decoration: none; }
-
-@-webkit-keyframes spin {
-  0% {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg); }
-  100% {
-    -webkit-transform: rotate(359deg);
-            transform: rotate(359deg); } }
-
-@keyframes spin {
-  0% {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg); }
-  100% {
-    -webkit-transform: rotate(359deg);
-            transform: rotate(359deg); } }
 
 /*mobile-head*/
 .mobile-head {
@@ -784,22 +660,20 @@ a .spin {
   bottom: 10px;
   z-index: 999;
   width: 100%;
-  height: 10px;
   /*background: red;*/
-  line-height: 10px;
   text-align: center; }
 
 .mobile-slide-radius span {
   display: inline-block;
   height: 0.3rem;
   width: 0.3rem;
+  padding: 0;
   background: #ccc;
   border-radius: 50%; }
   .mobile-slide-radius span + span {
     margin-left: 0.1rem; }
-
-.mobile-slide-radius .active {
-  background: red; }
+  .mobile-slide-radius span.active {
+    background: red; }
 
 .mobile-tab {
   position: fixed;
@@ -1048,6 +922,73 @@ a .spin {
   line-height: 2rem;
   background: #ccc;
   border-radius: 5px; }
+
+/*table-view*/
+.mobile-table-view {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: column nowrap;
+          flex-flow: column nowrap;
+  padding-left: 0.5rem;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  background: #fff;
+  /*圆角table*/ }
+  .mobile-table-view.mobile-table-view-rd {
+    margin: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 5px; }
+
+.mobile-table-view-cell {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: row nowrap;
+          flex-flow: row nowrap;
+  position: relative;
+  padding: 0.5rem;
+  font-size: 0.7rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-wrap: break-word;
+  overflow-x: hidden; }
+  .mobile-table-view-cell + .mobile-table-view-cell {
+    border-top: 1px solid #ddd; }
+  .mobile-table-view-cell a {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-flex: 9,;
+        -ms-flex: 9, 9, auto;
+            flex: 9, 9, auto;
+    width: 90%;
+    -webkit-box-pack: start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center; }
+  .mobile-table-view-cell .iconfont {
+    -webkit-box-flex: 1,;
+        -ms-flex: 1, 1, auto;
+            flex: 1, 1, auto;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    width: 10%;
+    font-size: 1rem;
+    color: #999; }
 
 .scrolltopbottom {
   -webkit-box-shadow: -2px 0px 3px #ddd;

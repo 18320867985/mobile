@@ -1,0 +1,48 @@
+/*table-view*/
+
+.mobile-table-view {
+    display: flex;
+    flex-flow: column nowrap;
+    padding-left: 10rem/$rem;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    background: #fff;
+    
+    /*圆角table*/
+    &.mobile-table-view-rd {
+        margin: 10rem/$rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+}
+
+.mobile-table-view-cell {
+    display: flex;
+    flex-flow: row nowrap;
+    position: relative;
+    padding: 10rem/$rem;
+    font-size: 14rem/$rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-wrap: break-word;
+    overflow-x: hidden;
+    &+.mobile-table-view-cell {
+        border-top: 1px solid #ddd;
+    }
+    a {
+        display: flex;
+        flex: 9, 9, auto;
+        width: 90%;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    .iconfont {
+        flex: 1, 1, auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 10%;
+        font-size: 20rem/$rem;
+        color: #999;
+    }
+}
