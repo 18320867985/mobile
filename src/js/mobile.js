@@ -1507,10 +1507,89 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 		},
 
 		//  tap
-		tap: function tap(fn, bl) {
-			bl = bl || false;
+		tap: function tap() {
+			var args = arguments;
+			var fn = function fn() {};
+			var deletage = "";
+			var bl = false;
+
 			Mobile.each(this, function () {
-				m(this).on("touchstart", fn, bl);
+
+				var isMOve = true; // 判断是否往上拖动
+
+				var startX = 0;
+				var startY = 0;
+
+				function start(event) {
+					event.preventDefault();
+					isMOve = true;
+					var touch = event.changedTouches[0];
+					startX = touch.clientX;
+					startY = touch.clientY;
+				}
+
+				function move(event) {
+					event.preventDefault();
+					var touch = event.changedTouches[0];
+					var nowX = touch.clientX;
+					var nowY = touch.clientY;
+					if (Math.abs(nowX - startX) > 1 || Math.abs(nowY - startY) > 1) {
+						isMOve = false;
+					}
+				}
+
+				function end(event) {
+					event.preventDefault();
+					if (isMOve) {
+						if (typeof fn === "function") {
+							fn.apply(event.target, event);
+						}
+					}
+				}
+
+				// 使用事件	
+				if (args.length >= 1 && typeof args[0] === "function") {
+					fn = args[0];
+					bl = args[1] || false;
+
+					m(this).on("touchstart", start, bl);
+					m(this).on("touchmove", move, bl);
+					m(this).on("touchend", end, bl);
+				}
+
+				// 使用委托事件	
+				else if (args.length >= 2 && typeof args[0] === "string" && typeof args[1] === "function") {
+						deletage = args[0];
+						fn = args[1];
+						bl = args[2] || false;
+
+						m(this).on("touchstart", deletage, start, bl);
+						m(this).on("touchmove", deletage, move, bl);
+						m(this).on("touchend", deletage, end, bl);
+					}
+
+					// 使用委托事件	
+					else if (args.length >= 2 && _typeof(args[0]) === "object" && typeof args[1] === "function") {
+							fn = args[1];
+							bl = args[2] || false;
+							var obj = args[0];
+
+							m(this).on("touchstart", obj, start, bl);
+							m(this).on("touchmove", obj, move, bl);
+							m(this).on("touchend", obj, end, bl);
+						}
+
+						// 使用委托事件传值data	
+						else if (args.length >= 3 && typeof args[0] === "string" && _typeof(args[1]) === "object" && typeof args[2] === "function") {
+								deletage = args[0];
+								var obj = args[1];
+								fn = args[2];
+								bl = args[3] || false;
+
+								m(this).on("touchstart", deletage, obj, start, bl);
+								m(this).on("touchmove", deletage, obj, move, bl);
+								m(this).on("touchend", deletage, obj, end, bl);
+							}
 			});
 		},
 
@@ -4027,6 +4106,24 @@ var spy = function (m) {
 	}
 }(mobile);
 
+/*table-view*/
+
+var tableview = function (m) {
+
+	m(".mobile-table-view >.mobile-table-view-cell a").tap({ n: 111 }, function (event) {
+		//	 	event.preventDefault();
+		//		var p=m(this).closest(".mobile-table-view");
+		//		p.find(".mobile-table-view-collapse").hide();
+		//
+		//	m(event.target).closest(".mobile-table-view-cell").find(".mobile-table-view-collapse").fadeIn();
+		//
+		//		console.log(m(this))
+		//		
+
+		console.log(m(this).html());
+	});
+}(mobile);
+
 exports.reset = reset;
 exports.commonStyle = commonStyle;
 exports.scrollTopBottom = scrollTopBottom;
@@ -4037,6 +4134,7 @@ exports.aside = aside;
 exports.fullpage = fullpage;
 exports.indexlist = indexlist;
 exports.spy = spy;
+exports.tableview = tableview;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 

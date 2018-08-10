@@ -20,5 +20,7 @@ export {indexlist} from "./component/mobile-indexlist.js";
 
 export {spy} from "./component/mobile-spy.js";
 
+export {tableview} from "./component/mobile-tableview.js";
+
 
 
