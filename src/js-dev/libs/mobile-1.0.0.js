@@ -1605,7 +1605,7 @@
 					event.preventDefault();
 					if(isMOve) {
 						if(typeof fn === "function") {
-							fn.apply(event.target,event);
+							fn.call(event.target,event);
 						}
 					}
 				}
@@ -1641,6 +1641,7 @@
 				m(this).on("touchmove",obj, move, bl);
 				m(this).on("touchend",obj, end, bl);
 			}
+			
 			
 			// 使用委托事件传值data	
 			else if(args.length>=3 && typeof args[0]==="string"&& typeof args[1]==="object" && typeof args[2]==="function"){

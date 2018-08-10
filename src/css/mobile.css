@@ -951,7 +951,7 @@ select option {
     -ms-flex-line-pack: justify;
         align-content: space-between;
     padding: 0.5rem;
-    padding-left: 1rem;
+    margin-left: 0.75rem;
     font-size: 0.7rem; }
     .mobile-table-view > .mobile-table-view-cell + .mobile-table-view-cell {
       border-top: 1px solid #ddd; }
@@ -987,7 +987,8 @@ select option {
 .mobile-table-view-collapse {
   margin-top: 10px;
   width: 100%;
-  background: #f8f8f8; }
+  background: #f8f8f8;
+  display: none; }
   .mobile-table-view-collapse > .mobile-table-view-cell {
     display: -webkit-box;
     display: -ms-flexbox;

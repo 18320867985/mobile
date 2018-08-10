@@ -20,7 +20,7 @@
         flex-flow: row wrap;
         align-content: space-between;
         padding: 10rem/$rem;
-        padding-left: 20rem/$rem;
+        margin-left: 15rem/$rem;
         font-size: 14rem/$rem;
         &+.mobile-table-view-cell {
             border-top: 1px solid #ddd;
@@ -52,6 +52,7 @@
     margin-top: 10px;
     width: 100%;
     background: #f8f8f8;
+    display: none;
 //  display: flex;
 //  flex-flow: column nowrap;
    

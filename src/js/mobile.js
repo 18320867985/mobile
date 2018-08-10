@@ -1542,7 +1542,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 					event.preventDefault();
 					if (isMOve) {
 						if (typeof fn === "function") {
-							fn.apply(event.target, event);
+							fn.call(event.target, event);
 						}
 					}
 				}
@@ -4110,17 +4110,13 @@ var spy = function (m) {
 
 var tableview = function (m) {
 
-	m(".mobile-table-view >.mobile-table-view-cell a").tap({ n: 111 }, function (event) {
-		//	 	event.preventDefault();
-		//		var p=m(this).closest(".mobile-table-view");
-		//		p.find(".mobile-table-view-collapse").hide();
-		//
-		//	m(event.target).closest(".mobile-table-view-cell").find(".mobile-table-view-collapse").fadeIn();
-		//
-		//		console.log(m(this))
-		//		
-
-		console.log(m(this).html());
+	m(".mobile-table-view ").tap(".mobile-table-view-ttl", function (event) {
+		event.preventDefault();
+		var p = m(this).closest(".mobile-table-view");
+		p.find(".mobile-table-view-collapse").hide();
+		p.find(".mobile-table-view-cell").removeClass("active");
+		m(this).addClass("active");
+		m(this).parents(".mobile-table-view-cell").find(".mobile-table-view-collapse").show();
 	});
 }(mobile);
 
