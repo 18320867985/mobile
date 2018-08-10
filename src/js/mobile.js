@@ -861,7 +861,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 		show: function show() {
 
 			Mobile.each(this, function (i, el) {
-
+				clearInterval(this.clearTimeId);
 				var _showType = this.showValue || "none";
 				var _nodeName = this.nodeName.toLowerCase();
 				if (_showType == "none") {
@@ -878,7 +878,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 		hide: function hide() {
 
 			Mobile.each(this, function (i, el) {
-
+				clearInterval(this.clearTimeId);
 				var _v = m(this).css("display") || "none";
 				this.showValue = _v;
 				this.style.display = "none";
@@ -903,24 +903,26 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 		},
 
 		// fadeIn
-		fadeIn: function fadeIn() {
+		fadeIn: function fadeIn(time) {
 
 			Mobile.each(this, function (i, el) {
 
 				var _showType = this.showValue || "none";
+				console.log(_showType);
 				var _nodeName = this.nodeName.toLowerCase();
 				if (_showType == "none") {
 					_showType = _getElementType(_nodeName);
-				}
+				} else {}
 
+				clearInterval(this.clearTimeId);
 				this.style.display = _showType;
-				this.style.opacity = 0;
-				var time = 400;
+				this.style.opacity = parseFloat(el.style.opacity) || 0;
+				time = typeof time === "number" ? time : 400;
 				var opt = 1000;
 				var fx = 30;
 				var t = time / fx;
 				var speed = opt / t;
-				var clearTimeId = setInterval(function () {
+				this.clearTimeId = setInterval(function () {
 					var v = parseFloat(el.style.opacity) || 0;
 					v = v * 1000;
 					el.style.opacity = (speed + v) / 1000;
@@ -930,7 +932,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 						el.style.opacity = opt / 1000;
 						el.style.opacity = 1;
 						el.style.display = _showType;
-						clearInterval(clearTimeId);
+						clearInterval(this.clearTimeId);
 					}
 				}, fx);
 			});
@@ -938,19 +940,21 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 		},
 
 		// fadeOut
-		fadeOut: function fadeOut() {
+		fadeOut: function fadeOut(time) {
 
 			Mobile.each(this, function (i, el) {
-
+				clearInterval(this.clearTimeId);
 				var _v = m(this).css("display") || "none";
+				if (_v != "none") {
+					this.style.opacity = parseFloat(el.style.opacity) || 1;
+				}
 				this.showValue = _v;
-				this.style.opacity = 1;
-				var time = 400;
+				time = typeof time === "number" ? time : 400;
 				var opt = 1000;
 				var fx = 30;
 				var t = time / fx;
 				var speed = opt / t;
-				var clearTimeId = setInterval(function () {
+				this.clearTimeId = setInterval(function () {
 					var v = parseFloat(el.style.opacity) || 0;
 					v = v * 1000;
 					el.style.opacity = (v - speed) / 1000;
@@ -958,7 +962,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 					if (v - speed < 0) {
 						el.style.opacity = 0;
 						el.style.display = "none";
-						clearInterval(clearTimeId);
+						clearInterval(this.clearTimeId);
 					}
 				}, fx);
 			});
@@ -966,15 +970,15 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 		},
 
 		// fadeToggle
-		fadeToggle: function fadeToggle() {
+		fadeToggle: function fadeToggle(time) {
 
 			Mobile.each(this, function () {
 
 				var _v = m(this).css("display") || "none";
 				if (_v.trim() != "none") {
-					m(this).fadeOut();
+					m(this).fadeOut(time);
 				} else {
-					m(this).fadeIn();
+					m(this).fadeIn(time);
 				}
 			});
 			return this;
@@ -4116,7 +4120,7 @@ var tableview = function (m) {
 		p.find(".mobile-table-view-collapse").hide();
 		p.find(".mobile-table-view-cell").removeClass("active");
 		m(this).addClass("active");
-		m(this).parents(".mobile-table-view-cell").find(".mobile-table-view-collapse").show();
+		m(this).parents(".mobile-table-view-cell").find(".mobile-table-view-collapse").fadeIn(600);
 	});
 }(mobile);
 

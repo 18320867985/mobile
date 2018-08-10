@@ -8,7 +8,7 @@ var tableview=(function(m){
 		p.find(".mobile-table-view-collapse").hide();
 		p.find(".mobile-table-view-cell").removeClass("active");
 		m(this).addClass("active");
-		m(this).parents(".mobile-table-view-cell").find(".mobile-table-view-collapse").show();
+		m(this).parents(".mobile-table-view-cell").find(".mobile-table-view-collapse").fadeIn(600);
 
 	});
 	

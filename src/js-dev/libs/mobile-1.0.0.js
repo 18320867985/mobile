@@ -900,7 +900,7 @@
 		show: function() {
 
 			Mobile.each(this, function(i, el) {
-
+				clearInterval(this.clearTimeId);
 				var _showType = this.showValue || "none";
 				var _nodeName = this.nodeName.toLowerCase();
 				if(_showType == "none") {
@@ -919,7 +919,7 @@
 		hide: function() {
 
 			Mobile.each(this, function(i, el) {
-
+				clearInterval(this.clearTimeId);
 				var _v = m(this).css("display") || "none";
 				this.showValue = _v;
 				this.style.display = "none";
@@ -945,24 +945,29 @@
 		},
 
 		// fadeIn
-		fadeIn: function() {
+		fadeIn: function(time) {
 
 			Mobile.each(this, function(i, el) {
 
 				var _showType = this.showValue || "none";
+				console.log(_showType)
 				var _nodeName = this.nodeName.toLowerCase();
 				if(_showType == "none") {
 					_showType = _getElementType(_nodeName);
+
+				} else {
+
 				}
 
+				clearInterval(this.clearTimeId);
 				this.style.display = _showType;
-				this.style.opacity = 0;
-				var time = 400;
+				this.style.opacity = parseFloat(el.style.opacity) || 0;
+				time =typeof time==="number"? time: 400;
 				var opt = 1000;
 				var fx = 30;
 				var t = time / fx;
 				var speed = opt / t;
-				var clearTimeId = setInterval(function() {
+				this.clearTimeId = setInterval(function() {
 					var v = parseFloat(el.style.opacity) || 0;
 					v = v * 1000;
 					el.style.opacity = (speed + v) / 1000;
@@ -972,7 +977,7 @@
 						el.style.opacity = opt / 1000;
 						el.style.opacity = 1;
 						el.style.display = _showType;
-						clearInterval(clearTimeId);
+						clearInterval(this.clearTimeId);
 					}
 				}, fx);
 
@@ -982,19 +987,21 @@
 		},
 
 		// fadeOut
-		fadeOut: function() {
+		fadeOut: function(time) {
 
 			Mobile.each(this, function(i, el) {
-
+				clearInterval(this.clearTimeId);
 				var _v = m(this).css("display") || "none";
+				if(_v != "none") {
+					this.style.opacity = parseFloat(el.style.opacity) || 1;
+				}
 				this.showValue = _v;
-				this.style.opacity = 1;
-				var time = 400;
+				time =typeof time==="number"? time: 400;
 				var opt = 1000;
 				var fx = 30;
 				var t = time / fx;
 				var speed = opt / t;
-				var clearTimeId = setInterval(function() {
+				this.clearTimeId = setInterval(function() {
 					var v = parseFloat(el.style.opacity) || 0;
 					v = v * 1000;
 					el.style.opacity = (v - speed) / 1000;
@@ -1002,7 +1009,7 @@
 					if((v - speed) < 0) {
 						el.style.opacity = 0;
 						el.style.display = "none";
-						clearInterval(clearTimeId);
+						clearInterval(this.clearTimeId);
 					}
 				}, fx);
 			});
@@ -1010,15 +1017,15 @@
 		},
 
 		// fadeToggle
-		fadeToggle: function() {
+		fadeToggle: function(time) {
 
 			Mobile.each(this, function() {
 
 				var _v = m(this).css("display") || "none";
 				if(_v.trim() != "none") {
-					m(this).fadeOut();
+					m(this).fadeOut(time);
 				} else {
-					m(this).fadeIn();
+					m(this).fadeIn(time);
 				}
 			});
 			return this;
@@ -1572,10 +1579,10 @@
 		//  tap
 		tap: function() {
 			var args = arguments;
-			var fn=function(){};
-			var deletage="";
-			var bl=false;
-			
+			var fn = function() {};
+			var deletage = "";
+			var bl = false;
+
 			Mobile.each(this, function() {
 
 				var isMOve = true; // 判断是否往上拖动
@@ -1605,58 +1612,54 @@
 					event.preventDefault();
 					if(isMOve) {
 						if(typeof fn === "function") {
-							fn.call(event.target,event);
+							fn.call(event.target, event);
 						}
 					}
 				}
-				
-			// 使用事件	
-			if(args.length>=1 && typeof args[0]==="function"){	
-				fn=args[0];
-				bl=args[1]||false;
-				
-				m(this).on("touchstart",start, bl);
-				m(this).on("touchmove", move, bl);
-				m(this).on("touchend", end, bl);
-			}
-			
-			// 使用委托事件	
-			else if(args.length>=2 && typeof args[0]==="string"&& typeof args[1]==="function"){
-				deletage=args[0];
-				fn=args[1];
-				bl=args[2]||false;
-				
-				m(this).on("touchstart", deletage,start, bl);
-				m(this).on("touchmove",deletage, move, bl);
-				m(this).on("touchend",deletage, end, bl);
-			}
-			
-			// 使用委托事件	
-			else if(args.length>=2  && typeof args[0]==="object" && typeof args[1]==="function"){	
-				fn=args[1];
-				bl=args[2]||false;
-				var obj=args[0]
-				
-				m(this).on("touchstart",obj,start, bl);
-				m(this).on("touchmove",obj, move, bl);
-				m(this).on("touchend",obj, end, bl);
-			}
-			
-			
-			// 使用委托事件传值data	
-			else if(args.length>=3 && typeof args[0]==="string"&& typeof args[1]==="object" && typeof args[2]==="function"){
-				deletage=args[0];
-				var obj=args[1]
-				fn=args[2];
-				bl=args[3]||false;
-				
-				m(this).on("touchstart", deletage,obj,start, bl);
-				m(this).on("touchmove",deletage,obj, move, bl);
-				m(this).on("touchend",deletage,obj, end, bl);
-			}
-			
-			
-				
+
+				// 使用事件	
+				if(args.length >= 1 && typeof args[0] === "function") {
+					fn = args[0];
+					bl = args[1] || false;
+
+					m(this).on("touchstart", start, bl);
+					m(this).on("touchmove", move, bl);
+					m(this).on("touchend", end, bl);
+				}
+
+				// 使用委托事件	
+				else if(args.length >= 2 && typeof args[0] === "string" && typeof args[1] === "function") {
+					deletage = args[0];
+					fn = args[1];
+					bl = args[2] || false;
+
+					m(this).on("touchstart", deletage, start, bl);
+					m(this).on("touchmove", deletage, move, bl);
+					m(this).on("touchend", deletage, end, bl);
+				}
+
+				// 使用委托事件	
+				else if(args.length >= 2 && typeof args[0] === "object" && typeof args[1] === "function") {
+					fn = args[1];
+					bl = args[2] || false;
+					var obj = args[0]
+
+					m(this).on("touchstart", obj, start, bl);
+					m(this).on("touchmove", obj, move, bl);
+					m(this).on("touchend", obj, end, bl);
+				}
+
+				// 使用委托事件传值data	
+				else if(args.length >= 3 && typeof args[0] === "string" && typeof args[1] === "object" && typeof args[2] === "function") {
+					deletage = args[0];
+					var obj = args[1]
+					fn = args[2];
+					bl = args[3] || false;
+
+					m(this).on("touchstart", deletage, obj, start, bl);
+					m(this).on("touchmove", deletage, obj, move, bl);
+					m(this).on("touchend", deletage, obj, end, bl);
+				}
 
 			});
 		},
