@@ -864,7 +864,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 				clearInterval(this.clearTimeId);
 				var _showType = this.showValue || "none";
 				var _nodeName = this.nodeName.toLowerCase();
-				if (_showType == "none") {
+				if (_showType === "none") {
 					_showType = _getElementType(_nodeName);
 				}
 
@@ -907,16 +907,30 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 			Mobile.each(this, function (i, el) {
 
-				var _showType = this.showValue || "none";
-				console.log(_showType);
+				clearInterval(this.clearTimeId);
+				var _showType = "";
+				this.isshow = true;
+				if (!this.firstclick) {
+					this.firstclick = true;
+					_showType = m(this).css("display") || "none";
+					if (_showType === "none") {
+						this.style.opacity = 0;
+					} else {
+						this.style.opacity = 1;
+					}
+				} else {
+					_showType = this.showValue || "none";
+					this.style.opacity = parseFloat(m(this).css("opacity")) || 0;
+				}
+
 				var _nodeName = this.nodeName.toLowerCase();
+				var _opacity = parseFloat(m(this).css("opacity")) || 0;
 				if (_showType == "none") {
 					_showType = _getElementType(_nodeName);
-				} else {}
+				}
 
-				clearInterval(this.clearTimeId);
 				this.style.display = _showType;
-				this.style.opacity = parseFloat(el.style.opacity) || 0;
+				this.showValue = _showType;
 				time = typeof time === "number" ? time : 400;
 				var opt = 1000;
 				var fx = 30;
@@ -934,7 +948,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 						el.style.display = _showType;
 						clearInterval(this.clearTimeId);
 					}
-				}, fx);
+				}.bind(this), fx);
 			});
 			return this;
 		},
@@ -944,6 +958,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 			Mobile.each(this, function (i, el) {
 				clearInterval(this.clearTimeId);
+				this.firstclick = true;
+				this.isshow = false;
 				var _v = m(this).css("display") || "none";
 				if (_v != "none") {
 					this.style.opacity = parseFloat(el.style.opacity) || 1;
@@ -964,7 +980,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 						el.style.display = "none";
 						clearInterval(this.clearTimeId);
 					}
-				}, fx);
+				}.bind(this), fx);
 			});
 			return this;
 		},
@@ -973,12 +989,33 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 		fadeToggle: function fadeToggle(time) {
 
 			Mobile.each(this, function () {
-
 				var _v = m(this).css("display") || "none";
-				if (_v.trim() != "none") {
-					m(this).fadeOut(time);
+				if (typeof this.isshow != "undefined") {
+					if (this.isshow) {
+						m(this).fadeOut(time);
+						this.isshow = false;
+					} else {
+						m(this).fadeIn(time);
+						this.isshow = true;
+					}
 				} else {
-					m(this).fadeIn(time);
+					if (_v != "none") {
+						if (!this.firstclick) {
+							m(this).fadeOut(time);
+							this.isshow = false;
+						} else {
+							m(this).fadeIn(time);
+							this.isshow = true;
+						}
+					} else {
+						if (this.firstclick) {
+							m(this).fadeOut(time);
+							this.isshow = false;
+						} else {
+							m(this).fadeIn(time);
+							this.isshow = true;
+						}
+					}
 				}
 			});
 			return this;
