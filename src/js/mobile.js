@@ -19,7 +19,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 	var _mobile = window.mobile = window.m;
 	var _$ = window.$;
 
-	/*创建mobile对象*/
+	// 创建mobile对象
 	var Mobile = window.$ = window.m = window.mobile = function (selector, content) {
 
 		if (typeof selector === "function" && arguments.length === 1) {
@@ -29,10 +29,13 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 		return new Mobile.fn.init(selector, content);
 	};
 
-	Mobile.version = "1.0.0"; // 版本号
-	Mobile.numberList = ["left", "top", "right", "bottom", "width", "height"]; // 可计算值 的列表
+	// 版本号
+	Mobile.version = "1.0.0";
 
-	/*私有函数*/
+	// 可计算值 的列表
+	Mobile.numberList = ["left", "top", "right", "bottom", "width", "height"];
+
+	// 私有函数
 	var _block = ["body", "div", "p", "table", "tr", "thead", "tbody", "tfoot", "h1", "h2", "h3", "h4", "h5", "h6", "article", "aside", "details", "figcaption", "figure", "footer", "header", "hgroup", "main", "menu", "nav", "section", "summary", "ul", "li", "ol", "dl", "dt", "dd", "fieldset"];
 	var _inlineBlock = ["img", "audio", "canvas", "progress", "video", "text-area", "select", "input", "button"];
 
@@ -848,6 +851,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 			return this;
 		},
+
 		//  prepend
 		prepend: function prepend(obj) {
 			if ((typeof obj === "undefined" ? "undefined" : _typeof(obj)) === "object" && obj.length && obj.length > 0) {
@@ -1354,7 +1358,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 	});
 
-	/*bind enevt 绑定事件*/
+	// bind enevt 绑定事件
 	Mobile.fn.extend({
 		on: function on(type) {
 
@@ -1503,8 +1507,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 					/*IE*/
 					this.deattachEvent('on' + type, handler);
 				} else {
+
+					// 直接赋给事件
 					this["on" + type] = null;
-					/*直接赋给事件*/
 				}
 				Mobile.events.off(type, handler);
 			});
@@ -1531,7 +1536,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 		one: function one() {
 			var args = arguments;
 			var $this = this;
-			this.bindOneElementEvent = true; //  只绑定一次事件
+
+			//  只绑定一次事件
+			this.bindOneElementEvent = true;
 			Mobile.each($this, function (i, v) {
 				m(this).on.apply($this, args);
 			});
@@ -1674,7 +1681,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 			});
 		},
 
-		//  scroll
+		// scroll
 		scroll: function scroll(fn, bl) {
 			bl = bl || false;
 			Mobile.each(this, function () {
@@ -1786,6 +1793,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 	// 链接ajax发送的参数数据
 	function _JoinParams(data) {
+
 		// 参数data对象字符
 		var params = [];
 
@@ -1902,7 +1910,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 							try {
 								opt.success(JSON.parse(xhr.responseText), xhr.status, xhr.statusText);
 							} catch (e) {
-								//TODO handle the exception
+								// handle the exception
 								opt.success(xhr.responseText, xhr.status, xhr.statusText);
 							}
 						}
@@ -1995,9 +2003,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 						break;
 					}
 				}
-				//} catch(e) {
-
-				//}
 			}
 		},
 
@@ -2037,17 +2042,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 			}
 			df = null;
 			return df2;
-
-			// Firefox, Mozilla, Opera, etc. 高级浏览才支持
-			//			try {
-			//				var parser = new DOMParser();
-			//				var xmlDoc = parser.parseFromString(txt, "text/html");
-			//				var els = xmlDoc.querySelector("body").childNodes;
-			//				for(var i = 0; i < els.length; i++) {
-			//					df2.appendChild(els[i]);
-			//				}
-			//				return df2;
-			//			} catch(e) {}
 		},
 
 		checkSelector: function checkSelector(el, txt) {
@@ -2225,7 +2219,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 	});
 
-	/**绑定自定义事件函数**/
+	/*绑定自定义事件函数*/
 	Mobile.extend({
 		events: {
 			props: {},

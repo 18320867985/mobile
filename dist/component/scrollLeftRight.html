@@ -6,19 +6,23 @@
 		<title>mobile触摸页面</title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<style type="text/css">
-			 h4 {
+			h4 {
 				height: 30px;
 				line-height: 30px;
 				color: #777;
 				text-align: center;
+				background: #F8F8F8;
 			}
-			 body{
-			 	background: #ccc;
-			 }
-			 .mobile-scroll-leftright{
-			 	margin-bottom: 10px;
-			 }
+			
+			.mobile-scroll-content{
+				
+			}
+			
+			.mobile-scroll-leftright {
+				margin-bottom: 10px;
+			}
 		</style>
+		<link rel="stylesheet" type="text/css" href="../css/font/iconfont.css" />
 		<link rel="stylesheet" type="text/css" href="../css/mobile.css" />
 
 	</head>
@@ -27,8 +31,13 @@
 
 		<!--header-->
 		<header class="mobile-head">
+			<span class="mobile-back iconfont icon-back-left"></span>
+			<h2 class="mobile-head-ttl">左右滑动组件</h2>
+		</header>
+
+		<div class="mobile-tab mobile-tab-top">
 			<h4>定位到中间</h4>
-			<!--左右滑动组建  data-position-left=定位到left data-position-center=定位到center -->
+			<!--左右滑动组件  data-position-left=定位到left data-position-center=定位到center -->
 			<nav class="mobile-scroll-leftright" data-position-center>
 				<ul class="mobile-scroll-content">
 					<li class="active">
@@ -64,6 +73,7 @@
 
 				</ul>
 			</nav>
+
 			<h4>定位到左边</h4>
 			<!--左右滑动组建  data-position-left=定位到left data-position-center=定位到center -->
 			<nav class="mobile-scroll-leftright" data-position-left>
@@ -101,6 +111,7 @@
 
 				</ul>
 			</nav>
+
 			<h4>内容小的window窗体</h4>
 			<!--左右滑动组建  data-position-left=定位到left data-position-center=定位到center -->
 			<nav class="mobile-scroll-leftright" data-position-center>
@@ -121,12 +132,7 @@
 				</ul>
 			</nav>
 
-		</header>
-
-		<!--content-->
-		<section class="mobile-content mobile-scroll-topbottom">
-
-		</section>
+		</div>
 
 		<!--footer-->
 		<footer>

@@ -97,13 +97,16 @@
 		</div>
 	
 	<hr />
-	<button class="btn10" type="button">toggleClass</button>
-		<p class="a b">2</p>
-		<p>2</p>
-		<p>2</p>
+	<div id="tap">
+		
+		<img src="../dist/images/2段奶粉.png"/>
+		
+	</div>
+
 
 		<script src="../src/js-dev/libs/mobile-1.0.0.js" type="text/javascript" charset="utf-8"></script>
 		<!--<script src="js/jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script>-->
+		<!--	<script src="js/zepto.js" type="text/javascript" charset="utf-8"></script>-->
 		<script type="text/javascript">
 			m(".btn").click(function() {
 				m(".animate").fadeIn(2000);
@@ -117,10 +120,10 @@
 			});
 			
 			m(".btn4").click(function() {
-				m(".animate").show(2000);
+				m(".animate").show();
 			});
 			m(".btn5").click(function() {
-				m(".animate").hide(2000);
+				m(".animate").hide();
 			});
 			
 			m(".btn6").click(function() {
@@ -130,6 +133,12 @@
 			m(".btn10").click(function() {
 				m("p").toggleClass("a");
 			});
+			
+			$("#tap").on("click","img",{name:124},fn);
+			
+			function fn(event){
+				console.log(event.target)
+			}
 		</script>
 	</body>
 

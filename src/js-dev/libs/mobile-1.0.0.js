@@ -5,11 +5,12 @@
 (function() {
 
 	"use strict"
+	
 	// 冲突Mobile兼容
 	var _mobile = window.mobile = window.m;
 	var _$ = window.$;
 
-	/*创建mobile对象*/
+	// 创建mobile对象
 	var Mobile = window.$ = window.m = window.mobile = function(selector, content) {
 
 		if(typeof selector === "function" && arguments.length === 1) {
@@ -18,11 +19,14 @@
 		};
 		return new Mobile.fn.init(selector, content);
 	};
+	
+	// 版本号
+	Mobile.version = "1.0.0"; 
+	
+	// 可计算值 的列表
+	Mobile.numberList = ["left", "top", "right", "bottom", "width", "height"]; 
 
-	Mobile.version = "1.0.0"; // 版本号
-	Mobile.numberList = ["left", "top", "right", "bottom", "width", "height"]; // 可计算值 的列表
-
-	/*私有函数*/
+	// 私有函数
 	var _block = ["body", "div", "p", "table", "tr", "thead", "tbody", "tfoot", "h1", "h2", "h3", "h4", "h5", "h6", "article",
 		"aside", "details", "figcaption", "figure", "footer", "header", "hgroup", "main", "menu", "nav", "section", "summary",
 		"ul", "li", "ol", "dl", "dt", "dd", "fieldset"
@@ -389,7 +393,7 @@
 
 			return this;
 		},
-		
+
 		// toggleClass
 		toggleClass: function(className) {
 
@@ -406,12 +410,12 @@
 				Mobile.each(this, function() {
 					for(var y = 0; y < className.length; y++) {
 						if(className[y]) {
-							if(this.classList.contains(className[y])){
+							if(this.classList.contains(className[y])) {
 								this.classList.remove(className[y]);
-							}else{
+							} else {
 								this.classList.add(className[y]);
 							}
-							
+
 						}
 
 					}
@@ -890,6 +894,7 @@
 
 			return this;
 		},
+
 		//  prepend
 		prepend: function(obj) {
 			if(typeof obj === "object" && obj.length && obj.length > 0) {
@@ -1420,7 +1425,7 @@
 
 	});
 
-	/*bind enevt 绑定事件*/
+	// bind enevt 绑定事件
 	Mobile.fn.extend({
 		on: function(type) {
 
@@ -1571,8 +1576,10 @@
 				else if(this.deattachEvent) { /*IE*/
 					this.deattachEvent('on' + type, handler);
 				} else {
+
+					// 直接赋给事件
 					this["on" + type] = null;
-					/*直接赋给事件*/
+
 				}
 				Mobile.events.off(type, handler);
 			});
@@ -1601,7 +1608,9 @@
 		one: function() {
 			var args = arguments;
 			var $this = this;
-			this.bindOneElementEvent = true; //  只绑定一次事件
+
+			//  只绑定一次事件
+			this.bindOneElementEvent = true;
 			Mobile.each($this, function(i, v) {
 				m(this).on.apply($this, args);
 
@@ -1655,13 +1664,13 @@
 			var deletage = "";
 			var bl = false;
 
-			Mobile.each(this, function(i,v) {
+			Mobile.each(this, function(i, v) {
 
 				var isMOve = true; // 判断是否往上拖动
 
 				var startX = 0;
 				var startY = 0;
-				var isDeleDageTarget=true;  // 是否是委托事件
+				var isDeleDageTarget = true; // 是否是委托事件
 
 				function start(event) {
 					event.preventDefault();
@@ -1684,10 +1693,10 @@
 				function end(event) {
 					event.preventDefault();
 					var _target;
-					if(isDeleDageTarget){
-						_target=this;
-					}else{
-						_target=event.target;
+					if(isDeleDageTarget) {
+						_target = this;
+					} else {
+						_target = event.target;
 					}
 					if(isMOve) {
 						if(typeof fn === "function") {
@@ -1700,7 +1709,7 @@
 				if(args.length >= 1 && typeof args[0] === "function") {
 					fn = args[0];
 					bl = args[1] || false;
-					isDeleDageTarget=true;
+					isDeleDageTarget = true;
 
 					m(this).on("touchstart", start, bl);
 					m(this).on("touchmove", move, bl);
@@ -1712,7 +1721,7 @@
 					deletage = args[0];
 					fn = args[1];
 					bl = args[2] || false;
-					isDeleDageTarget=false;
+					isDeleDageTarget = false;
 
 					m(this).on("touchstart", deletage, start, bl);
 					m(this).on("touchmove", deletage, move, bl);
@@ -1724,7 +1733,7 @@
 					fn = args[1];
 					bl = args[2] || false;
 					var obj = args[0]
-					isDeleDageTarget=true;
+					isDeleDageTarget = true;
 					m(this).on("touchstart", obj, start, bl);
 					m(this).on("touchmove", obj, move, bl);
 					m(this).on("touchend", obj, end, bl);
@@ -1736,7 +1745,7 @@
 					var obj = args[1]
 					fn = args[2];
 					bl = args[3] || false;
-					isDeleDageTarget=false;
+					isDeleDageTarget = false;
 
 					m(this).on("touchstart", deletage, obj, start, bl);
 					m(this).on("touchmove", deletage, obj, move, bl);
@@ -1746,7 +1755,7 @@
 			});
 		},
 
-		//  scroll
+		// scroll
 		scroll: function(fn, bl) {
 			bl = bl || false;
 			Mobile.each(this, function() {
@@ -1864,6 +1873,7 @@
 
 	// 链接ajax发送的参数数据
 	function _JoinParams(data) {
+
 		// 参数data对象字符
 		var params = [];
 
@@ -1985,7 +1995,7 @@
 							try {
 								opt.success(JSON.parse(xhr.responseText), xhr.status, xhr.statusText);
 							} catch(e) {
-								//TODO handle the exception
+								// handle the exception
 								opt.success(xhr.responseText, xhr.status, xhr.statusText);
 							}
 						}
@@ -2082,10 +2092,6 @@
 						break;
 					}
 				}
-				//} catch(e) {
-
-				//}
-
 			}
 		},
 
@@ -2127,17 +2133,6 @@
 			}
 			df = null;
 			return df2;
-
-			// Firefox, Mozilla, Opera, etc. 高级浏览才支持
-			//			try {
-			//				var parser = new DOMParser();
-			//				var xmlDoc = parser.parseFromString(txt, "text/html");
-			//				var els = xmlDoc.querySelector("body").childNodes;
-			//				for(var i = 0; i < els.length; i++) {
-			//					df2.appendChild(els[i]);
-			//				}
-			//				return df2;
-			//			} catch(e) {}
 
 		},
 
@@ -2327,7 +2322,7 @@
 
 	});
 
-	/**绑定自定义事件函数**/
+	/*绑定自定义事件函数*/
 	Mobile.extend({
 		events: {
 			props: {},
