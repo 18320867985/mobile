@@ -314,31 +314,8 @@ var tab = (function(m) {
 
 	}
 
-	// mobile-tab-nav 头部 左右滑动点击
-	var isMOve_tab = true;
-	var startX_tab = 0;
-	var startY_tab = 0;
-	m(".mobile-tab-nav").on("touchstart", "li", function(event) {
-
-		var touch = event.changedTouches[0];
-		startX_tab = touch.clientX;
-		startY_tab = touch.clientY;
-		isMOve_tab = true;
-
-	});
-	m(".mobile-tab-nav").on("touchmove", "li", function(event) {
-		var touch = event.changedTouches[0];
-		var nowX = touch.clientX;
-		var nowY = touch.clientY;
-		var dis = nowX - startX;
-		if(Math.abs(nowX - startX_tab) > 1 || Math.abs(nowY - startY_tab) > 1) {
-			isMOve_tab = false;
-		}
-
-	});
-	m(".mobile-tab-nav").on("touchend", "li", function(event) {
-
-		if(isMOve_tab) {
+	
+		m(".mobile-tab-nav").tap("li", function(event) {
 
 			// 添加样式
 			var $this = m(this);
@@ -388,7 +365,7 @@ var tab = (function(m) {
 			// 标签下面线条
 			setLineTransleateX($this);
 
-		}
+	
 
 	});
 

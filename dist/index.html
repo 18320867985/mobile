@@ -5,25 +5,95 @@
 		<meta charset="UTF-8">
 		<title></title>
 		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<link rel="stylesheet" type="text/css" href="css/font/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="css/mobile.css" />
 
 	</head>
 
-	<body>
-		<h1 data-id-name="123">mobile</h1>
-		<script src="js-dev/libs/mobile-1.0.0.js" type="text/javascript" charset="utf-8"></script>
+	<body><!--head-->
+		<div class="mobile-head">
+			<h2 class="mobile-head-ttl">触摸页面</h2>
+		</div>
+		
+		<section class="mobile-content mobile-scroll-topbottom mobile-link" data-scroll-top data-scroll-bottom>
+			<div class="mobile-scroll-content">
+
+				
+				<div class="mobile-title">
+					触摸页面
+				</div>
+				<ul class="mobile-table-view mobile-table-view-rd">
+					<li class="mobile-table-view-cell ">
+						<h5 class="mobile-table-view-ttl a">
+							产品
+						</h5>
+						<span class="iconfont icon-back-right"></span>
+						<!--折叠div-->
+						<ul class="mobile-table-view-collapse ">
+							<li class="mobile-table-view-cell ">
+								<a class="mui-navigate-right" href="#">iOS</a>
+								<span class="iconfont icon-back-right"></span>
+							</li>
+							<li class="mobile-table-view-cell">
+								<a class="mui-navigate-right" href="#">Android</a>
+								<span class="iconfont icon-back-right"></span>
+							</li>
+							<li class="mobile-table-view-cell">
+								<a class="mui-navigate-right" href="#">HTML5</a>
+								<span class="iconfont icon-back-right"></span>
+							</li>
+						</ul>
+					</li>
+
+					<li class="mobile-table-view-cell">
+						<h5 class="mobile-table-view-ttl ">
+							方案
+						</h5>
+						<span class="iconfont icon-back-right"></span>
+						<!--折叠div-->
+						<ul class="mobile-table-view-collapse ">
+							<li class="mobile-table-view-cell">
+								<a class="mui-navigate-right" href="#">PC方案</a>
+								<span class="iconfont icon-back-right"></span>
+							</li>
+							<li class="mobile-table-view-cell">
+								<a class="mui-navigate-right" href="#">手机方案</a>
+								<span class="iconfont icon-back-right"></span>
+							</li>
+							<li class="mobile-table-view-cell">
+								<a class="mui-navigate-right" href="#">TV方案</a>
+								<span class="iconfont icon-back-right"></span>
+							</li>
+						</ul>
+					</li>
+					<li class="mobile-table-view-cell">
+						<h5 class="mobile-table-view-ttl">
+							新闻
+						</h5>
+						<span class="iconfont icon-back-right"></span>
+						<!--折叠div-->
+						<ul class="mobile-table-view-collapse ">
+							<li class="mobile-table-view-cell">
+								<a class="mui-navigate-right" href="#">公司新闻</a>
+								<span class="iconfont icon-back-right"></span>
+							</li>
+							<li class="mobile-table-view-cell">
+								<a class="mui-navigate-right" href="#">行业新闻</a>
+								<span class="iconfont icon-back-right"></span>
+							</li>
+
+						</ul>
+
+					</li>
+				</ul>
+
+			</div>
+
+		</section>
+
+		<script src="js/mobile.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
-			m("h1").on("click","h1",function(event) {
-				
-				console.log(event);
-				event.stopPropagation();
-				m(document).one("click", function(event) {
-					console.log("2");
-				});
-				
-			});
-			m(document).one("click", function(event) {
-					console.log("2");
-				});
+			
 		</script>
 
 	</body>

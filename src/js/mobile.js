@@ -1364,7 +1364,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 			// 正常绑定事件
 			if (arguments.length >= 2 && typeof arguments[1] === "function") {
 				var f = function f(event) {
-					handler.call(event.target, event);
+					handler.call(this, event);
 
 					// m(el).one()只绑定一次事件
 					if (isonebind) {
@@ -1396,7 +1396,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 			if (arguments.length >= 3 && _typeof(arguments[1]) === "object" && typeof arguments[2] === "function") {
 				var _f = function _f(event) {
 					event.data = obj;
-					handler.call(event.target, event);
+					handler.call(this, event);
 
 					// m(el).one()只绑定一次事件
 					if (isonebind) {
@@ -1584,12 +1584,13 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 			var deletage = "";
 			var bl = false;
 
-			Mobile.each(this, function () {
+			Mobile.each(this, function (i, v) {
 
 				var isMOve = true; // 判断是否往上拖动
 
 				var startX = 0;
 				var startY = 0;
+				var isDeleDageTarget = true; // 是否是委托事件
 
 				function start(event) {
 					event.preventDefault();
@@ -1611,9 +1612,15 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 				function end(event) {
 					event.preventDefault();
+					var _target;
+					if (isDeleDageTarget) {
+						_target = this;
+					} else {
+						_target = event.target;
+					}
 					if (isMOve) {
 						if (typeof fn === "function") {
-							fn.call(event.target, event);
+							fn.call(_target, event);
 						}
 					}
 				}
@@ -1622,6 +1629,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 				if (args.length >= 1 && typeof args[0] === "function") {
 					fn = args[0];
 					bl = args[1] || false;
+					isDeleDageTarget = true;
 
 					m(this).on("touchstart", start, bl);
 					m(this).on("touchmove", move, bl);
@@ -1633,18 +1641,19 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 						deletage = args[0];
 						fn = args[1];
 						bl = args[2] || false;
+						isDeleDageTarget = false;
 
 						m(this).on("touchstart", deletage, start, bl);
 						m(this).on("touchmove", deletage, move, bl);
 						m(this).on("touchend", deletage, end, bl);
 					}
 
-					// 使用委托事件	
+					// 使用事件data		
 					else if (args.length >= 2 && _typeof(args[0]) === "object" && typeof args[1] === "function") {
 							fn = args[1];
 							bl = args[2] || false;
 							var obj = args[0];
-
+							isDeleDageTarget = true;
 							m(this).on("touchstart", obj, start, bl);
 							m(this).on("touchmove", obj, move, bl);
 							m(this).on("touchend", obj, end, bl);
@@ -1656,6 +1665,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 								var obj = args[1];
 								fn = args[2];
 								bl = args[3] || false;
+								isDeleDageTarget = false;
 
 								m(this).on("touchstart", deletage, obj, start, bl);
 								m(this).on("touchmove", deletage, obj, move, bl);
@@ -3596,77 +3606,55 @@ var tab = function (m) {
 		}
 	}
 
-	// mobile-tab-nav 头部 左右滑动点击
-	var isMOve_tab = true;
-	var startX_tab = 0;
-	var startY_tab = 0;
-	m(".mobile-tab-nav").on("touchstart", "li", function (event) {
+	m(".mobile-tab-nav").tap("li", function (event) {
 
-		var touch = event.changedTouches[0];
-		startX_tab = touch.clientX;
-		startY_tab = touch.clientY;
-		isMOve_tab = true;
-	});
-	m(".mobile-tab-nav").on("touchmove", "li", function (event) {
-		var touch = event.changedTouches[0];
-		var nowX = touch.clientX;
-		var nowY = touch.clientY;
-		if (Math.abs(nowX - startX_tab) > 1 || Math.abs(nowY - startY_tab) > 1) {
-			isMOve_tab = false;
+		// 添加样式
+		var $this = m(this);
+		$this.siblings().removeClass("active");
+		$this.addClass("active");
+
+		var id = $this.attr("data-target");
+		var obj = m(id);
+
+		// tuochend 发生的事件
+		$this.emit("tabnavend", {
+			el: this
+		});
+
+		var p = obj.parents(".mobile-tab-slide-list");
+		// add active
+		p.find(".mobile-tab-slide-item").removeClass("active");
+		obj.addClass("active");
+		var left = m(obj).offset().left;
+		m(p).setTransform("translateX", -left);
+		var istransition = m(obj).parents(".mobile-tab-slide").hasAttr("data-transition");
+		if (istransition) {
+			m(p).transition("all", 500);
+		} else {
+			m(p).transition("null");
 		}
-	});
-	m(".mobile-tab-nav").on("touchend", "li", function (event) {
 
-		if (isMOve_tab) {
+		// 是否允许触发事件
+		var isTrigger = $this.parents(".mobile-tab-nav").hasAttr("data-trigger");
+		var el_content = obj.find(".mobile-scroll-content");
 
-			// 添加样式
-			var $this = m(this);
-			$this.siblings().removeClass("active");
-			$this.addClass("active");
-
-			var id = $this.attr("data-target");
-			var obj = m(id);
-
-			// tuochend 发生的事件
-			$this.emit("tabnavend", {
-				el: this
-			});
-
-			var p = obj.parents(".mobile-tab-slide-list");
-			// add active
-			p.find(".mobile-tab-slide-item").removeClass("active");
-			obj.addClass("active");
-			var left = m(obj).offset().left;
-			m(p).setTransform("translateX", -left);
-			var istransition = m(obj).parents(".mobile-tab-slide").hasAttr("data-transition");
-			if (istransition) {
-				m(p).transition("all", 500);
-			} else {
-				m(p).transition("null");
-			}
-
-			// 是否允许触发事件
-			var isTrigger = $this.parents(".mobile-tab-nav").hasAttr("data-trigger");
-			var el_content = obj.find(".mobile-scroll-content");
-
-			if (el_content.length <= 0) {
-				el_content = obj;
-			}
-
-			if (isTrigger) {
-				if (!el_content.hasAttr("data-trigger")) {
-					el_content.emit("scrollloading", {
-						el: el_content.eq(0),
-						isLoading: true,
-						loading: el_content.find(".mobile-loading")
-
-					});
-				}
-			}
-
-			// 标签下面线条
-			setLineTransleateX($this);
+		if (el_content.length <= 0) {
+			el_content = obj;
 		}
+
+		if (isTrigger) {
+			if (!el_content.hasAttr("data-trigger")) {
+				el_content.emit("scrollloading", {
+					el: el_content.eq(0),
+					isLoading: true,
+					loading: el_content.find(".mobile-loading")
+
+				});
+			}
+		}
+
+		// 标签下面线条
+		setLineTransleateX($this);
 	});
 
 	//mobile-tab-nav 标签下面线条 
@@ -4183,16 +4171,27 @@ var tableview = function (m) {
 
 	m(".mobile-table-view ").tap(".mobile-table-view-ttl", function (event) {
 		event.preventDefault();
+		tableviewfn.call(this, event);
+	});
+
+	m(".mobile-table-view ").tap(".iconfont", function (event) {
+		event.preventDefault();
+		tableviewfn.call(this, event);
+	});
+
+	function tableviewfn(event) {
 		var p = m(this).closest(".mobile-table-view-cell");
 		p.siblings().find(".mobile-table-view-collapse").hide();
 		p.siblings().find(".mobile-table-view-ttl").removeClass("active");
-		m(this).toggleClass("active");
+		p.find(".mobile-table-view-ttl").toggleClass("active");
+		p.siblings().find(".iconfont").removeClass("active");
+		p.find(".iconfont").toggleClass("active");
 
 		p.siblings().find(".mobile-table-view-collapse").removeClass("active");
 		var curt = m(this).parents(".mobile-table-view-cell").find(".mobile-table-view-collapse");
 		curt.fadeToggle();
 		curt.addClass("active");
-	});
+	}
 }(mobile);
 
 exports.reset = reset;

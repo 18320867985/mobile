@@ -51,7 +51,17 @@
             width: 10%;
             font-size: 20rem/$rem;
             color: #999;
+            
         }
+        .mobile-table-view-ttl+.iconfont{
+              transform: rotate(90deg);
+                transition: all .5s;
+            &.active{
+                  transform:  rotate(-90deg);
+                
+            }
+        }
+        
       
     }
 }

@@ -40,7 +40,7 @@
     float: left;
     height: 2rem;
     line-height: 2rem;
-    width: 70%;
+    width: 100%;
     margin: 0 auto;
     font-size: .7rem;
     text-align: center;
@@ -48,9 +48,15 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-  
+ 
     
   
 }
+
+.mobile-back +.mobile-head-ttl {
+     width: 70%; 
+    
+  }
+  
 
 

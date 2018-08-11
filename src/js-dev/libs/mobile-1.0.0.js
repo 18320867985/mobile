@@ -1433,7 +1433,7 @@
 				var bl = typeof arguments[2] === "boolean" ? arguments[2] : false;
 
 				function f(event) {
-					handler.call(event.target, event);
+					handler.call(this, event);
 
 					// m(el).one()只绑定一次事件
 					if(isonebind) {
@@ -1466,7 +1466,7 @@
 
 				function f(event) {
 					event.data = obj;
-					handler.call(event.target, event);
+					handler.call(this, event);
 
 					// m(el).one()只绑定一次事件
 					if(isonebind) {
@@ -1655,12 +1655,13 @@
 			var deletage = "";
 			var bl = false;
 
-			Mobile.each(this, function() {
+			Mobile.each(this, function(i,v) {
 
 				var isMOve = true; // 判断是否往上拖动
 
 				var startX = 0;
 				var startY = 0;
+				var isDeleDageTarget=true;  // 是否是委托事件
 
 				function start(event) {
 					event.preventDefault();
@@ -1682,9 +1683,15 @@
 
 				function end(event) {
 					event.preventDefault();
+					var _target;
+					if(isDeleDageTarget){
+						_target=this;
+					}else{
+						_target=event.target;
+					}
 					if(isMOve) {
 						if(typeof fn === "function") {
-							fn.call(event.target, event);
+							fn.call(_target, event);
 						}
 					}
 				}
@@ -1693,6 +1700,7 @@
 				if(args.length >= 1 && typeof args[0] === "function") {
 					fn = args[0];
 					bl = args[1] || false;
+					isDeleDageTarget=true;
 
 					m(this).on("touchstart", start, bl);
 					m(this).on("touchmove", move, bl);
@@ -1704,18 +1712,19 @@
 					deletage = args[0];
 					fn = args[1];
 					bl = args[2] || false;
+					isDeleDageTarget=false;
 
 					m(this).on("touchstart", deletage, start, bl);
 					m(this).on("touchmove", deletage, move, bl);
 					m(this).on("touchend", deletage, end, bl);
 				}
 
-				// 使用委托事件	
+				// 使用事件data		
 				else if(args.length >= 2 && typeof args[0] === "object" && typeof args[1] === "function") {
 					fn = args[1];
 					bl = args[2] || false;
 					var obj = args[0]
-
+					isDeleDageTarget=true;
 					m(this).on("touchstart", obj, start, bl);
 					m(this).on("touchmove", obj, move, bl);
 					m(this).on("touchend", obj, end, bl);
@@ -1727,6 +1736,7 @@
 					var obj = args[1]
 					fn = args[2];
 					bl = args[3] || false;
+					isDeleDageTarget=false;
 
 					m(this).on("touchstart", deletage, obj, start, bl);
 					m(this).on("touchmove", deletage, obj, move, bl);
