@@ -374,6 +374,34 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 			return this;
 		},
 
+		// toggleClass
+		toggleClass: function toggleClass(className) {
+
+			if (typeof className === "string") {
+				className = className.split(/\s+/);
+			} else {
+
+				return this;
+			}
+
+			if (arguments.length === 1) {
+
+				Mobile.each(this, function () {
+					for (var y = 0; y < className.length; y++) {
+						if (className[y]) {
+							if (this.classList.contains(className[y])) {
+								this.classList.remove(className[y]);
+							} else {
+								this.classList.add(className[y]);
+							}
+						}
+					}
+				});
+			}
+
+			return this;
+		},
+
 		//  hasclass
 		hasClass: function hasClass(className) {
 			var ishasClass = false;
@@ -862,6 +890,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 			Mobile.each(this, function (i, el) {
 				clearInterval(this.clearTimeId);
+				this.isshow = true;
 				var _showType = this.showValue || "none";
 				var _nodeName = this.nodeName.toLowerCase();
 				if (_showType === "none") {
@@ -879,6 +908,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 			Mobile.each(this, function (i, el) {
 				clearInterval(this.clearTimeId);
+				this.isshow = false;
 				var _v = m(this).css("display") || "none";
 				this.showValue = _v;
 				this.style.display = "none";
@@ -4153,11 +4183,15 @@ var tableview = function (m) {
 
 	m(".mobile-table-view ").tap(".mobile-table-view-ttl", function (event) {
 		event.preventDefault();
-		var p = m(this).closest(".mobile-table-view");
-		p.find(".mobile-table-view-collapse").hide();
-		p.find(".mobile-table-view-cell").removeClass("active");
-		m(this).addClass("active");
-		m(this).parents(".mobile-table-view-cell").find(".mobile-table-view-collapse").fadeIn(600);
+		var p = m(this).closest(".mobile-table-view-cell");
+		p.siblings().find(".mobile-table-view-collapse").hide();
+		p.siblings().find(".mobile-table-view-ttl").removeClass("active");
+		m(this).toggleClass("active");
+
+		p.siblings().find(".mobile-table-view-collapse").removeClass("active");
+		var curt = m(this).parents(".mobile-table-view-cell").find(".mobile-table-view-collapse");
+		curt.fadeToggle();
+		curt.addClass("active");
 	});
 }(mobile);
 

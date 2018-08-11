@@ -25,6 +25,8 @@
         &+.mobile-table-view-cell {
             border-top: 1px solid #ddd;
         }
+        
+        >.mobile-table-view-ttl,
         a {
             display: flex;
             width: 90%;
@@ -35,6 +37,13 @@
             word-wrap: break-word;
             overflow-x: hidden;
         }
+         >.mobile-table-view-ttl{
+             font-size: 15rem/$rem;
+             color:#777;
+             &.active{
+                 color:$active-color;
+             }
+         }
         .iconfont {
             display: flex;
             justify-content: center;

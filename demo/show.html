@@ -82,10 +82,13 @@
 
 	<body>
 		<div>
-
-			<button class="btn" type="button">show</button>
-			<button class="btn2" type="button">hide</button>
-			<button class="btn3" type="button">toggle</button>
+			<button class="btn4" type="button">show</button>
+			<button class="btn5" type="button">hide</button>
+			<button class="btn6" type="button">toggle</button>
+			<hr />
+			<button class="btn" type="button">fadeIn</button>
+			<button class="btn2" type="button">fadeOut</button>
+			<button class="btn3" type="button">fadeInToggle</button>
 
 		</div>
 
@@ -93,7 +96,9 @@
 
 		</div>
 	
-		<p>2</p>
+	<hr />
+	<button class="btn10" type="button">toggleClass</button>
+		<p class="a b">2</p>
 		<p>2</p>
 		<p>2</p>
 
@@ -108,7 +113,22 @@
 			});
 			
 			m(".btn3").click(function() {
+				m(".animate").fadeToggle(2000);
+			});
+			
+			m(".btn4").click(function() {
+				m(".animate").show(2000);
+			});
+			m(".btn5").click(function() {
+				m(".animate").hide(2000);
+			});
+			
+			m(".btn6").click(function() {
 				m(".animate").toggle(2000);
+			});
+			
+			m(".btn10").click(function() {
+				m("p").toggleClass("a");
 			});
 		</script>
 	</body>

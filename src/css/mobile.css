@@ -955,6 +955,7 @@ select option {
     font-size: 0.7rem; }
     .mobile-table-view > .mobile-table-view-cell + .mobile-table-view-cell {
       border-top: 1px solid #ddd; }
+    .mobile-table-view > .mobile-table-view-cell > .mobile-table-view-ttl,
     .mobile-table-view > .mobile-table-view-cell a {
       display: -webkit-box;
       display: -ms-flexbox;
@@ -970,6 +971,11 @@ select option {
       white-space: nowrap;
       word-wrap: break-word;
       overflow-x: hidden; }
+    .mobile-table-view > .mobile-table-view-cell > .mobile-table-view-ttl {
+      font-size: 0.75rem;
+      color: #777; }
+      .mobile-table-view > .mobile-table-view-cell > .mobile-table-view-ttl.active {
+        color: #690; }
     .mobile-table-view > .mobile-table-view-cell .iconfont {
       display: -webkit-box;
       display: -ms-flexbox;

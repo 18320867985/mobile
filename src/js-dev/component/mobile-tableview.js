@@ -4,11 +4,15 @@ var tableview=(function(m){
 	
 	 m(".mobile-table-view ").tap(".mobile-table-view-ttl",function(event){
 	 	event.preventDefault();
-		var p=m(this).closest(".mobile-table-view");
-		p.find(".mobile-table-view-collapse").hide();
-		p.find(".mobile-table-view-cell").removeClass("active");
-		m(this).addClass("active");
-		m(this).parents(".mobile-table-view-cell").find(".mobile-table-view-collapse").fadeIn(600);
+		var p=m(this).closest(".mobile-table-view-cell");
+		p.siblings().find(".mobile-table-view-collapse").hide();
+		p.siblings().find(".mobile-table-view-ttl").removeClass("active");
+		m(this).toggleClass("active");
+		
+		p.siblings().find(".mobile-table-view-collapse").removeClass("active");
+		var curt= m(this).parents(".mobile-table-view-cell").find(".mobile-table-view-collapse");
+		curt.fadeToggle();
+		curt.addClass("active");
 
 	});
 	

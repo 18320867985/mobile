@@ -389,6 +389,38 @@
 
 			return this;
 		},
+		
+		// toggleClass
+		toggleClass: function(className) {
+
+			if(typeof className === "string") {
+				className = className.split(/\s+/);
+
+			} else {
+
+				return this;
+			}
+
+			if(arguments.length === 1) {
+
+				Mobile.each(this, function() {
+					for(var y = 0; y < className.length; y++) {
+						if(className[y]) {
+							if(this.classList.contains(className[y])){
+								this.classList.remove(className[y]);
+							}else{
+								this.classList.add(className[y]);
+							}
+							
+						}
+
+					}
+				});
+
+			}
+
+			return this;
+		},
 
 		//  hasclass
 		hasClass: function(className) {
@@ -901,6 +933,7 @@
 
 			Mobile.each(this, function(i, el) {
 				clearInterval(this.clearTimeId);
+				this.isshow = true;
 				var _showType = this.showValue || "none";
 				var _nodeName = this.nodeName.toLowerCase();
 				if(_showType === "none") {
@@ -920,6 +953,7 @@
 
 			Mobile.each(this, function(i, el) {
 				clearInterval(this.clearTimeId);
+				this.isshow = false;
 				var _v = m(this).css("display") || "none";
 				this.showValue = _v;
 				this.style.display = "none";
