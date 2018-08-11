@@ -3,7 +3,6 @@
 .mobile-table-view {
     display: flex;
     flex-flow: column nowrap;
-   
     border-top: 1px solid #ddd;
     border-bottom: 1px solid #ddd;
     background: #fff;
@@ -19,20 +18,21 @@
         display: flex;
         flex-flow: row wrap;
         align-content: space-between;
-        padding: 10rem/$rem;
-        margin-left: 15rem/$rem;
+        margin-left: 10rem/$rem;
         font-size: 14rem/$rem;
+       
         &+.mobile-table-view-cell {
             border-top: 1px solid #ddd;
         }
         
         >.mobile-table-view-ttl,
-        a {
+        >a {
             display: flex;
             width: 90%;
             justify-content: flex-start;
             align-items: center;
             text-overflow: ellipsis;
+             padding: 10rem/$rem;
             white-space: nowrap;
             word-wrap: break-word;
             overflow-x: hidden;
@@ -67,20 +67,15 @@
 }
 
 .mobile-table-view-collapse {
-  
-    margin-top: 10px;
+ 
     width: 100%;
     background: #f8f8f8;
     display: none;
-//  display: flex;
-//  flex-flow: column nowrap;
-   
+    margin-left: 15rem/$rem;
     >.mobile-table-view-cell {
         display: flex;
         flex-flow: row wrap;
         align-content: flex-start;
-        padding: 10rem/$rem;
-          padding-left: 15rem/$rem;
         font-size: 14rem/$rem;
         &+.mobile-table-view-cell {
             border-top: 1px solid #ddd;
@@ -90,6 +85,7 @@
             width: 90%;
             justify-content: flex-start;
             align-items: center;
+             padding: 10rem/$rem;
             text-overflow: ellipsis;
             white-space: nowrap;
             word-wrap: break-word;
