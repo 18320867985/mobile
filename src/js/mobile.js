@@ -1594,6 +1594,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 			Mobile.each(this, function (i, v) {
 
 				var isMOve = true; // 判断是否往上拖动
+				var isMOveFirst = true;
 
 				var startX = 0;
 				var startY = 0;
@@ -1602,6 +1603,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 				function start(event) {
 					event.preventDefault();
 					isMOve = true;
+					isMOveFirst = true;
 					var touch = event.changedTouches[0];
 					startX = touch.clientX;
 					startY = touch.clientY;
@@ -1612,8 +1614,11 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 					var touch = event.changedTouches[0];
 					var nowX = touch.clientX;
 					var nowY = touch.clientY;
-					if (Math.abs(nowX - startX) > 1 || Math.abs(nowY - startY) > 1) {
+					var _x = Math.abs(nowX - startX);
+					var _y = Math.abs(nowY - startY);
+					if ((_x > 1 || _y > 1) && isMOveFirst) {
 						isMOve = false;
+						isMOveFirst = false;
 					}
 				}
 
@@ -2543,6 +2548,7 @@ var scrollTopBottom = function (m) {
 		var startY = 0;
 		var startX = 0;
 		var isLink = true;
+		var isLinkFirst = true;
 		var isAddMoveEvent = false; // 判断是否往上拖动
 		var isAddMoveEventFirst = true; // 判断是否第一往上拖动
 		var dis = 0;
@@ -2582,6 +2588,7 @@ var scrollTopBottom = function (m) {
 			startY = touch.clientY;
 			startX = touch.clientX;
 			isLink = true;
+			isLinkFirst = true;
 			speedDcrt = "auto"; //速度方向
 
 			if (isManyContent) {
@@ -2627,10 +2634,6 @@ var scrollTopBottom = function (m) {
 			event.preventDefault();
 			window_h = m(scrolltb).height();
 
-			// 检查是否向上移动
-			if (isAddMoveEvent) {
-				return;
-			}
 			var touch = event.touches[0];
 			var nowY = touch.clientY;
 			dis = nowY - startY;
@@ -2638,8 +2641,12 @@ var scrollTopBottom = function (m) {
 			var disX = nowX - startX;
 			var disY = nowY - startY;
 
-			if (Math.abs(nowX - startX) > 1 || Math.abs(nowY - startY) > 1) {
+			var _x = Math.abs(disX);
+			var _y = Math.abs(disY);
+
+			if ((_x > 1 || _y > 1) && isLinkFirst) {
 				isLink = false;
+				isLinkFirst = false;
 			}
 
 			// 滚动条
@@ -2651,8 +2658,6 @@ var scrollTopBottom = function (m) {
 			}
 
 			// 检查是否向上移动
-			var _x = Math.abs(disX);
-			var _y = Math.abs(disY);
 			if (isAddMoveEventFirst && _x != _y) {
 				isAddMoveEventFirst = false;
 				if (_x > _y) {
@@ -3134,6 +3139,7 @@ var slide = function (m) {
 		var startY = 0;
 		var now = 0;
 		var isLink = true;
+		var isLinkFirst = true;
 		var isAddMoveEvent = false; // 判断是否往上拖动
 		var isAddMoveEventFirst = true; // 判断是否第一往上拖动
 
@@ -3147,6 +3153,7 @@ var slide = function (m) {
 			window_w = m(mobile_slide).width();
 			var touch = event.changedTouches[0];
 			isLink = true;
+			isLinkFirst = true;
 			clearInterval(timerId);
 			list.transition("none");
 			var left = m(list).getTransform("translateX");
@@ -3180,13 +3187,16 @@ var slide = function (m) {
 			var nowY = touch.clientY;
 			var disX = nowX - startX;
 
-			if (Math.abs(nowX - startX) > 1 || Math.abs(nowY - startY) > 1) {
+			var _x = Math.abs(nowX - startX);
+			var _y = Math.abs(nowY - startY);
+
+			if ((_x > 1 || _y > 1) && isLinkFirst) {
 				isLink = false;
+				isLinkFirst = false;
 			}
 
 			// 检查是否向上移动
-			var _x = Math.abs(nowX - startX);
-			var _y = Math.abs(nowY - startY);
+
 			if (isAddMoveEventFirst && _x != _y) {
 				isAddMoveEventFirst = false;
 				if (_y > _x) {
@@ -3238,11 +3248,14 @@ var slide = function (m) {
 
 			// a链接
 			if (isLink) {
-				var _a = m(event.target).closest("a");
-				var isHasParent = m(event.target).closest(".mobile-slide-item");
-				if (isHasParent.length > 0) {
-					var href = _a.attr("href") || "javascript:;";
-					window.location.assign(href);
+				var mobile_link = m(event.target).closest(".mobile-link");
+				if (mobile_link.length === 0) {
+					var _a = m(event.target).closest("a");
+					var isHasParent = m(event.target).closest(".mobile-slide-item");
+					if (isHasParent.length > 0) {
+						var href = _a.attr("href") || "javascript:;";
+						window.location.assign(href);
+					}
 				}
 			}
 

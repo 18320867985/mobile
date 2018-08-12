@@ -46,6 +46,7 @@ var scrollTopBottom = (function(m) {
 		var startY = 0;
 		var startX = 0;
 		var isLink = true;
+		var isLinkFirst = true;
 		var isAddMoveEvent = false; // 判断是否往上拖动
 		var isAddMoveEventFirst = true; // 判断是否第一往上拖动
 		var dis = 0;
@@ -91,6 +92,7 @@ var scrollTopBottom = (function(m) {
 			startY = touch.clientY;
 			startX = touch.clientX;
 			isLink = true;
+			isLinkFirst = true;
 			speedDcrt = "auto"; //速度方向
 
 			if(isManyContent) {
@@ -138,20 +140,21 @@ var scrollTopBottom = (function(m) {
 			event.preventDefault();
 			window_h = m(scrolltb).height();
 
-			// 检查是否向上移动
-			if(isAddMoveEvent) {
-				return;
-			}
+			
 			var touch = event.touches[0];
 			var nowY = touch.clientY;
 			dis = nowY - startY;
 			var nowX = touch.clientX;
 			var disX = nowX - startX;
 			var disY = nowY - startY
-
-			if(Math.abs(nowX - startX) > 1 || Math.abs(nowY - startY) > 1) {
+			
+			var _x = Math.abs(disX);
+			var _y = Math.abs(disY);
+			
+			if((_x> 1 || _y> 1)&&isLinkFirst ) {
 				isLink = false;
-
+				isLinkFirst=false;
+				
 			}
 
 			// 滚动条
@@ -161,10 +164,9 @@ var scrollTopBottom = (function(m) {
 				var scroll_box_sale = scroll_Y / scroll_box_h;
 				mobile_scroll_bar.setTransform("translateY", -bar_wrap_h * scroll_box_sale);
 			}
-
+			
+			
 			// 检查是否向上移动
-			var _x = Math.abs(disX);
-			var _y = Math.abs(disY);
 			if(isAddMoveEventFirst && (_x != _y)) {
 				isAddMoveEventFirst = false;
 				if(_x > _y) {

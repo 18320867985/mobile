@@ -61,6 +61,7 @@ var slide = (function(m) {
 		var startY = 0;
 		var now = 0;
 		var isLink = true;
+		var isLinkFirst = true;
 		var isAddMoveEvent = false; // 判断是否往上拖动
 		var isAddMoveEventFirst = true; // 判断是否第一往上拖动
 
@@ -74,6 +75,7 @@ var slide = (function(m) {
 			window_w = m(mobile_slide).width();
 			var touch = event.changedTouches[0];
 			isLink = true;
+			isLinkFirst = true;
 			clearInterval(timerId);
 			list.transition("none");
 			var left = m(list).getTransform("translateX");
@@ -108,13 +110,17 @@ var slide = (function(m) {
 			var nowY = touch.clientY;
 			var disX = nowX - startX;
 
-			if(Math.abs(nowX - startX) > 1 || Math.abs(nowY - startY) > 1) {
+			var _x = Math.abs(nowX - startX);
+			var _y = Math.abs(nowY - startY);
+
+			if((_x > 1 || _y > 1) && isLinkFirst) {
 				isLink = false;
+				isLinkFirst = false;
+
 			}
 
 			// 检查是否向上移动
-			var _x = Math.abs(nowX - startX);
-			var _y = Math.abs(nowY - startY);
+
 			if(isAddMoveEventFirst && (_x != _y)) {
 				isAddMoveEventFirst = false;
 				if(_y > _x) {
@@ -168,11 +174,14 @@ var slide = (function(m) {
 
 			// a链接
 			if(isLink) {
-				var _a = m(event.target).closest("a");
-				var isHasParent = m(event.target).closest(".mobile-slide-item");
-				if(isHasParent.length > 0) {
-					var href = _a.attr("href") || "javascript:;";
-					window.location.assign(href);
+				var mobile_link = m(event.target).closest(".mobile-link");
+				if(mobile_link.length === 0) {
+					var _a = m(event.target).closest("a");
+					var isHasParent = m(event.target).closest(".mobile-slide-item");
+					if(isHasParent.length > 0) {
+						var href = _a.attr("href") || "javascript:;";
+						window.location.assign(href);
+					}
 				}
 			}
 

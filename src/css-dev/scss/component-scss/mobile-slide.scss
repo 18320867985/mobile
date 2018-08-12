@@ -31,24 +31,25 @@
     position: absolute;
     left: 0;
     bottom: 10px;
-    z-index: 999;
+    z-index: 9999;
     width: 100%;
-    /*background: red;*/
+ 
     text-align: center;
 }
 
 .mobile-slide-radius span {
     display: inline-block;
-    height: 6rem/$rem;
-    width: 6rem/$rem;
+    height: 6px;
+    width:6px;
     padding: 0;
     background: $slide-rd-df;
+    border:1px solid $slide-rd-df;
     border-radius: 50%;
-    &+span{
-        margin-left: 2rem/$rem;
-    }
+     margin-left: 2rem/$rem;
+    
     &.active {
     background: $slide-rd-active;
+     border:1px solid $slide-rd-active;
 }
 }
 

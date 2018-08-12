@@ -661,22 +661,22 @@ select option {
   position: absolute;
   left: 0;
   bottom: 10px;
-  z-index: 999;
+  z-index: 9999;
   width: 100%;
-  /*background: red;*/
   text-align: center; }
 
 .mobile-slide-radius span {
   display: inline-block;
-  height: 0.3rem;
-  width: 0.3rem;
+  height: 6px;
+  width: 6px;
   padding: 0;
   background: #ccc;
-  border-radius: 50%; }
-  .mobile-slide-radius span + span {
-    margin-left: 0.1rem; }
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  margin-left: 0.1rem; }
   .mobile-slide-radius span.active {
-    background: red; }
+    background: red;
+    border: 1px solid red; }
 
 .mobile-tab {
   position: fixed;

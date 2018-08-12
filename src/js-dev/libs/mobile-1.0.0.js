@@ -1667,6 +1667,7 @@
 			Mobile.each(this, function(i, v) {
 
 				var isMOve = true; // 判断是否往上拖动
+				var isMOveFirst = true;
 
 				var startX = 0;
 				var startY = 0;
@@ -1675,6 +1676,7 @@
 				function start(event) {
 					event.preventDefault();
 					isMOve = true;
+					isMOveFirst = true;
 					var touch = event.changedTouches[0];
 					startX = touch.clientX;
 					startY = touch.clientY;
@@ -1685,8 +1687,11 @@
 					var touch = event.changedTouches[0];
 					var nowX = touch.clientX;
 					var nowY = touch.clientY;
-					if(Math.abs(nowX - startX) > 1 || Math.abs(nowY - startY) > 1) {
+					var _x=Math.abs(nowX - startX);
+					var _y=Math.abs(nowY - startY);
+					if(( _x> 1 || _y > 1)&&isMOveFirst) {
 						isMOve = false;
+						isMOveFirst=false;
 					}
 				}
 
