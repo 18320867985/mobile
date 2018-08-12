@@ -67,7 +67,7 @@ var slide = (function(m) {
 
 		m(list).setTransform('translateZ', 0.01)
 
-		wrap.on("touchstart", start);
+		wrap.touchstart(start);
 
 		// start
 		function start(event) {
@@ -101,7 +101,7 @@ var slide = (function(m) {
 
 		}
 
-		wrap.on("touchmove", move);
+		wrap.touchmove( move);
 
 		function move(event) {
 			event.preventDefault();
@@ -157,7 +157,7 @@ var slide = (function(m) {
 
 		}
 
-		wrap.on("touchend", end);
+		wrap.touchendcancel(end);
 
 		//touchend
 		function end(event) {

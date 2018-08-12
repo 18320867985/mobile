@@ -43,7 +43,7 @@ var scrollLeftRight = (function(m) {
 		var isAddMoveEvent = false; // 判断是否top拖动
 		var isAddMoveEventFirst = true; // 判断是否第一往上拖动
 
-		m(navs).on("touchstart", start);
+		m(navs).touchstart(start);
 
 		function start(event) {
 			event.preventDefault();
@@ -61,7 +61,7 @@ var scrollLeftRight = (function(m) {
 
 		};
 
-		m(navs).on("touchmove", move);
+		m(navs).touchmove(move);
 
 		function move(event) {
 			event.preventDefault();
@@ -114,7 +114,7 @@ var scrollLeftRight = (function(m) {
 			disValue = endValue - beginValue;
 		}
 
-		m(navs).on("touchend", end);
+		m(navs).touchendcancel(end);
 
 		function end(event) {
 			event.preventDefault();

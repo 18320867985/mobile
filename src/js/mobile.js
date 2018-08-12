@@ -1552,7 +1552,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 			});
 		},
 
-		//  touchstart
+		// touchstart
 		touchstart: function touchstart(fn, bl) {
 			bl = bl || false;
 			Mobile.each(this, function () {
@@ -1560,15 +1560,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 			});
 		},
 
-		//  touchend
-		touchend: function touchend(fn, bl) {
-			bl = bl || false;
-			Mobile.each(this, function () {
-				m(this).on("touchend", fn, bl);
-			});
-		},
-
-		//  touchmove
+		// touchmove
 		touchmove: function touchmove(fn, bl) {
 			bl = bl || false;
 			Mobile.each(this, function () {
@@ -1576,7 +1568,15 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 			});
 		},
 
-		//  touchcancel
+		// touchend
+		touchend: function touchend(fn, bl) {
+			bl = bl || false;
+			Mobile.each(this, function () {
+				m(this).on("touchend", fn, bl);
+			});
+		},
+
+		// touchcancel
 		touchcancel: function touchcancel(fn, bl) {
 			bl = bl || false;
 			Mobile.each(this, function () {
@@ -1584,7 +1584,16 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 			});
 		},
 
-		//  tap
+		// touchend 和 touchcancel 同时绑定事件
+		touchendcancel: function touchendcancel(fn, bl) {
+			bl = bl || false;
+			Mobile.each(this, function () {
+				m(this).on("touchend", fn, bl);
+				m(this).on("touchcancel", fn, bl);
+			});
+		},
+
+		// tap
 		tap: function tap() {
 			var args = arguments;
 			var fn = function fn() {};
@@ -2579,7 +2588,7 @@ var scrollTopBottom = function (m) {
 			loadingY = loading.offsetTop();
 		}
 
-		m(scrolltb).on("touchstart", start);
+		m(scrolltb).touchstart(start);
 
 		function start(event) {
 
@@ -2628,7 +2637,7 @@ var scrollTopBottom = function (m) {
 			}
 		}
 
-		m(scrolltb).on("touchmove", move);
+		m(scrolltb).touchmove(move);
 
 		function move(event) {
 			event.preventDefault();
@@ -2752,8 +2761,7 @@ var scrollTopBottom = function (m) {
 			m(topbottomContent).setTransform("translateY", translateY);
 		}
 
-		m(scrolltb).on("touchend", end);
-
+		m(scrolltb).touchendcancel(end);
 		function end(event) {
 			event.preventDefault();
 			var touch = event.touches[0];
@@ -2919,7 +2927,7 @@ var scrollLeftRight = function (m) {
 		var isAddMoveEvent = false; // 判断是否top拖动
 		var isAddMoveEventFirst = true; // 判断是否第一往上拖动
 
-		m(navs).on("touchstart", start);
+		m(navs).touchstart(start);
 
 		function start(event) {
 			event.preventDefault();
@@ -2936,7 +2944,7 @@ var scrollLeftRight = function (m) {
 			navsList[0].style.transition = 'none';
 		}
 
-		m(navs).on("touchmove", move);
+		m(navs).touchmove(move);
 
 		function move(event) {
 			event.preventDefault();
@@ -2986,7 +2994,7 @@ var scrollLeftRight = function (m) {
 			disValue = endValue - beginValue;
 		}
 
-		m(navs).on("touchend", end);
+		m(navs).touchendcancel(end);
 
 		function end(event) {
 			event.preventDefault();
@@ -3145,7 +3153,7 @@ var slide = function (m) {
 
 		m(list).setTransform('translateZ', 0.01);
 
-		wrap.on("touchstart", start);
+		wrap.touchstart(start);
 
 		// start
 		function start(event) {
@@ -3178,7 +3186,7 @@ var slide = function (m) {
 			elementX = m(list).getTransform('translateX');
 		}
 
-		wrap.on("touchmove", move);
+		wrap.touchmove(move);
 
 		function move(event) {
 			event.preventDefault();
@@ -3231,7 +3239,7 @@ var slide = function (m) {
 			}
 		}
 
-		wrap.on("touchend", end);
+		wrap.touchendcancel(end);
 
 		//touchend
 		function end(event) {
@@ -3379,7 +3387,7 @@ var tab = function (m) {
 		var isAddMoveEventFirst = true; // 判断是否第一往上拖动
 
 		m(list).setTransform('translateZ', 0.01);
-		wrap.on("touchstart", start);
+		wrap.touchstart(start);
 
 		// start
 		function start(event) {
@@ -3408,7 +3416,7 @@ var tab = function (m) {
 			}
 		}
 
-		wrap.on("touchmove", move);
+		wrap.touchmove(move);
 
 		function move(event) {
 			event.preventDefault();
@@ -3473,7 +3481,7 @@ var tab = function (m) {
 			});
 		}
 
-		wrap.on("touchend", end);
+		wrap.touchendcancel(end);
 
 		//touchend
 		function end(event) {

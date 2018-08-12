@@ -1625,7 +1625,7 @@
 			});
 		},
 
-		//  touchstart
+		// touchstart
 		touchstart: function(fn, bl) {
 			bl = bl || false;
 			Mobile.each(this, function() {
@@ -1633,7 +1633,16 @@
 			});
 		},
 
-		//  touchend
+		
+		// touchmove
+		touchmove: function(fn, bl) {
+			bl = bl || false;
+			Mobile.each(this, function() {
+				m(this).on("touchmove", fn, bl);
+			});
+		},
+		
+		// touchend
 		touchend: function(fn, bl) {
 			bl = bl || false;
 			Mobile.each(this, function() {
@@ -1641,23 +1650,24 @@
 			});
 		},
 
-		//  touchmove
-		touchmove: function(fn, bl) {
-			bl = bl || false;
-			Mobile.each(this, function() {
-				m(this).on("touchmove", fn, bl);
-			});
-		},
-
-		//  touchcancel
+		// touchcancel
 		touchcancel: function(fn, bl) {
 			bl = bl || false;
 			Mobile.each(this, function() {
 				m(this).on("touchcancel", fn, bl);
 			});
 		},
+		
+		// touchend 和 touchcancel 同时绑定事件
+		touchendcancel: function(fn, bl) {
+			bl = bl || false;
+			Mobile.each(this, function() {
+				m(this).on("touchend", fn, bl);
+				m(this).on("touchcancel", fn, bl);
+			});
+		},
 
-		//  tap
+		// tap
 		tap: function() {
 			var args = arguments;
 			var fn = function() {};

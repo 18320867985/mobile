@@ -83,7 +83,7 @@ var scrollTopBottom = (function(m) {
 			loadingY = loading.offsetTop();
 		}
 
-		m(scrolltb).on("touchstart", start);
+		m(scrolltb).touchstart(start);
 
 		function start(event) {
 
@@ -134,7 +134,7 @@ var scrollTopBottom = (function(m) {
 
 		};
 
-		m(scrolltb).on("touchmove", move);
+		m(scrolltb).touchmove(move);
 
 		function move(event) {
 			event.preventDefault();
@@ -267,8 +267,7 @@ var scrollTopBottom = (function(m) {
 
 		}
 
-		m(scrolltb).on("touchend", end);
-
+		m(scrolltb).touchendcancel(end)
 		function end(event) {
 			event.preventDefault();
 			var touch = event.touches[0];
