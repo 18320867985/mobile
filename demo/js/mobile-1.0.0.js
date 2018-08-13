@@ -5,11 +5,12 @@
 (function() {
 
 	"use strict"
+	
 	// 冲突Mobile兼容
 	var _mobile = window.mobile = window.m;
 	var _$ = window.$;
 
-	/*创建mobile对象*/
+	// 创建mobile对象
 	var Mobile = window.$ = window.m = window.mobile = function(selector, content) {
 
 		if(typeof selector === "function" && arguments.length === 1) {
@@ -18,11 +19,14 @@
 		};
 		return new Mobile.fn.init(selector, content);
 	};
+	
+	// 版本号
+	Mobile.version = "1.0.0"; 
+	
+	// 可计算值 的列表
+	Mobile.numberList = ["left", "top", "right", "bottom", "width", "height"]; 
 
-	Mobile.version = "1.0.0"; // 版本号
-	Mobile.numberList = ["left", "top", "right", "bottom", "width", "height"]; // 可计算值 的列表
-
-	/*私有函数*/
+	// 私有函数
 	var _block = ["body", "div", "p", "table", "tr", "thead", "tbody", "tfoot", "h1", "h2", "h3", "h4", "h5", "h6", "article",
 		"aside", "details", "figcaption", "figure", "footer", "header", "hgroup", "main", "menu", "nav", "section", "summary",
 		"ul", "li", "ol", "dl", "dt", "dd", "fieldset"
@@ -380,6 +384,38 @@
 					for(var y = 0; y < className.length; y++) {
 						if(className[y]) {
 							this.classList.add(className[y]);
+						}
+
+					}
+				});
+
+			}
+
+			return this;
+		},
+
+		// toggleClass
+		toggleClass: function(className) {
+
+			if(typeof className === "string") {
+				className = className.split(/\s+/);
+
+			} else {
+
+				return this;
+			}
+
+			if(arguments.length === 1) {
+
+				Mobile.each(this, function() {
+					for(var y = 0; y < className.length; y++) {
+						if(className[y]) {
+							if(this.classList.contains(className[y])) {
+								this.classList.remove(className[y]);
+							} else {
+								this.classList.add(className[y]);
+							}
+
 						}
 
 					}
@@ -858,6 +894,7 @@
 
 			return this;
 		},
+
 		//  prepend
 		prepend: function(obj) {
 			if(typeof obj === "object" && obj.length && obj.length > 0) {
@@ -900,10 +937,11 @@
 		show: function() {
 
 			Mobile.each(this, function(i, el) {
-
+				clearInterval(this.clearTimeId);
+				this.isshow = true;
 				var _showType = this.showValue || "none";
 				var _nodeName = this.nodeName.toLowerCase();
-				if(_showType == "none") {
+				if(_showType === "none") {
 					_showType = _getElementType(_nodeName);
 				}
 
@@ -919,7 +957,8 @@
 		hide: function() {
 
 			Mobile.each(this, function(i, el) {
-
+				clearInterval(this.clearTimeId);
+				this.isshow = false;
 				var _v = m(this).css("display") || "none";
 				this.showValue = _v;
 				this.style.display = "none";
@@ -945,24 +984,42 @@
 		},
 
 		// fadeIn
-		fadeIn: function() {
+		fadeIn: function(time) {
 
 			Mobile.each(this, function(i, el) {
 
-				var _showType = this.showValue || "none";
+				clearInterval(this.clearTimeId);
+				var _showType = "";
+				this.isshow = true;
+				if(!this.firstclick) {
+					this.firstclick = true;
+					_showType = m(this).css("display") || "none";
+					if(_showType === "none") {
+						this.style.opacity = 0;
+					} else {
+						this.style.opacity = 1;
+					}
+
+				} else {
+					_showType = this.showValue || "none";
+					this.style.opacity = parseFloat(m(this).css("opacity")) || 0;
+
+				}
+
 				var _nodeName = this.nodeName.toLowerCase();
+				var _opacity = parseFloat(m(this).css("opacity")) || 0;
 				if(_showType == "none") {
 					_showType = _getElementType(_nodeName);
 				}
 
 				this.style.display = _showType;
-				this.style.opacity = 0;
-				var time = 400;
+				this.showValue = _showType;
+				time = typeof time === "number" ? time : 400;
 				var opt = 1000;
 				var fx = 30;
 				var t = time / fx;
 				var speed = opt / t;
-				var clearTimeId = setInterval(function() {
+				this.clearTimeId = setInterval(function() {
 					var v = parseFloat(el.style.opacity) || 0;
 					v = v * 1000;
 					el.style.opacity = (speed + v) / 1000;
@@ -972,9 +1029,9 @@
 						el.style.opacity = opt / 1000;
 						el.style.opacity = 1;
 						el.style.display = _showType;
-						clearInterval(clearTimeId);
+						clearInterval(this.clearTimeId);
 					}
-				}, fx);
+				}.bind(this), fx);
 
 			});
 			return this;
@@ -982,19 +1039,23 @@
 		},
 
 		// fadeOut
-		fadeOut: function() {
+		fadeOut: function(time) {
 
 			Mobile.each(this, function(i, el) {
-
+				clearInterval(this.clearTimeId);
+				this.firstclick = true;
+				this.isshow = false;
 				var _v = m(this).css("display") || "none";
+				if(_v != "none") {
+					this.style.opacity = parseFloat(el.style.opacity) || 1;
+				}
 				this.showValue = _v;
-				this.style.opacity = 1;
-				var time = 400;
+				time = typeof time === "number" ? time : 400;
 				var opt = 1000;
 				var fx = 30;
 				var t = time / fx;
 				var speed = opt / t;
-				var clearTimeId = setInterval(function() {
+				this.clearTimeId = setInterval(function() {
 					var v = parseFloat(el.style.opacity) || 0;
 					v = v * 1000;
 					el.style.opacity = (v - speed) / 1000;
@@ -1002,23 +1063,46 @@
 					if((v - speed) < 0) {
 						el.style.opacity = 0;
 						el.style.display = "none";
-						clearInterval(clearTimeId);
+						clearInterval(this.clearTimeId);
 					}
-				}, fx);
+				}.bind(this), fx);
 			});
 			return this;
 		},
 
 		// fadeToggle
-		fadeToggle: function() {
+		fadeToggle: function(time) {
 
 			Mobile.each(this, function() {
-
 				var _v = m(this).css("display") || "none";
-				if(_v.trim() != "none") {
-					m(this).fadeOut();
+				if(typeof this.isshow != "undefined") {
+					if(this.isshow) {
+						m(this).fadeOut(time);
+						this.isshow = false;
+					} else {
+						m(this).fadeIn(time);
+						this.isshow = true;
+					}
+
 				} else {
-					m(this).fadeIn();
+					if(_v != "none") {
+						if(!this.firstclick) {
+							m(this).fadeOut(time);
+							this.isshow = false;
+						} else {
+							m(this).fadeIn(time);
+							this.isshow = true;
+						}
+					} else {
+						if(this.firstclick) {
+							m(this).fadeOut(time);
+							this.isshow = false;
+						} else {
+							m(this).fadeIn(time);
+							this.isshow = true;
+						}
+					}
+
 				}
 			});
 			return this;
@@ -1341,7 +1425,7 @@
 
 	});
 
-	/*bind enevt 绑定事件*/
+	// bind enevt 绑定事件
 	Mobile.fn.extend({
 		on: function(type) {
 
@@ -1354,7 +1438,7 @@
 				var bl = typeof arguments[2] === "boolean" ? arguments[2] : false;
 
 				function f(event) {
-					handler.call(event.target, event);
+					handler.call(this, event);
 
 					// m(el).one()只绑定一次事件
 					if(isonebind) {
@@ -1387,7 +1471,7 @@
 
 				function f(event) {
 					event.data = obj;
-					handler.call(event.target, event);
+					handler.call(this, event);
 
 					// m(el).one()只绑定一次事件
 					if(isonebind) {
@@ -1492,8 +1576,10 @@
 				else if(this.deattachEvent) { /*IE*/
 					this.deattachEvent('on' + type, handler);
 				} else {
+
+					// 直接赋给事件
 					this["on" + type] = null;
-					/*直接赋给事件*/
+
 				}
 				Mobile.events.off(type, handler);
 			});
@@ -1522,7 +1608,9 @@
 		one: function() {
 			var args = arguments;
 			var $this = this;
-			this.bindOneElementEvent = true; //  只绑定一次事件
+
+			//  只绑定一次事件
+			this.bindOneElementEvent = true;
 			Mobile.each($this, function(i, v) {
 				m(this).on.apply($this, args);
 
@@ -1537,7 +1625,7 @@
 			});
 		},
 
-		//  touchstart
+		// touchstart
 		touchstart: function(fn, bl) {
 			bl = bl || false;
 			Mobile.each(this, function() {
@@ -1545,7 +1633,16 @@
 			});
 		},
 
-		//  touchend
+		
+		// touchmove
+		touchmove: function(fn, bl) {
+			bl = bl || false;
+			Mobile.each(this, function() {
+				m(this).on("touchmove", fn, bl);
+			});
+		},
+		
+		// touchend
 		touchend: function(fn, bl) {
 			bl = bl || false;
 			Mobile.each(this, function() {
@@ -1553,31 +1650,127 @@
 			});
 		},
 
-		//  touchmove
-		touchmove: function(fn, bl) {
-			bl = bl || false;
-			Mobile.each(this, function() {
-				m(this).on("touchmove", fn, bl);
-			});
-		},
-
-		//  touchcancel
+		// touchcancel
 		touchcancel: function(fn, bl) {
 			bl = bl || false;
 			Mobile.each(this, function() {
 				m(this).on("touchcancel", fn, bl);
 			});
 		},
-
-		//  tap
-		tap: function(fn, bl) {
+		
+		// touchend 和 touchcancel 同时绑定事件
+		touchendcancel: function(fn, bl) {
 			bl = bl || false;
 			Mobile.each(this, function() {
-				m(this).on("touchstart", fn, bl);
+				m(this).on("touchend", fn, bl);
+				m(this).on("touchcancel", fn, bl);
 			});
 		},
 
-		//  scroll
+		// tap
+		tap: function() {
+			var args = arguments;
+			var fn = function() {};
+			var deletage = "";
+			var bl = false;
+
+			Mobile.each(this, function(i, v) {
+
+				var isMOve = true; // 判断是否往上拖动
+				var isMOveFirst = true;
+
+				var startX = 0;
+				var startY = 0;
+				var isDeleDageTarget = true; // 是否是委托事件
+
+				function start(event) {
+					event.preventDefault();
+					isMOve = true;
+					isMOveFirst = true;
+					var touch = event.changedTouches[0];
+					startX = touch.clientX;
+					startY = touch.clientY;
+				}
+
+				function move(event) {
+					event.preventDefault();
+					var touch = event.changedTouches[0];
+					var nowX = touch.clientX;
+					var nowY = touch.clientY;
+					var _x=Math.abs(nowX - startX);
+					var _y=Math.abs(nowY - startY);
+					if(( _x> 1 || _y > 1)&&isMOveFirst) {
+						isMOve = false;
+						isMOveFirst=false;
+					}
+				}
+
+				function end(event) {
+					event.preventDefault();
+					var _target;
+					if(isDeleDageTarget) {
+						_target = this;
+					} else {
+						_target = event.target;
+					}
+					if(isMOve) {
+						if(typeof fn === "function") {
+							fn.call(_target, event);
+						}
+					}
+				}
+
+				// 使用事件	
+				if(args.length >= 1 && typeof args[0] === "function") {
+					fn = args[0];
+					bl = args[1] || false;
+					isDeleDageTarget = true;
+
+					m(this).on("touchstart", start, bl);
+					m(this).on("touchmove", move, bl);
+					m(this).on("touchend", end, bl);
+				}
+
+				// 使用委托事件	
+				else if(args.length >= 2 && typeof args[0] === "string" && typeof args[1] === "function") {
+					deletage = args[0];
+					fn = args[1];
+					bl = args[2] || false;
+					isDeleDageTarget = false;
+
+					m(this).on("touchstart", deletage, start, bl);
+					m(this).on("touchmove", deletage, move, bl);
+					m(this).on("touchend", deletage, end, bl);
+				}
+
+				// 使用事件data		
+				else if(args.length >= 2 && typeof args[0] === "object" && typeof args[1] === "function") {
+					fn = args[1];
+					bl = args[2] || false;
+					var obj = args[0]
+					isDeleDageTarget = true;
+					m(this).on("touchstart", obj, start, bl);
+					m(this).on("touchmove", obj, move, bl);
+					m(this).on("touchend", obj, end, bl);
+				}
+
+				// 使用委托事件传值data	
+				else if(args.length >= 3 && typeof args[0] === "string" && typeof args[1] === "object" && typeof args[2] === "function") {
+					deletage = args[0];
+					var obj = args[1]
+					fn = args[2];
+					bl = args[3] || false;
+					isDeleDageTarget = false;
+
+					m(this).on("touchstart", deletage, obj, start, bl);
+					m(this).on("touchmove", deletage, obj, move, bl);
+					m(this).on("touchend", deletage, obj, end, bl);
+				}
+
+			});
+		},
+
+		// scroll
 		scroll: function(fn, bl) {
 			bl = bl || false;
 			Mobile.each(this, function() {
@@ -1695,6 +1888,7 @@
 
 	// 链接ajax发送的参数数据
 	function _JoinParams(data) {
+
 		// 参数data对象字符
 		var params = [];
 
@@ -1816,7 +2010,7 @@
 							try {
 								opt.success(JSON.parse(xhr.responseText), xhr.status, xhr.statusText);
 							} catch(e) {
-								//TODO handle the exception
+								// handle the exception
 								opt.success(xhr.responseText, xhr.status, xhr.statusText);
 							}
 						}
@@ -1913,10 +2107,6 @@
 						break;
 					}
 				}
-				//} catch(e) {
-
-				//}
-
 			}
 		},
 
@@ -1958,17 +2148,6 @@
 			}
 			df = null;
 			return df2;
-
-			// Firefox, Mozilla, Opera, etc. 高级浏览才支持
-			//			try {
-			//				var parser = new DOMParser();
-			//				var xmlDoc = parser.parseFromString(txt, "text/html");
-			//				var els = xmlDoc.querySelector("body").childNodes;
-			//				for(var i = 0; i < els.length; i++) {
-			//					df2.appendChild(els[i]);
-			//				}
-			//				return df2;
-			//			} catch(e) {}
 
 		},
 
@@ -2158,7 +2337,7 @@
 
 	});
 
-	/**绑定自定义事件函数**/
+	/*绑定自定义事件函数*/
 	Mobile.extend({
 		events: {
 			props: {},
