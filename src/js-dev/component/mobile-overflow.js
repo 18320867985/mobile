@@ -1,4 +1,4 @@
-var scrollTopBottom = (function(m) {
+var overflow = (function(m) {
 
 	m(function() {
 		topBottom();
@@ -6,7 +6,7 @@ var scrollTopBottom = (function(m) {
 
 	//导航拖拽
 	function topBottom() {
-		var scrolltb = m(".mobile-scroll-topbottom");
+		var scrolltb = m(".mobile-overflow");
 		scrolltb.each(function(i, v) {
 			topBottomFun(v);
 
@@ -17,7 +17,7 @@ var scrollTopBottom = (function(m) {
 	//导航拖拽fun
 	function topBottomFun(scrolltb) {
 
-		var topbottomContent = m(scrolltb).find(".mobile-scroll-content");
+		var topbottomContent = m(scrolltb).find(".mobile-overflow-content");
 		var many = m(scrolltb).find(".mobile-scroll-content-many.active");
 		var isManyContent = false; //是否显示多内容
 		if(topbottomContent.length === 0) {
@@ -87,8 +87,8 @@ var scrollTopBottom = (function(m) {
 
 		function start(event) {
 
-			event.preventDefault();
-			var touch = event.changedTouches[0];
+			//event.preventDefault();
+			var touch = event.touches[0];
 			startY = touch.clientY;
 			startX = touch.clientX;
 			isLink = true;
@@ -117,7 +117,7 @@ var scrollTopBottom = (function(m) {
 
 			// 滚动条
 			if(isScrollBar) {
-				
+				mobile_scroll_bar.transition("null");
 				bar_h = m(topbottomContent).height();
 				bar_wrap_h = m(scrolltb).height();
 				sale_bar = bar_wrap_h / bar_h;
@@ -129,18 +129,19 @@ var scrollTopBottom = (function(m) {
 				}
 				mobile_scroll_bar.css("opacity", 1);
 				mobile_scroll_bar.transition("null");
-			
+
 			}
 
 		};
 
 		m(scrolltb).touchmove(move);
-var ttt=0;
+
 		function move(event) {
-			event.preventDefault();
+			//event.preventDefault();
 			window_h = m(scrolltb).height();
 
-			var touch = event.changedTouches[0];
+			
+			var touch = event.touches[0];
 			var nowY = touch.clientY;
 			dis = nowY - startY;
 			var nowX = touch.clientX;
@@ -151,8 +152,6 @@ var ttt=0;
 			var _y = Math.abs(disY);
 			
 			if((_x> 1 || _y> 1)&&isLinkFirst ) {
-//				mobile_scroll_bar.transition("null");
-//				mobile_scroll_bar.transition("null")
 				isLink = false;
 				isLinkFirst=false;
 				
@@ -160,7 +159,6 @@ var ttt=0;
 
 			// 滚动条
 			if(isScrollBar) {
-				
 				var scroll_Y = m(topbottomContent).getTransform("translateY");
 				var scroll_box_h = m(topbottomContent).height();
 				var scroll_box_sale = scroll_Y / scroll_box_h;
@@ -180,90 +178,35 @@ var ttt=0;
 				return;
 			}
 
-			// 计算移动速度
-			if(speedSetIntervalFisrt) {
-				speedSetIntervalFisrt = false;
-				var speedlateY2=0;
-				var speedlateY3=0;
-				speedSetIntervalId = setInterval(function() {
-					speedlateY2 = m(topbottomContent).getTransform("translateY") || 0;
-					speedlateY3 = speedlateY2 - speedlateY;
-					speedlateY = speedlateY2;
-					speedScroll = speedlateY3;
-					
-					ttt=++ttt;
-					m(".mobile-head-ttl").html(speedScroll+"#ttt:"+ttt);
-					
-				}, 20);
-			}
-
-
+		
 			minY = window_h - topbottomContent.height();
 			var translateY = eleY + dis;
 
-			// 是否下拉加载
-			if(isLoading) {
-				loadingY = loading.offsetTop();
-
-				// scroll上下滚动加载数据scrollloading自定义事件
-				m(this).trigger("scrollloading", {
-					el: topbottomContent.eq(0),
-					resetBar: scrollBarFun,
-					translateY: translateY, // 滚动translateY
-					loading: loading,
-					loadingY: loadingY, // loanding offsetTop值
-					isLoading: (Math.abs(translateY)) >= (loadingY - window_h)
-
-				});
-			}
-
-			// scroll上下滚动scrolltopbottom自定义事件
-			if(Math.abs(speedScroll) === 0) {
-				m(this).trigger("scrolltopbottom", {
-					el: topbottomContent.eq(0),
-					translateY: translateY,
-					resetBar: scrollBarFun,
-
-				});
-			}
-			speedDcrt = "auto"; //速度方向
+		
+		
 			if(translateY > 0) {
+				
 				var scale = 1 - translateY / window_h;
 				translateY = translateY * scale;
-				speedDcrt = "down"; //速度方向
-
+		
 				// 是否下拉
 				if(!isScrollTop) {
 					translateY = 0;
 
 				}
 
-				// scroll顶部 scrolltop自定义事件
-				m(this).trigger("scrolltop", {
-					el: topbottomContent.eq(0),
-					resetBar: scrollBarFun,
-					translateY: translateY,
-
-				});
 
 			} else if(translateY < minY) {
+				
 				var over = Math.abs(translateY - minY);
 				var scale = 1 - over / window_h;
 				translateY = minY - over * scale;
-				speedDcrt = "up"; //速度方向
+			
 				// 是否上拉
 				if(!isScrollBottom) {
 					translateY = minY;
 
 				}
-
-				// scroll底部 scrollbottom自定义事件
-				m(this).trigger("scrollbottom", {
-					el: topbottomContent.eq(0),
-					resetBar: scrollBarFun,
-					translateY: translateY,
-
-				});
 
 				if((m(topbottomContent).height()) < (window_h)) {
 					translateY = 0;
@@ -271,35 +214,16 @@ var ttt=0;
 
 			}
 
-			m(topbottomContent).setTransform("translateY", translateY);
+			//m(topbottomContent).setTransform("translateY", translateY);
 
 		}
 
 		m(scrolltb).touchendcancel(end)
 		function end(event) {
-			event.preventDefault();
-			var touch = event.changedTouches[0];
+			//event.preventDefault();
+			var touch = event.touches[0];
 
-			// 计算移动速度
-			speedSetIntervalFisrt = true;
-			clearInterval(speedSetIntervalId);
-			//console.log(isMOve+"/end");
-			var setTimeoutId=setTimeout(function(){
-				clearInterval(speedSetIntervalId);
-				clearTimeout(setTimeoutId);
-			},100); // 意外处理
-
-			// a链接
-			if(isLink) {
-
-				var _a = m(event.target).closest("a");
-				var isHasParent = m(event.target).closest(".mobile-link");
-				if(isHasParent.length > 0) {
-					var href = _a.attr("href") || "javascript:;";
-					window.location.assign(href);
-				}
-
-			}
+			
 			// 检查是否向上移动
 			if(isAddMoveEvent) {
 				return;
@@ -327,14 +251,7 @@ var ttt=0;
 				}
 
 			}
-			//速度方向
-			else if(speedDcrt == "up") {
-				target = minY;
-				m(topbottomContent).transition("all", 500, bezier);
-			} else if(speedDcrt == "down") {
-				target = 0;
-				m(topbottomContent).transition("all", 500, bezier);
-			}
+			
 
 			// 滚动条
 			if(isScrollBar) {
@@ -346,34 +263,10 @@ var ttt=0;
 
 			}
 
-			// 是否下拉加载
-			if(isLoading) {
-				loadingY = loading.offsetTop();
 
-				// scroll上下滚动加载数据scrollloading自定义事件
-				m(this).trigger("scrollloading", {
-					el: topbottomContent.eq(0),
-					resetBar: scrollBarFun,
-					translateY: target, // 滚动translateY
-					loading: loading,
-					loadingY: loadingY, // loanding offsetTop值
-					isLoading: (Math.abs(target)) >= (loadingY - window_h)
-
-				});
-			}
-
-			// scroll上下滚动scrolltopbottom自定义事件
-			if(Math.abs(speedScroll) != 0) {
-				m(this).trigger("scrolltopbottom", {
-					el: topbottomContent.eq(0),
-					translateY: target,
-					resetBar: scrollBarFun,
-
-				});
-			}
 			
 			//m(".mobile-head-ttl").html(speedScroll);
-			m(topbottomContent).setTransform("translateY", target);
+			//m(topbottomContent).setTransform("translateY", target);
 
 		}
 
@@ -407,5 +300,5 @@ var ttt=0;
 
 export {
 
-	scrollTopBottom
+	overflow
 }

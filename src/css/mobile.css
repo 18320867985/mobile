@@ -494,7 +494,7 @@ select option {
   width: 100%;
   top: 0;
   left: 0;
-  z-index: 9999;
+  z-index: 9;
   background: #f0f0f0;
   overflow: hidden; }
 
@@ -539,14 +539,15 @@ select option {
 .mobile-content {
   position: absolute;
   z-index: 9;
-  width: 100%; }
+  width: 100%;
+  overflow-y: auto; }
 
 /*mobile-footer*/
 .mobile-footer {
   position: fixed;
   left: 0;
   bottom: 0;
-  z-index: 9999;
+  z-index: 9;
   height: 2.2rem;
   width: 100%;
   background: #f0f0f0; }
@@ -562,7 +563,7 @@ select option {
   position: relative;
   width: 100%;
   height: 100%;
-  z-index: 9;
+  z-index: 1;
   overflow: hidden;
   /*置顶文字*/
   /*加载图标*/ }
@@ -570,7 +571,7 @@ select option {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 9;
+    z-index: 1;
     display: block;
     width: 100%;
     min-height: 100%;
@@ -605,7 +606,7 @@ select option {
 /* mobile-scroll 导航左右滑动 */
 .mobile-scroll-leftright {
   position: relative;
-  z-index: 9999;
+  z-index: 1;
   padding: 5px 0;
   width: 100%;
   overflow: hidden;
@@ -635,7 +636,7 @@ select option {
 /* mobile-slide 图片轮播 */
 .mobile-slide {
   position: relative;
-  z-index: 9;
+  z-index: 1;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   width: 100%;
@@ -644,7 +645,7 @@ select option {
 
 .mobile-slide-list {
   position: relative;
-  z-index: 2;
+  z-index: 1;
   height: 100%; }
 
 .mobile-slide-item {
@@ -661,7 +662,7 @@ select option {
   position: absolute;
   left: 0;
   bottom: 10px;
-  z-index: 9999;
+  z-index: 1;
   width: 100%;
   text-align: center; }
 
@@ -688,7 +689,7 @@ select option {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 99;
+  z-index: 9;
   background: #f0f0f0; }
 
 .mobile-tab-ttl {
@@ -703,7 +704,7 @@ select option {
   position: fixed;
   left: 0;
   bottom: 0;
-  z-index: 99;
+  z-index: 9;
   width: 100%;
   border-top: 1px solid #ddd;
   background: #fff; }
@@ -735,7 +736,7 @@ select option {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 9999;
+  z-index: 1;
   overflow: hidden; }
 
 .mobile-tab-slide-list {
@@ -781,7 +782,7 @@ select option {
   position: absolute;
   left: 0;
   bottom: 0;
-  z-index: 9999;
+  z-index: 1;
   width: 40px;
   height: 2px;
   background: #690; }
@@ -879,7 +880,7 @@ select option {
 
 .mobile-indexlist-nav {
   position: absolute;
-  z-index: 9999;
+  z-index: 2;
   top: 0;
   right: 0;
   display: -webkit-box;
@@ -1049,6 +1050,15 @@ select option {
       font-size: 1rem;
       color: #999; }
 
+.mobile-overflow {
+  height: 100%;
+  width: 100%;
+  overflow-y: scroll; }
+
+.mobile-overflow-content {
+  width: 100%;
+  height: auto; }
+
 .scrolltopbottom {
   -webkit-box-shadow: -2px 0px 3px #ddd;
           box-shadow: -2px 0px 3px #ddd; }
@@ -1066,9 +1076,10 @@ select option {
       height: 6rem; }
     .scrolltopbottom li h5 {
       padding-bottom: .25rem;
-      font-size: .6rem;
+      font-size: .7rem;
       text-align: left;
       width: 100%;
+      color: #444;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis; }

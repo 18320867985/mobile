@@ -22,5 +22,8 @@ export {spy} from "./component/mobile-spy.js";
 
 export {tableview} from "./component/mobile-tableview.js";
 
+export {overflow} from "./component/mobile-overflow.js";
+
+
 
 

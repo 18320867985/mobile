@@ -1,24 +1,25 @@
 /*公共js设置样式*/
 var commonStyle = (function(m) {
-	if(m.isMobile()) {
-		m(document).touchstart(function(event) {
+	
+
+		m(".mobile-head,.mobile-footer,.mobile-tab").touchstart(function(event) {
 			event.preventDefault();
 
 		});
-		m(document).touchmove(function(event) {
+		m(".mobile-head,.mobile-footer,.mobile-tab").touchmove(function(event) {
 			event.preventDefault();
 
 		});
-		m(document).touchend(function(event) {
+		m(".mobile-head,.mobile-footer,.mobile-tab").touchend(function(event) {
 			event.preventDefault();
 
 		});
-		m(document).touchcancel(function(event) {
+		m(".mobile-head,.mobile-footer,.mobile-tab").touchcancel(function(event) {
 			event.preventDefault();
 
 		});
 
-	}
+	
 
 	// 设置主题内容样式
 	m(function() {
@@ -26,7 +27,7 @@ var commonStyle = (function(m) {
 		m(window).resize(function() {
 			reset();
 		});
-		
+
 		// 返回上一页
 		m(".mobile-back").on("touchend", function(event) {
 			event.preventDefault();

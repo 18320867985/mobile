@@ -9,7 +9,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 99;
+    z-index: 9;
     background: #f0f0f0;
 }
 
@@ -26,7 +26,7 @@
     position: fixed;
     left: 0;
     bottom: 0;
-    z-index: 99;
+    z-index: 9;
     width: 100%;
     border-top: 1px solid #ddd;
     background: #fff;
@@ -64,27 +64,23 @@
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 9999;
+    z-index: 1;
     overflow: hidden;
-  
-      
 }
 
 .mobile-tab-slide-list {
     height: 100%;
-  
-    .mobile-scroll-content-many{
-         min-height: 100%;
-         background: #fff;
+    .mobile-scroll-content-many {
+        min-height: 100%;
+        background: #fff;
     }
 }
 
 .mobile-tab-slide-item {
     float: left;
     padding: 10px;
- 
-    &.mobile-scroll-topbottom{
-         height: 100%;
+    &.mobile-scroll-topbottom {
+        height: 100%;
     }
 }
 
@@ -113,6 +109,7 @@
 
 
 /*mobile-tab-nav 下面的线条*/
+
 .mobile-tab-fixed.mobile-tab-line li {
     padding: 5px;
 }
@@ -122,15 +119,15 @@
     color: #690;
 }
 
+
 /*滑动线条*/
-.mobile-tab-slide-line{
-    
+
+.mobile-tab-slide-line {
     position: absolute;
-     left: 0;
-     bottom: 0;
-    z-index: 9999;
-    width:40px;
+    left: 0;
+    bottom: 0;
+    z-index: 1;
+    width: 40px;
     height: 2px;
     background: $active-bg;
-    
 }
