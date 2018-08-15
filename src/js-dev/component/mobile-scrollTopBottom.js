@@ -25,7 +25,7 @@ var scrollTopBottom = (function(m) {
 			isManyContent = true;
 		}
 
-		m(topbottomContent).setTransform('translateZ', 0.01);
+		m(topbottomContent).setTransform('translateZ', 0.05);
 		var isScrollTop = m(scrolltb).hasAttr("data-scroll-top"); // 是否下拉
 		var isScrollBottom = m(scrolltb).hasAttr("data-scroll-bottom"); // 是否上拉
 
@@ -113,7 +113,7 @@ var scrollTopBottom = (function(m) {
 
 			window_h = m(scrolltb).height();
 			// 过度时间0s
-			topbottomContent.transition("null");
+			//topbottomContent.transition("transform",200,"ease-out");
 
 			// 滚动条
 			if(isScrollBar) {
@@ -128,14 +128,14 @@ var scrollTopBottom = (function(m) {
 					mobile_scroll_bar.height(scroll_bar_h);
 				}
 				mobile_scroll_bar.css("opacity", 1);
-				mobile_scroll_bar.transition("null");
+				//mobile_scroll_bar.transition("transform",200,"ease-out");
 			
 			}
 
 		};
 
 		m(scrolltb).touchmove(move);
-var ttt=0;
+		var ttt=0;
 		function move(event) {
 			event.preventDefault();
 			window_h = m(scrolltb).height();
@@ -151,13 +151,15 @@ var ttt=0;
 			var _y = Math.abs(disY);
 			
 			if((_x> 1 || _y> 1)&&isLinkFirst ) {
-//				mobile_scroll_bar.transition("null");
-//				mobile_scroll_bar.transition("null")
+				
 				isLink = false;
 				isLinkFirst=false;
 				
 			}
-
+			
+			topbottomContent.transition("null");
+			mobile_scroll_bar.transition("null");
+	
 			// 滚动条
 			if(isScrollBar) {
 				
@@ -166,7 +168,6 @@ var ttt=0;
 				var scroll_box_sale = scroll_Y / scroll_box_h;
 				mobile_scroll_bar.setTransform("translateY", -bar_wrap_h * scroll_box_sale);
 			}
-			
 			
 			// 检查是否向上移动
 			if(isAddMoveEventFirst && (_x != _y)) {
@@ -307,7 +308,7 @@ var ttt=0;
 
 			minY = window_h - topbottomContent.height();
 			var _target = m(topbottomContent).getTransform("translateY");
-			var target = _target + speedScroll * 20;
+			var target = _target + speedScroll * 18;
 			var bezier = 'ease-out';
 
 			if(speedDcrt == "auto") {

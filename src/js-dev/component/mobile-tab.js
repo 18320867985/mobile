@@ -176,13 +176,14 @@ var tab = (function(m) {
 			var ratio = -left / m(mobile_slide).width();
 			if(nowX > startX) {
 
-				now = m.round(ratio, 0.8);
+				now = m.round(ratio, 0.7);
 				
 
 			} else {
-				now = m.round(ratio, 0.2);
+				now = m.round(ratio, 0.3);
 				
 			}
+			//now = m.round(ratio);
 
 			if(now < 0) {
 				now = 0
