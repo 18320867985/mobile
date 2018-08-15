@@ -78,7 +78,7 @@ var fullpage = (function(m) {
 			liNodes = wrap.find(".mobile-fullpage-list-item");
 
 			isLink = true;
-			list.transition("null");
+			list.transition("none");
 			var top = m(list).getTransform("translateY");
 			now = Math.round(-top / m(mobile_slide).height());
 			

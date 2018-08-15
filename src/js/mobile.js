@@ -2663,12 +2663,13 @@ var scrollTopBottom = function (m) {
 					mobile_scroll_bar.height(scroll_bar_h);
 				}
 				mobile_scroll_bar.css("opacity", 1);
+
 				//mobile_scroll_bar.transition("transform",200,"ease-out");
 			}
 		}
 
 		m(scrolltb).touchmove(move);
-		var ttt = 0;
+
 		function move(event) {
 			event.preventDefault();
 			window_h = m(scrolltb).height();
@@ -2689,8 +2690,8 @@ var scrollTopBottom = function (m) {
 				isLinkFirst = false;
 			}
 
-			topbottomContent.transition("null");
-			mobile_scroll_bar.transition("null");
+			topbottomContent.transition("none");
+			mobile_scroll_bar.transition("none");
 
 			// 滚动条
 			if (isScrollBar) {
@@ -2723,9 +2724,6 @@ var scrollTopBottom = function (m) {
 					speedlateY3 = speedlateY2 - speedlateY;
 					speedlateY = speedlateY2;
 					speedScroll = speedlateY3;
-
-					ttt = ++ttt;
-					m(".mobile-head-ttl").html(speedScroll + "#ttt:" + ttt);
 				}, 20);
 			}
 
@@ -2802,6 +2800,7 @@ var scrollTopBottom = function (m) {
 		}
 
 		m(scrolltb).touchendcancel(end);
+
 		function end(event) {
 			event.preventDefault();
 			var touch = event.changedTouches[0];
@@ -2809,7 +2808,7 @@ var scrollTopBottom = function (m) {
 			// 计算移动速度
 			speedSetIntervalFisrt = true;
 			clearInterval(speedSetIntervalId);
-			//console.log(isMOve+"/end");
+
 			var setTimeoutId = setTimeout(function () {
 				clearInterval(speedSetIntervalId);
 				clearTimeout(setTimeoutId);
@@ -2830,15 +2829,17 @@ var scrollTopBottom = function (m) {
 				return;
 			}
 
+			// 计算移动速度
 			if (speedScroll > 70) {
 				speedScroll = 70;
 			} else if (speedScroll < -70) {
 				speedScroll = -70;
 			}
 
+			var speedHeight = m(scrolltb).height();
 			minY = window_h - topbottomContent.height();
 			var _target = m(topbottomContent).getTransform("translateY");
-			var target = _target + speedScroll * 20;
+			var target = _target + speedScroll * (speedHeight / 28);
 			var bezier = 'ease-out';
 
 			if (speedDcrt == "auto") {
@@ -2855,6 +2856,7 @@ var scrollTopBottom = function (m) {
 					m(topbottomContent).transition("all", 800, bezier);
 				}
 			}
+
 			//速度方向
 			else if (speedDcrt == "up") {
 					target = minY;
@@ -2912,7 +2914,7 @@ var scrollTopBottom = function (m) {
 				var scroll_box_sale = scroll_Y / scroll_box_h;
 				mobile_scroll_bar.setTransform("translateY", -bar_wrap_h * scroll_box_sale);
 
-				mobile_scroll_bar.transition("null");
+				mobile_scroll_bar.transition("none");
 				bar_h = m(topbottomContent).height();
 				bar_wrap_h = m(scrolltb).height();
 				sale_bar = bar_wrap_h / bar_h;
@@ -2983,7 +2985,7 @@ var scrollLeftRight = function (m) {
 			disValue = 0;
 
 			// 过度时间0s
-			navsList[0].style.transition = 'none';
+			m(navsList).transition("none");
 		}
 
 		m(navs).touchmove(move);
@@ -3438,7 +3440,7 @@ var tab = function (m) {
 			list = wrap.find(".mobile-tab-slide-list");
 			liNodes = wrap.find(".mobile-tab-slide-item");
 
-			list.transition("null");
+			list.transition("none");
 			var left = m(list).getTransform("translateX");
 			now = Math.round(-left / m(mobile_slide).width());
 
@@ -3576,7 +3578,7 @@ var tab = function (m) {
 			var sp_v = li_w * sp;
 			var line_slideX = -sp_v + lineX;
 			line.setTransform("translateX", line_slideX);
-			line.transition("null");
+			line.transition("none");
 			//console.log("line")
 		}
 	});
@@ -3691,7 +3693,7 @@ var tab = function (m) {
 		if (istransition) {
 			m(p).transition("all", 500);
 		} else {
-			m(p).transition("null");
+			m(p).transition("none");
 		}
 
 		// 是否允许触发事件
@@ -3925,7 +3927,7 @@ var fullpage = function (m) {
 			list = wrap.find(".mobile-fullpage-list");
 			liNodes = wrap.find(".mobile-fullpage-list-item");
 
-			list.transition("null");
+			list.transition("none");
 			var top = m(list).getTransform("translateY");
 			now = Math.round(-top / m(mobile_slide).height());
 
@@ -4096,7 +4098,7 @@ var indexlist = function (m) {
 			}
 
 			ul.setTransform("translateY", -top);
-			ul.transition("null");
+			ul.transition("none");
 			indexlist_a.removeClass("active");
 			m(this).addClass("active");
 			tip.text(v);
@@ -4150,7 +4152,7 @@ var indexlist = function (m) {
 				top = translateY;
 			}
 			ul.setTransform("translateY", -top);
-			ul.transition("null");
+			ul.transition("none");
 			indexlist_a.removeClass("active");
 			indexlist_a.eq(i).addClass("active");
 			tip.text(items[i].name);

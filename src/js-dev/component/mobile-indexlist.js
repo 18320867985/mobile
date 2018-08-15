@@ -33,7 +33,7 @@ var indexlist = (function(m) {
 			}
 
 			ul.setTransform("translateY", -top);
-			ul.transition("null");
+			ul.transition("none");
 			indexlist_a.removeClass("active");
 			m(this).addClass("active");
 			tip.text(v);
@@ -93,7 +93,7 @@ var indexlist = (function(m) {
 				top = translateY;
 			}
 			ul.setTransform("translateY", -top);
-			ul.transition("null");
+			ul.transition("none");
 			indexlist_a.removeClass("active");
 			indexlist_a.eq(i).addClass("active");
 			tip.text(items[i].name);

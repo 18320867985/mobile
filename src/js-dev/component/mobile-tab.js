@@ -69,7 +69,7 @@ var tab = (function(m) {
 			liNodes = wrap.find(".mobile-tab-slide-item");
 
 			isLink = true;
-			list.transition("null");
+			list.transition("none");
 			var left = m(list).getTransform("translateX");
 			 now = Math.round(-left / m(mobile_slide).width());
 
@@ -221,7 +221,7 @@ var tab = (function(m) {
 			var sp_v = li_w * sp;
 			var line_slideX = -sp_v + lineX;
 			line.setTransform("translateX", line_slideX);
-			line.transition("null");
+			line.transition("none");
 			//console.log("line")
 
 		}
@@ -343,7 +343,7 @@ var tab = (function(m) {
 			if(istransition) {
 				m(p).transition("all", 500);
 			} else {
-				m(p).transition("null");
+				m(p).transition("none");
 			}
 
 			// 是否允许触发事件

@@ -57,8 +57,7 @@ var scrollLeftRight = (function(m) {
 			disValue = 0;
 
 			// 过度时间0s
-			navsList[0].style.transition = 'none';
-
+			m(navsList).transition("none");
 		};
 
 		m(navs).touchmove(move);

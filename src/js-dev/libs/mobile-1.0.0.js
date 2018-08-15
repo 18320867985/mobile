@@ -1216,6 +1216,8 @@
 					this.style.webkitTransition = _transition;
 					this.style.OTransition = _transition;
 					this.style.transition = _transition;
+					
+					
 				});
 
 				return this;
