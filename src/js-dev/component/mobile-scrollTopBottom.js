@@ -305,10 +305,16 @@ var scrollTopBottom = (function(m) {
 			if(isAddMoveEvent) {
 				return;
 			}
-
+			
+			if(speedScroll>70){
+				speedScroll=70;
+			}else if(speedScroll<-70){
+				speedScroll=-70;
+			}
+			
 			minY = window_h - topbottomContent.height();
 			var _target = m(topbottomContent).getTransform("translateY");
-			var target = _target + speedScroll * 18;
+			var target = _target + speedScroll * 20;
 			var bezier = 'ease-out';
 
 			if(speedDcrt == "auto") {
@@ -346,6 +352,7 @@ var scrollTopBottom = (function(m) {
 				mobile_scroll_bar.transition("all", 800);
 
 			}
+			
 
 			// 是否下拉加载
 			if(isLoading) {

@@ -2830,9 +2830,15 @@ var scrollTopBottom = function (m) {
 				return;
 			}
 
+			if (speedScroll > 70) {
+				speedScroll = 70;
+			} else if (speedScroll < -70) {
+				speedScroll = -70;
+			}
+
 			minY = window_h - topbottomContent.height();
 			var _target = m(topbottomContent).getTransform("translateY");
-			var target = _target + speedScroll * 18;
+			var target = _target + speedScroll * 20;
 			var bezier = 'ease-out';
 
 			if (speedDcrt == "auto") {
