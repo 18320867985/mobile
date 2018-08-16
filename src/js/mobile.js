@@ -2586,12 +2586,18 @@ var scrollTopBottom = function (m) {
 		var eleY = 0; // 元素初始位置
 		var startY = 0;
 		var startX = 0;
+		var dis = 0;
+
+		// a链接
 		var isLink = true;
 		var isLinkFirst = true;
+
+		// 是否上拖动
 		var isAddMoveEvent = false; // 判断是否往上拖动
 		var isAddMoveEventFirst = true; // 判断是否第一往上拖动
-		var dis = 0;
-		var speedDcrt = "auto"; //速度方向
+
+		//速度方向
+		var speedDcrt = "auto";
 
 		var window_h = m(scrolltb).height();
 		var minY = window_h - topbottomContent.height();
@@ -2673,6 +2679,8 @@ var scrollTopBottom = function (m) {
 		function move(event) {
 			event.preventDefault();
 			window_h = m(scrolltb).height();
+			topbottomContent.transition("none");
+			mobile_scroll_bar.transition("none");
 
 			var touch = event.changedTouches[0];
 			var nowY = touch.clientY;
@@ -2689,9 +2697,6 @@ var scrollTopBottom = function (m) {
 				isLink = false;
 				isLinkFirst = false;
 			}
-
-			topbottomContent.transition("none");
-			mobile_scroll_bar.transition("none");
 
 			// 滚动条
 			if (isScrollBar) {
@@ -2830,10 +2835,10 @@ var scrollTopBottom = function (m) {
 			}
 
 			// 计算移动速度
-			if (speedScroll > 70) {
-				speedScroll = 70;
-			} else if (speedScroll < -70) {
-				speedScroll = -70;
+			if (speedScroll > 80) {
+				speedScroll = 80;
+			} else if (speedScroll < -80) {
+				speedScroll = -80;
 			}
 
 			var speedHeight = m(scrolltb).height();
