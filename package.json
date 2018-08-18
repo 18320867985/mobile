@@ -9,13 +9,13 @@
     "start": "node app.js"
   },
   "license": "ISC",
-  "dependencies": {
-   
-  },
+  "dependencies": {},
   "devDependencies": {
     "autoprefixer": "^7.1.4",
     "babel-core": "^6.26.0",
     "babel-preset-es2015-rollup": "^3.0.0",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-preset-latest": "^6.24.1",
     "del": "^3.0.0",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1",

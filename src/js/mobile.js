@@ -14,7 +14,28 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
  *	移动端 公共类库
  */
 
-(function () {
+(function (global, factory) {
+	//  cmd commonjs
+	if ((typeof module === "undefined" ? "undefined" : _typeof(module)) === "object" && _typeof(module.exports) === "object") {
+		module.exports = factory(global);
+	}
+
+	// amd requirejs
+	else if (typeof define === "function" && define.amd) {
+			define(function () {
+				return factory(global);
+			});
+		}
+
+		// cmd seajs
+		else if (typeof define === "function" && define.cmd) {
+				define(function (require, exports, module) {
+					module.exports = factory(global);
+				});
+			} else {
+				factory(global);
+			}
+})(typeof window !== "undefined" ? window : window, function (window) {
 
 	var _mobile = window.mobile = window.m;
 	var _$ = window.$;
@@ -2432,25 +2453,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 	});
 
-	//  cmd commonjs
-	if ((typeof module === "undefined" ? "undefined" : _typeof(module)) === "object" && _typeof(module.exports) === "object") {
-		module.exports = Mobile;
-	}
-
-	// amd requirejs
-	if (typeof define === "function" && define.amd) {
-		define(function () {
-			return Mobile;
-		});
-	}
-
-	// cmd seajs
-	if (typeof define === "function" && define.cmd) {
-		define(function (require, exports, module) {
-			module.exports = Mobile;
-		});
-	}
-})();
+	return mobile;
+});
 
 var reset = function () {
 

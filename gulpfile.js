@@ -142,6 +142,9 @@ gulp.task('t_eslint', function() {
 gulp.task('build', async function () {
   const bundle = await rollup.rollup({
   	input: './src/js-dev/app.js',
+  	
+  	/* 默认情况下，模块的上下文 - 即顶级的this的值为undefined。您可能需要将其更改为其他内容，如 'window'*/
+	context: "window",
     plugins: [
     npm({
 			jsnext: true,
