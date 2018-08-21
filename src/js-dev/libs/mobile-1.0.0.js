@@ -1,8 +1,10 @@
 /*
  *	移动端 公共类库
+ * 作者：724485868@qq.com
  */
 
 (function(global, factory) {
+	
 	//  cmd commonjs
 	if(typeof module === "object" && typeof module.exports === "object") {
 		module.exports = factory(global);
@@ -513,17 +515,17 @@
 			var arr = [];
 			var obj = m(this);
 			for(var i = 0; i < obj.length; i++) {
-
+			
 				var p = _searchParents(obj[i], function(elm) {
-					var bl = false;
-					bl = Mobile.checkSelector(elm, selector);
-					return bl;
+					 return  Mobile.checkSelector(elm, selector);
 				});
 
 				delete obj[i];
 				if(p) {
 					arr.push(p);
+				
 				}
+					
 			};
 			delete obj.length;
 			Array.prototype.push.apply(obj, arr);
@@ -541,9 +543,7 @@
 					arr.push(obj[i]);
 				} else {
 					p = _searchParents(obj[i], function(elm) {
-						var bl = false;
-						bl = Mobile.checkSelector(elm, selector);
-						return bl;
+					return	Mobile.checkSelector(elm, selector);
 					});
 				}
 				delete obj[i];
