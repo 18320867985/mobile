@@ -40,7 +40,7 @@ export default {
 	// sourceMap: true,
 	output: [{
 			format: 'umd',
-			name: 'hqs',
+			name: 'mobile',
 			file: 'dist/js/mobile.js',
 			indent: '\t',
 			strict: false, //在生成的包中省略`"use strict";`
